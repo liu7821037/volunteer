@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bjb.dao.VolNewsInfomationDao">
+	<resultMap id="volNewsInfomationResultMap" type="com.bjb.entity.VolNewsInfomation">
+		<id column="infomationId" property="id" jdbcType="INTEGER" />
+		<result column="infomationTitle" property="infomationTitle" jdbcType="VARCHAR" />
+		<result column="infomationContent" property="infomationContent" jdbcType="VARCHAR" />
+		<result column="infomationType" property="infomationType" jdbcType="INTEGER" />
+		<result column="infomationRelease" property="infomationRelease" jdbcType="INTEGER" />
+		<result column="releaseDate" property="releaseDate" jdbcType="TIMESTAMP" />
+		<result column="viewed" property="viewed" jdbcType="INTEGER" />
+	</resultMap>
+	
+	<sql id="columns">
+		infomationId, infomationTitle, infomationContent, infomationType, infomationRelease, releaseDate, viewed
+	</sql>
+	
+	<sql id="insertValues">
+		null,
+		#{infomationTitle, jdbcType=VARCHAR},
+		#{infomationContent, jdbcType=VARCHAR},
+		#{infomationType, jdbcType=INTEGER},
+		#{infomationRelease, jdbcType=INTEGER},
+		#{releaseDate, jdbcType=TIMESTAMP},
+		#{viewed, jdbcType=INTEGER}
+	</sql>
+	
+	<sql id="insertListValues">
+		null,
+		#{dto.infomationTitle, jdbcType=VARCHAR},
+		#{dto.infomationContent, jdbcType=VARCHAR},
+		#{dto.infomationType, jdbcType=INTEGER},
+		#{dto.infomationRelease, jdbcType=INTEGER},
+		#{dto.releaseDate, jdbcType=TIMESTAMP},
+		#{dto.viewed, jdbcType=INTEGER}
+	</sql>
+	
+	<sql id="updateValues">
+		infomationId=#{id, jdbcType=INTEGER},
+		infomationTitle=#{infomationTitle, jdbcType=VARCHAR},
+		infomationContent=#{infomationContent, jdbcType=VARCHAR},
+		infomationType=#{infomationType, jdbcType=INTEGER},
+		infomationRelease=#{infomationRelease, jdbcType=INTEGER},
+		releaseDate=#{releaseDate, jdbcType=TIMESTAMP},
+		viewed=#{viewed, jdbcType=INTEGER}
+	</sql>
+	
+	<sql id="updateListValues">
+		infomationId=#{dto.id, jdbcType=INTEGER},
+		infomationTitle=#{dto.infomationTitle, jdbcType=VARCHAR},
+		infomationContent=#{dto.infomationContent, jdbcType=VARCHAR},
+		infomationType=#{dto.infomationType, jdbcType=INTEGER},
+		infomationRelease=#{dto.infomationRelease, jdbcType=INTEGER},
+		releaseDate=#{dto.releaseDate, jdbcType=TIMESTAMP},
+		viewed=#{dto.viewed, jdbcType=INTEGER}
+	</sql>
+	
+	<sql id="updatePartialValues">
+		infomationId=#{id, jdbcType=INTEGER}
+		<if test="infomationTitle != null">
+			<trim prefix=",">
+				infomationTitle=#{infomationTitle, jdbcType=VARCHAR}
+			</trim>
+		</if>
+		<if test="infomationContent != null">
+			<trim prefix=",">
+				infomationContent=#{infomationContent, jdbcType=VARCHAR}
+			</trim>
+		</if>
+		<if test="infomationType != null">
+			<trim prefix=",">
+				infomationType=#{infomationType, jdbcType=INTEGER}
+			</trim>
+		</if>
+		<if test="infomationRelease != null">
+			<trim prefix=",">
+				infomationRelease=#{infomationRelease, jdbcType=INTEGER}
+			</trim>
+		</if>
+		<if test="releaseDate != null">
+			<trim prefix=",">
+				releaseDate=#{releaseDate, jdbcType=TIMESTAMP}
+			</trim>
+		</if>
+		<if test="viewed != null">
+			<trim prefix=",">
+				viewed=#{viewed, jdbcType=INTEGER}
+			</trim>
+		</if>
+	</sql>
+	
+	<sql id="whereCondition">
+		<if test="infomationTitle != null">
+			<if test="infomationTitle.length() > 0">
+				and instr(infomationTitle, #{infomationTitle, jdbcType=VARCHAR}) > 0
+			</if>
+		</if>
+		<if test="infomationRelease != null">
+			and infomationRelease = #{infomationRelease, jdbcType=INTEGER}
+		</if>
+	</sql>
+	
+	<select id="count" resultType="int">
+		select count(infomationId)
+		from vol_news_infomation
+	</select>
+	
+	<select id="countByDto" resultType="int" parameterType="VolNewsInfomation">
+		select count(infomationId)
+		from vol_news_infomation
+		where 1=1 <include refid="whereCondition"/>
+	</select>
+	
+	<select id="findById" resultMap="volNewsInfomationResultMap" parameterType="int">
+		select <include refid="columns"/>
+		from vol_news_infomation
+		where infomationId = #{id}
+	</select>
+	
+	<select id="findAll" resultMap="volNewsInfomationResultMap">
+		select <include refid="columns"/>
+		from vol_news_infomation
+		order by infomationId desc
+	</select>
+	
+	<select id="findByDto" resultMap="volNewsInfomationResultMap" parameterType="VolNewsInfomation">
+		select infomationId, infomationTitle, infomationType, infomationRelease, releaseDate, viewed
+		from vol_news_infomation
+		where 1=1 <include refid="whereCondition"/>
+		<if test="state == 0">
+			order by infomationId desc
+		</if>
+		<if test="state == 1">
+			order by viewed desc
+		</if>
+		<if test="start != null">
+			limit #{start}, #{end}
+		</if>
+	</select>
+	
+	<insert id="insert" parameterType="VolNewsInfomation">
+		insert into vol_news_infomation
+		(<include refid="columns"/>)
+		values(<include refid="insertValues"/>);
+		<selectKey resultType="int" keyProperty="id">
+			select last_insert_id()
+		</selectKey>
+	</insert>
+	
+	<insert id="insertList" parameterType="java.util.List">
+		insert into vol_news_infomation
+		(<include refid="columns"/>)
+		values
+			<foreach collection="list" item="dto" index="index" separator=",">
+				(<include refid="insertListValues"/>)
+			</foreach>
+	</insert>
+	
+	<update id="update" parameterType="VolNewsInfomation">
+		update vol_news_infomation
+		set <include refid="updateValues"/>
+		where infomationId = #{id}
+	</update>
+	
+	<!--update id="updateList" parameterType="java.util.List">
+		update vol_news_infomation
+		set <include refid="updateListValues"/>
+		where infomationId in
+		<foreach collection="list" item="dto" open="(" separator="," close=")">
+			#{dto.id}
+		</foreach>
+	</update-->
+	
+	<update id="updatePartial" parameterType="VolNewsInfomation">
+		update vol_news_infomation
+		set <include refid="updatePartialValues"/>
+		where infomationId = #{id}
+	</update>
+	
+	<delete id="delete" parameterType="int">
+		delete from vol_news_infomation
+		where infomationId = #{id}
+	</delete>
+	
+	<delete id="deleteList" parameterType="java.util.List">
+		delete from vol_news_infomation
+		where infomationId in
+		<foreach collection="list" item="id" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+</mapper>

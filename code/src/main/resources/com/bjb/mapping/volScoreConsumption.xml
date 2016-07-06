@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bjb.dao.VolScoreConsumptionDao">
+	<resultMap id="volScoreConsumptionResultMap" type="com.bjb.entity.VolScoreConsumption">
+		<id column="consumptionId" property="id" jdbcType="INTEGER" />
+		<result column="organizationId" property="organizationId" jdbcType="INTEGER" />
+		<result column="volunteerId" property="volunteerId" jdbcType="INTEGER" />
+		<result column="RedeemForehead" property="RedeemForehead" jdbcType="INTEGER" />
+		<result column="RedeemDate" property="RedeemDate" jdbcType="TIMESTAMP" />
+		<result column="operator" property="operator" jdbcType="INTEGER" />
+		<result column="RedeemReason" property="RedeemReason" jdbcType="VARCHAR" />
+		<result column="remark" property="remark" jdbcType="VARCHAR" />
+	</resultMap>
+	
+	<sql id="columns">
+		consumptionId, organizationId, volunteerId, RedeemForehead, RedeemDate, operator, RedeemReason, remark
+	</sql>
+	
+	<sql id="insertValues">
+		null,
+		#{organizationId, jdbcType=INTEGER},
+		#{volunteerId, jdbcType=INTEGER},
+		#{RedeemForehead, jdbcType=INTEGER},
+		#{RedeemDate, jdbcType=TIMESTAMP},
+		#{operator, jdbcType=INTEGER},
+		#{RedeemReason, jdbcType=VARCHAR},
+		#{remark, jdbcType=VARCHAR}
+	</sql>
+	
+	<sql id="insertListValues">
+		null,
+		#{dto.organizationId, jdbcType=INTEGER},
+		#{dto.volunteerId, jdbcType=INTEGER},
+		#{dto.RedeemForehead, jdbcType=INTEGER},
+		#{dto.RedeemDate, jdbcType=TIMESTAMP},
+		#{dto.operator, jdbcType=INTEGER},
+		#{dto.RedeemReason, jdbcType=VARCHAR},
+		#{dto.remark, jdbcType=VARCHAR}
+	</sql>
+	
+	<sql id="updateValues">
+		consumptionId=#{id, jdbcType=INTEGER},
+		organizationId=#{organizationId, jdbcType=INTEGER},
+		volunteerId=#{volunteerId, jdbcType=INTEGER},
+		RedeemForehead=#{RedeemForehead, jdbcType=INTEGER},
+		RedeemDate=#{RedeemDate, jdbcType=TIMESTAMP},
+		operator=#{operator, jdbcType=INTEGER},
+		RedeemReason=#{RedeemReason, jdbcType=VARCHAR},
+		remark=#{remark, jdbcType=VARCHAR}
+	</sql>
+	
+	<sql id="updateListValues">
+		consumptionId=#{dto.id, jdbcType=INTEGER},
+		organizationId=#{dto.organizationId, jdbcType=INTEGER},
+		volunteerId=#{dto.volunteerId, jdbcType=INTEGER},
+		RedeemForehead=#{dto.RedeemForehead, jdbcType=INTEGER},
+		RedeemDate=#{dto.RedeemDate, jdbcType=TIMESTAMP},
+		operator=#{dto.operator, jdbcType=INTEGER},
+		RedeemReason=#{dto.RedeemReason, jdbcType=VARCHAR},
+		remark=#{dto.remark, jdbcType=VARCHAR}
+	</sql>
+	
+	<sql id="updatePartialValues">
+		consumptionId=#{id, jdbcType=INTEGER}
+		<if test="organizationId != null">
+			<trim prefix=",">
+				organizationId=#{organizationId, jdbcType=INTEGER}
+			</trim>
+		</if>
+		<if test="volunteerId != null">
+			<trim prefix=",">
+				volunteerId=#{volunteerId, jdbcType=INTEGER}
+			</trim>
+		</if>
+		<if test="RedeemForehead != null">
+			<trim prefix=",">
+				RedeemForehead=#{RedeemForehead, jdbcType=INTEGER}
+			</trim>
+		</if>
+		<if test="RedeemDate != null">
+			<trim prefix=",">
+				RedeemDate=#{RedeemDate, jdbcType=TIMESTAMP}
+			</trim>
+		</if>
+		<if test="operator != null">
+			<trim prefix=",">
+				operator=#{operator, jdbcType=INTEGER}
+			</trim>
+		</if>
+		<if test="RedeemReason != null">
+			<trim prefix=",">
+				RedeemReason=#{RedeemReason, jdbcType=VARCHAR}
+			</trim>
+		</if>
+		<if test="remark != null">
+			<trim prefix=",">
+				remark=#{remark, jdbcType=VARCHAR}
+			</trim>
+		</if>
+	</sql>
+	
+	<sql id="whereCondition">
+	</sql>
+	
+	<select id="count" resultType="int">
+		select count(consumptionId)
+		from vol_score_consumption
+	</select>
+	
+	<select id="countByDto" resultType="int" parameterType="VolScoreConsumption">
+		select count(consumptionId)
+		from vol_score_consumption
+		where 1=1 <include refid="whereCondition"/>
+	</select>
+	
+	<select id="findById" resultMap="volScoreConsumptionResultMap" parameterType="int">
+		select <include refid="columns"/>
+		from vol_score_consumption
+		where consumptionId = #{id}
+	</select>
+	
+	<select id="findAll" resultMap="volScoreConsumptionResultMap">
+		select <include refid="columns"/>
+		from vol_score_consumption
+		order by consumptionId desc
+	</select>
+	
+	<select id="findByDto" resultMap="volScoreConsumptionResultMap" parameterType="VolScoreConsumption">
+		select <include refid="columns"/>
+		from vol_score_consumption
+		where 1=1 <include refid="whereCondition"/>
+		order by consumptionId desc
+		<if test="start != null">
+			limit #{start}, #{end}
+		</if>
+	</select>
+	
+	<insert id="insert" parameterType="VolScoreConsumption">
+		insert into vol_score_consumption
+		(<include refid="columns"/>)
+		values(<include refid="insertValues"/>);
+		<selectKey resultType="int" keyProperty="id">
+			select last_insert_id()
+		</selectKey>
+	</insert>
+	
+	<insert id="insertList" parameterType="java.util.List">
+		insert into vol_score_consumption
+		(<include refid="columns"/>)
+		values
+			<foreach collection="list" item="dto" index="index" separator=",">
+				(<include refid="insertListValues"/>)
+			</foreach>
+	</insert>
+	
+	<update id="update" parameterType="VolScoreConsumption">
+		update vol_score_consumption
+		set <include refid="updateValues"/>
+		where consumptionId = #{id}
+	</update>
+	
+	<!--update id="updateList" parameterType="java.util.List">
+		update vol_score_consumption
+		set <include refid="updateListValues"/>
+		where consumptionId in
+		<foreach collection="list" item="dto" open="(" separator="," close=")">
+			#{dto.id}
+		</foreach>
+	</update-->
+	
+	<update id="updatePartial" parameterType="VolScoreConsumption">
+		update vol_score_consumption
+		set <include refid="updatePartialValues"/>
+		where consumptionId = #{id}
+	</update>
+	
+	<delete id="delete" parameterType="int">
+		delete from vol_score_consumption
+		where consumptionId = #{id}
+	</delete>
+	
+	<delete id="deleteList" parameterType="java.util.List">
+		delete from vol_score_consumption
+		where consumptionId in
+		<foreach collection="list" item="id" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+</mapper>

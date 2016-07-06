@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bjb.dao.VolVolunteerRecommendedDao">
+	<resultMap id="volVolunteerRecommendedResultMap" type="com.bjb.entity.VolVolunteerRecommended">
+		<id column="recommendId" property="id" jdbcType="INTEGER" />
+		<result column="volunteerId" property="volunteerId" jdbcType="INTEGER" />
+		<result column="serviceType" property="serviceType" jdbcType="INTEGER" />
+		<result column="serviceDateStr" property="serviceDateStr" jdbcType="VARCHAR" />
+		<result column="area" property="area" jdbcType="VARCHAR" />
+		<result column="introduction" property="introduction" jdbcType="VARCHAR" />
+		<result column="createDate" property="createDate" jdbcType="TIMESTAMP" />
+		<result column="updateDate" property="updateDate" jdbcType="TIMESTAMP" />
+	</resultMap>
+	
+	<sql id="columns">
+		recommendId, volunteerId, serviceType, serviceDateStr, area, introduction, createDate, updateDate
+	</sql>
+	
+	<sql id="insertValues">
+		null,
+		#{volunteerId, jdbcType=INTEGER},
+		#{serviceType, jdbcType=INTEGER},
+		#{serviceDateStr, jdbcType=VARCHAR},
+		#{area, jdbcType=VARCHAR},
+		#{introduction, jdbcType=VARCHAR},
+		#{createDate, jdbcType=TIMESTAMP},
+		#{updateDate, jdbcType=TIMESTAMP}
+	</sql>
+	
+	<sql id="insertListValues">
+		null,
+		#{dto.volunteerId, jdbcType=INTEGER},
+		#{dto.serviceType, jdbcType=INTEGER},
+		#{dto.serviceDateStr, jdbcType=VARCHAR},
+		#{dto.area, jdbcType=VARCHAR},
+		#{dto.introduction, jdbcType=VARCHAR},
+		#{dto.createDate, jdbcType=TIMESTAMP},
+		#{dto.updateDate, jdbcType=TIMESTAMP}
+	</sql>
+	
+	<sql id="updateValues">
+		recommendId=#{id, jdbcType=INTEGER},
+		volunteerId=#{volunteerId, jdbcType=INTEGER},
+		serviceType=#{serviceType, jdbcType=INTEGER},
+		serviceDateStr=#{serviceDateStr, jdbcType=VARCHAR},
+		area=#{area, jdbcType=VARCHAR},
+		introduction=#{introduction, jdbcType=VARCHAR},
+		createDate=#{createDate, jdbcType=TIMESTAMP},
+		updateDate=#{updateDate, jdbcType=TIMESTAMP}
+	</sql>
+	
+	<sql id="updateListValues">
+		recommendId=#{dto.id, jdbcType=INTEGER},
+		volunteerId=#{dto.volunteerId, jdbcType=INTEGER},
+		serviceType=#{dto.serviceType, jdbcType=INTEGER},
+		serviceDateStr=#{dto.serviceDateStr, jdbcType=VARCHAR},
+		area=#{dto.area, jdbcType=VARCHAR},
+		introduction=#{dto.introduction, jdbcType=VARCHAR},
+		createDate=#{dto.createDate, jdbcType=TIMESTAMP},
+		updateDate=#{dto.updateDate, jdbcType=TIMESTAMP}
+	</sql>
+	
+	<sql id="updatePartialValues">
+		recommendId=#{id, jdbcType=INTEGER}
+		<if test="volunteerId != null">
+			<trim prefix=",">
+				volunteerId=#{volunteerId, jdbcType=INTEGER}
+			</trim>
+		</if>
+		<if test="serviceType != null">
+			<trim prefix=",">
+				serviceType=#{serviceType, jdbcType=INTEGER}
+			</trim>
+		</if>
+		<if test="serviceDateStr != null">
+			<trim prefix=",">
+				serviceDateStr=#{serviceDateStr, jdbcType=VARCHAR}
+			</trim>
+		</if>
+		<if test="area != null">
+			<trim prefix=",">
+				area=#{area, jdbcType=VARCHAR}
+			</trim>
+		</if>
+		<if test="introduction != null">
+			<trim prefix=",">
+				introduction=#{introduction, jdbcType=VARCHAR}
+			</trim>
+		</if>
+		<if test="createDate != null">
+			<trim prefix=",">
+				createDate=#{createDate, jdbcType=TIMESTAMP}
+			</trim>
+		</if>
+		<if test="updateDate != null">
+			<trim prefix=",">
+				updateDate=#{updateDate, jdbcType=TIMESTAMP}
+			</trim>
+		</if>
+	</sql>
+	
+	<sql id="whereCondition">
+	</sql>
+	
+	<select id="count" resultType="int">
+		select count(recommendId)
+		from vol_volunteer_recommended
+	</select>
+	
+	<select id="countByDto" resultType="int" parameterType="VolVolunteerRecommended">
+		select count(recommendId)
+		from vol_volunteer_recommended
+		where 1=1 <include refid="whereCondition"/>
+	</select>
+	
+	<select id="findById" resultMap="volVolunteerRecommendedResultMap" parameterType="int">
+		select <include refid="columns"/>
+		from vol_volunteer_recommended
+		where recommendId = #{id}
+	</select>
+	
+	<select id="findAll" resultMap="volVolunteerRecommendedResultMap">
+		select <include refid="columns"/>
+		from vol_volunteer_recommended
+		order by recommendId desc
+	</select>
+	
+	<select id="findByDto" resultMap="volVolunteerRecommendedResultMap" parameterType="VolVolunteerRecommended">
+		select <include refid="columns"/>
+		from vol_volunteer_recommended
+		where 1=1 <include refid="whereCondition"/>
+		order by recommendId desc
+		<if test="start != null">
+			limit #{start}, #{end}
+		</if>
+	</select>
+	
+	<insert id="insert" parameterType="VolVolunteerRecommended">
+		insert into vol_volunteer_recommended
+		(<include refid="columns"/>)
+		values(<include refid="insertValues"/>);
+		<selectKey resultType="int" keyProperty="id">
+			select last_insert_id()
+		</selectKey>
+	</insert>
+	
+	<insert id="insertList" parameterType="java.util.List">
+		insert into vol_volunteer_recommended
+		(<include refid="columns"/>)
+		values
+			<foreach collection="list" item="dto" index="index" separator=",">
+				(<include refid="insertListValues"/>)
+			</foreach>
+	</insert>
+	
+	<update id="update" parameterType="VolVolunteerRecommended">
+		update vol_volunteer_recommended
+		set <include refid="updateValues"/>
+		where recommendId = #{id}
+	</update>
+	
+	<!--update id="updateList" parameterType="java.util.List">
+		update vol_volunteer_recommended
+		set <include refid="updateListValues"/>
+		where recommendId in
+		<foreach collection="list" item="dto" open="(" separator="," close=")">
+			#{dto.id}
+		</foreach>
+	</update-->
+	
+	<update id="updatePartial" parameterType="VolVolunteerRecommended">
+		update vol_volunteer_recommended
+		set <include refid="updatePartialValues"/>
+		where recommendId = #{id}
+	</update>
+	
+	<delete id="delete" parameterType="int">
+		delete from vol_volunteer_recommended
+		where recommendId = #{id}
+	</delete>
+	
+	<delete id="deleteList" parameterType="java.util.List">
+		delete from vol_volunteer_recommended
+		where recommendId in
+		<foreach collection="list" item="id" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+</mapper>

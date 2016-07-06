@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bjb.dao.VolProjectCountDao">
+	<resultMap id="volProjectCountResultMap" type="com.bjb.entity.VolProjectCount">
+		<id column="projectId" property="id" jdbcType="INTEGER" />
+		<result column="join_nums" property="join_nums" jdbcType="INTEGER" />
+		<result column="read_nums" property="read_nums" jdbcType="INTEGER" />
+		<result column="share_nums" property="share_nums" jdbcType="INTEGER" />
+		<result column="createDate" property="createDate" jdbcType="TIMESTAMP" />
+		<result column="updateDate" property="updateDate" jdbcType="TIMESTAMP" />
+	</resultMap>
+	
+	<sql id="columns">
+		projectId, join_nums, read_nums, share_nums, createDate, updateDate
+	</sql>
+	
+	<sql id="insertValues">
+		#{id, jdbcType=INTEGER},
+		#{join_nums, jdbcType=INTEGER},
+		#{read_nums, jdbcType=INTEGER},
+		#{share_nums, jdbcType=INTEGER},
+		#{createDate, jdbcType=TIMESTAMP},
+		#{updateDate, jdbcType=TIMESTAMP}
+	</sql>
+	
+	<sql id="insertListValues">
+		#{dto.id, jdbcType=INTEGER},
+		#{dto.join_nums, jdbcType=INTEGER},
+		#{dto.read_nums, jdbcType=INTEGER},
+		#{dto.share_nums, jdbcType=INTEGER},
+		#{dto.createDate, jdbcType=TIMESTAMP},
+		#{dto.updateDate, jdbcType=TIMESTAMP}
+	</sql>
+	
+	<sql id="updateValues">
+		projectId=#{id, jdbcType=INTEGER},
+		join_nums=#{join_nums, jdbcType=INTEGER},
+		read_nums=#{read_nums, jdbcType=INTEGER},
+		share_nums=#{share_nums, jdbcType=INTEGER},
+		createDate=#{createDate, jdbcType=TIMESTAMP},
+		updateDate=#{updateDate, jdbcType=TIMESTAMP}
+	</sql>
+	
+	<sql id="updateListValues">
+		projectId=#{dto.id, jdbcType=INTEGER},
+		join_nums=#{dto.join_nums, jdbcType=INTEGER},
+		read_nums=#{dto.read_nums, jdbcType=INTEGER},
+		share_nums=#{dto.share_nums, jdbcType=INTEGER},
+		createDate=#{dto.createDate, jdbcType=TIMESTAMP},
+		updateDate=#{dto.updateDate, jdbcType=TIMESTAMP}
+	</sql>
+	
+	<sql id="updatePartialValues">
+		projectId=#{id, jdbcType=INTEGER}
+		<if test="join_nums != null">
+			<trim prefix=",">
+				join_nums=#{join_nums, jdbcType=INTEGER}
+			</trim>
+		</if>
+		<if test="read_nums != null">
+			<trim prefix=",">
+				read_nums=#{read_nums, jdbcType=INTEGER}
+			</trim>
+		</if>
+		<if test="share_nums != null">
+			<trim prefix=",">
+				share_nums=#{share_nums, jdbcType=INTEGER}
+			</trim>
+		</if>
+		<if test="createDate != null">
+			<trim prefix=",">
+				createDate=#{createDate, jdbcType=TIMESTAMP}
+			</trim>
+		</if>
+		<if test="updateDate != null">
+			<trim prefix=",">
+				updateDate=#{updateDate, jdbcType=TIMESTAMP}
+			</trim>
+		</if>
+	</sql>
+	
+	<sql id="whereCondition">
+		<if test="id != null">
+			and projectId = #{id, jdbcType=INTEGER}
+		</if>
+	</sql>
+	
+	<select id="count" resultType="int">
+		select count(projectId)
+		from vol_project_count
+	</select>
+	
+	<select id="countByDto" resultType="int" parameterType="VolProjectCount">
+		select count(projectId)
+		from vol_project_count
+		where 1=1 <include refid="whereCondition"/>
+	</select>
+	
+	<select id="findById" resultMap="volProjectCountResultMap" parameterType="int">
+		select <include refid="columns"/>
+		from vol_project_count
+		where projectId = #{id}
+	</select>
+	
+	<select id="findAll" resultMap="volProjectCountResultMap">
+		select <include refid="columns"/>
+		from vol_project_count
+		order by projectId desc
+	</select>
+	
+	<select id="findByDto" resultMap="volProjectCountResultMap" parameterType="VolProjectCount">
+		select <include refid="columns"/>
+		from vol_project_count
+		where 1=1 <include refid="whereCondition"/>
+		order by projectId desc
+		<if test="start != null">
+			limit #{start}, #{end}
+		</if>
+	</select>
+	
+	<insert id="insert" parameterType="VolProjectCount">
+		insert into vol_project_count
+		(<include refid="columns"/>)
+		values(<include refid="insertValues"/>);
+	</insert>
+	
+	<insert id="insertList" parameterType="java.util.List">
+		insert into vol_project_count
+		(<include refid="columns"/>)
+		values
+			<foreach collection="list" item="dto" index="index" separator=",">
+				(<include refid="insertListValues"/>)
+			</foreach>
+	</insert>
+	
+	<update id="update" parameterType="VolProjectCount">
+		update vol_project_count
+		set <include refid="updateValues"/>
+		where projectId = #{id}
+	</update>
+	
+	<!--update id="updateList" parameterType="java.util.List">
+		update vol_project_count
+		set <include refid="updateListValues"/>
+		where projectId in
+		<foreach collection="list" item="dto" open="(" separator="," close=")">
+			#{dto.id}
+		</foreach>
+	</update-->
+	
+	<update id="updatePartial" parameterType="VolProjectCount">
+		update vol_project_count
+		set <include refid="updatePartialValues"/>
+		where projectId = #{id}
+	</update>
+	
+	<delete id="delete" parameterType="int">
+		delete from vol_project_count
+		where projectId = #{id}
+	</delete>
+	
+	<delete id="deleteList" parameterType="java.util.List">
+		delete from vol_project_count
+		where projectId in
+		<foreach collection="list" item="id" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+</mapper>

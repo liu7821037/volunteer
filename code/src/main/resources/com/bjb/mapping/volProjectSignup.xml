@@ -1,0 +1,271 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bjb.dao.VolProjectSignupDao">
+	<resultMap id="volProjectSignupResultMap" type="com.bjb.entity.VolProjectSignup">
+		<id column="signUpId" property="id" jdbcType="INTEGER" />
+		<result column="projectId" property="projectId" jdbcType="INTEGER" />
+		<result column="volunteerId" property="volunteerId" jdbcType="INTEGER" />
+		<result column="signUpDate" property="signUpDate" jdbcType="TIMESTAMP" />
+		<result column="signUpType" property="signUpType" jdbcType="INTEGER" />
+		<result column="signUpStutas" property="signUpStutas" jdbcType="INTEGER" />
+		<result column="refuseReason" property="refuseReason" jdbcType="VARCHAR" />
+		<result column="getScore" property="getScore" jdbcType="INTEGER" />
+		<result column="projectName" property="projectName" jdbcType="VARCHAR" />
+		<result column="userName" property="userName" jdbcType="VARCHAR" />
+		<result column="statusName" property="statusName" jdbcType="VARCHAR" />
+		<result column="headPortrait" property="headPortrait" jdbcType="VARCHAR" />
+		<result column="userId" property="userId" jdbcType="VARCHAR" />
+		<result column="signId" property="signId" jdbcType="INTEGER" />
+	</resultMap>
+	
+	<sql id="columns">
+		signUpId, projectId, volunteerId, signUpDate, signUpType, signUpStutas, refuseReason, getScore,signId
+	</sql>
+	
+	<sql id="columns3">
+		s.volunteerId,u.fullName as username,s.signUpDate,s.signUpStutas
+	</sql>
+	
+	<sql id="insertValues">
+		null,
+		#{projectId, jdbcType=INTEGER},
+		#{volunteerId, jdbcType=INTEGER},
+		#{signUpDate, jdbcType=TIMESTAMP},
+		#{signUpType, jdbcType=INTEGER},
+		#{signUpStutas, jdbcType=INTEGER},
+		#{refuseReason, jdbcType=VARCHAR},
+		#{getScore, jdbcType=INTEGER},
+		#{signId, jdbcType=INTEGER}
+	</sql>
+	
+	<sql id="insertListValues">
+		null,
+		#{dto.projectId, jdbcType=INTEGER},
+		#{dto.volunteerId, jdbcType=INTEGER},
+		#{dto.signUpDate, jdbcType=TIMESTAMP},
+		#{dto.signUpType, jdbcType=INTEGER},
+		#{dto.signUpStutas, jdbcType=INTEGER},
+		#{dto.refuseReason, jdbcType=VARCHAR},
+		#{dto.getScore, jdbcType=INTEGER},
+		#{dto.signId, jdbcType=INTEGER}
+	</sql>
+	
+	<sql id="updateValues">
+		signUpId=#{id, jdbcType=INTEGER},
+		projectId=#{projectId, jdbcType=INTEGER},
+		volunteerId=#{volunteerId, jdbcType=INTEGER},
+		signUpDate=#{signUpDate, jdbcType=TIMESTAMP},
+		signUpType=#{signUpType, jdbcType=INTEGER},
+		signUpStutas=#{signUpStutas, jdbcType=INTEGER},
+		refuseReason=#{refuseReason, jdbcType=VARCHAR},
+		getScore=#{getScore, jdbcType=INTEGER},
+		signId=#{signId, jdbcType=INTEGER}
+	</sql>
+	
+	<sql id="updateListValues">
+		signUpId=#{dto.id, jdbcType=INTEGER},
+		projectId=#{dto.projectId, jdbcType=INTEGER},
+		volunteerId=#{dto.volunteerId, jdbcType=INTEGER},
+		signUpDate=#{dto.signUpDate, jdbcType=TIMESTAMP},
+		signUpType=#{dto.signUpType, jdbcType=INTEGER},
+		signUpStutas=#{dto.signUpStutas, jdbcType=INTEGER},
+		refuseReason=#{dto.refuseReason, jdbcType=VARCHAR},
+		getScore=#{dto.getScore, jdbcType=INTEGER},
+		signId=#{dto.signId, jdbcType=INTEGER}
+	</sql>
+	
+	<sql id="updatePartialValues">
+		signUpId=#{id, jdbcType=INTEGER}
+		<if test="projectId != null">
+			<trim prefix=",">
+				projectId=#{projectId, jdbcType=INTEGER}
+			</trim>
+		</if>
+		<if test="volunteerId != null">
+			<trim prefix=",">
+				volunteerId=#{volunteerId, jdbcType=INTEGER}
+			</trim>
+		</if>
+		<if test="signUpDate != null">
+			<trim prefix=",">
+				signUpDate=#{signUpDate, jdbcType=TIMESTAMP}
+			</trim>
+		</if>
+		<if test="signUpType != null">
+			<trim prefix=",">
+				signUpType=#{signUpType, jdbcType=INTEGER}
+			</trim>
+		</if>
+		<if test="signUpStutas != null">
+			<trim prefix=",">
+				signUpStutas=#{signUpStutas, jdbcType=INTEGER}
+			</trim>
+		</if>
+		<if test="refuseReason != null">
+			<trim prefix=",">
+				refuseReason=#{refuseReason, jdbcType=VARCHAR}
+			</trim>
+		</if>
+		<if test="getScore != null">
+			<trim prefix=",">
+				getScore=#{getScore, jdbcType=INTEGER}
+			</trim>
+		</if>
+	</sql>
+	
+	<sql id="whereCondition">
+		<if test="projectId != null">
+			and projectId = #{projectId, jdbcType=INTEGER}
+		</if>
+		<if test="volunteerId != null">
+			and volunteerId = #{volunteerId, jdbcType=INTEGER}
+		</if>
+		<if test="signUpStutas != null">
+			and signUpStutas = #{signUpStutas, jdbcType=INTEGER}
+		</if>
+	</sql>
+	
+	<select id="count" resultType="int">
+		select count(signUpId)
+		from vol_project_signup
+	</select>
+	
+	<select id="count1" resultType="int" parameterType="VolProjectSignup">
+		select count(signUpId)
+		from vol_project_signup 
+		where projectId = #{projectId, jdbcType=INTEGER}
+	</select>
+	
+	<select id="countByDto" resultType="int" parameterType="VolProjectSignup">
+		select count(signUpId)
+		from vol_project_signup
+		where 1=1 <include refid="whereCondition"/>
+	</select>
+	
+	<select id="findById" resultMap="volProjectSignupResultMap" parameterType="int">
+		select <include refid="columns"/>
+		from vol_project_signup
+		where signUpId = #{id}
+	</select>
+	
+	<select id="findAll" resultMap="volProjectSignupResultMap">
+		select <include refid="columns"/>
+		from vol_project_signup
+		order by signUpId desc
+	</select>
+	
+	<select id="findListByName" resultMap="volProjectSignupResultMap">
+		select p.signUpId, p.projectId, p.volunteerId, p.signUpDate, p.signUpType, p.signUpStutas, p.refuseReason, p.getScore
+		from vol_project_signup as p,vol_service_project as s
+		where p.projectId = s.projectId and s.projectTitle like '%${name}%'
+		order by p.signUpId desc
+	</select>
+	
+	<sql id="columns1">
+		signUpId, s.projectId, s.volunteerId, signUpDate, signUpType, signUpStutas, refuseReason, getScore
+	</sql>
+	
+	<sql id="columns2">
+		v.userId,v.headPortrait,v.fullName as userName,s.volunteerId,s.signUpDate,s.signUpStutas
+	</sql>
+	
+	<sql id="whereCondition1">
+		<if test="projectId != null">
+			and s.projectId = #{projectId, jdbcType=INTEGER}
+		</if>
+		<if test="volunteerId != null">
+			and s.volunteerId = #{volunteerId, jdbcType=INTEGER}
+		</if>
+		<if test="signUpStutas != null">
+			and signUpStutas = #{signUpStutas, jdbcType=INTEGER}
+		</if>
+	</sql>
+	
+	<sql id="whereCondition2">
+		<if test="projectId != null">
+			and s.projectId = #{projectId, jdbcType=INTEGER}
+		</if>
+	</sql>
+	
+	<select id="findByDto" resultMap="volProjectSignupResultMap" parameterType="VolProjectSignup">
+		select <include refid="columns1"/>,p.projectTitle as projectName,v.fullName as userName,d.dataName as statusName
+		from vol_project_signup as s,vol_service_project as p,vol_volunteer_user as v,vol_basic_data as d
+		where 1=1 <include refid="whereCondition1"/> and s.projectId = p.projectId and s.volunteerId = v.userId and s.signUpStutas = d.dataId
+		order by signUpId desc
+		<if test="start != null">
+			limit #{start}, #{end}
+		</if>
+	</select>
+	
+	<select id="findByDto2" resultMap="volProjectSignupResultMap" parameterType="VolProjectSignup">
+		select <include refid="columns3"/>
+		from vol_project_signup AS s,vol_volunteer_user AS u
+		where 1=1 <include refid="whereCondition2"/> and s.volunteerId = u.userId
+	</select>
+	
+	<select id="findByDto1" resultMap="volProjectSignupResultMap" parameterType="VolProjectSignup">
+		select <include refid="columns2"/>
+		from vol_volunteer_user as v, vol_project_signup as s
+		where 1=1 <include refid="whereCondition1"/> and s.volunteerId = v.userId
+		order by signUpDate desc
+	</select>
+	
+	<insert id="insert" parameterType="VolProjectSignup">
+		insert into vol_project_signup
+		(<include refid="columns"/>)
+		values(<include refid="insertValues"/>);
+		<selectKey resultType="int" keyProperty="id">
+			select last_insert_id()
+		</selectKey>
+	</insert>
+	
+	<insert id="insertList" parameterType="java.util.List">
+		insert into vol_project_signup
+		(<include refid="columns"/>)
+		values
+			<foreach collection="list" item="dto" index="index" separator=",">
+				(<include refid="insertListValues"/>)
+			</foreach>
+	</insert>
+	
+	<update id="update" parameterType="VolProjectSignup">
+		update vol_project_signup
+		set <include refid="updateValues"/>
+		where signUpId = #{id}
+	</update>
+	
+	<!--update id="updateList" parameterType="java.util.List">
+		update vol_project_signup
+		set <include refid="updateListValues"/>
+		where signUpId in
+		<foreach collection="list" item="dto" open="(" separator="," close=")">
+			#{dto.id}
+		</foreach>
+	</update-->
+	
+	<update id="updatePartial" parameterType="VolProjectSignup">
+		update vol_project_signup
+		set <include refid="updatePartialValues"/>
+		where signUpId = #{id}
+	</update>
+	
+	<delete id="delete" parameterType="int">
+		delete from vol_project_signup
+		where signUpId = #{id}
+	</delete>
+	
+	<delete id="deleteList" parameterType="java.util.List">
+		delete from vol_project_signup
+		where signUpId in
+		<foreach collection="list" item="id" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+	<!-- 自定义方法 -->
+	<select id="getScoreByProjectId" resultMap="volProjectSignupResultMap" parameterType="int">
+		select <include refid="columns"/>
+		from vol_project_signup
+		where projectId = #{id}
+	</select>
+	
+</mapper>

@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bjb.dao.VolSetSysidDao">
+	<resultMap id="volSetSysidResultMap" type="com.bjb.entity.VolSetSysid">
+		<id column="set_id" property="id" jdbcType="INTEGER" />
+		<result column="onlySign" property="onlySign" jdbcType="VARCHAR" />
+		<result column="projectId" property="projectId" jdbcType="INTEGER" />
+		<result column="sid" property="sid" jdbcType="INTEGER" />
+		<result column="creat_time" property="creat_time" jdbcType="TIMESTAMP" />
+		<result column="update_time" property="update_time" jdbcType="TIMESTAMP" />
+	</resultMap>
+	
+	<sql id="columns">
+		set_id, onlySign, projectId, sid, creat_time, update_time
+	</sql>
+	
+	<sql id="insertValues">
+		null,
+		#{onlySign, jdbcType=VARCHAR},
+		#{projectId, jdbcType=INTEGER},
+		#{sid, jdbcType=INTEGER},
+		#{creat_time, jdbcType=TIMESTAMP},
+		#{update_time, jdbcType=TIMESTAMP}
+	</sql>
+	
+	<sql id="insertListValues">
+		null,
+		#{dto.onlySign, jdbcType=VARCHAR},
+		#{dto.projectId, jdbcType=INTEGER},
+		#{dto.sid, jdbcType=INTEGER},
+		#{dto.creat_time, jdbcType=TIMESTAMP},
+		#{dto.update_time, jdbcType=TIMESTAMP}
+	</sql>
+	
+	<sql id="updateValues">
+		set_id=#{id, jdbcType=INTEGER},
+		onlySign=#{onlySign, jdbcType=VARCHAR},
+		projectId=#{projectId, jdbcType=INTEGER},
+		sid=#{sid, jdbcType=INTEGER},
+		creat_time=#{creat_time, jdbcType=TIMESTAMP},
+		update_time=#{update_time, jdbcType=TIMESTAMP}
+	</sql>
+	
+	<sql id="updateListValues">
+		set_id=#{dto.id, jdbcType=INTEGER},
+		onlySign=#{dto.onlySign, jdbcType=VARCHAR},
+		projectId=#{dto.projectId, jdbcType=INTEGER},
+		sid=#{dto.sid, jdbcType=INTEGER},
+		creat_time=#{dto.creat_time, jdbcType=TIMESTAMP},
+		update_time=#{dto.update_time, jdbcType=TIMESTAMP}
+	</sql>
+	
+	<sql id="updatePartialValues">
+		set_id=#{id, jdbcType=INTEGER}
+		<if test="onlySign != null">
+			<trim prefix=",">
+				onlySign=#{onlySign, jdbcType=VARCHAR}
+			</trim>
+		</if>
+		<if test="projectId != null">
+			<trim prefix=",">
+				projectId=#{projectId, jdbcType=INTEGER}
+			</trim>
+		</if>
+		<if test="sid != null">
+			<trim prefix=",">
+				sid=#{sid, jdbcType=INTEGER}
+			</trim>
+		</if>
+		<if test="creat_time != null">
+			<trim prefix=",">
+				creat_time=#{creat_time, jdbcType=TIMESTAMP}
+			</trim>
+		</if>
+		<if test="update_time != null">
+			<trim prefix=",">
+				update_time=#{update_time, jdbcType=TIMESTAMP}
+			</trim>
+		</if>
+	</sql>
+	
+	<sql id="whereCondition">
+		<if test="sid!=null">
+			and sid = #{sid, jdbcType=INTEGER}
+		</if>
+	</sql>
+	
+	<select id="count" resultType="int">
+		select count(set_id)
+		from vol_set_sysid
+	</select>
+	
+	<select id="countByDto" resultType="int" parameterType="VolSetSysid">
+		select count(set_id)
+		from vol_set_sysid
+		where 1=1 <include refid="whereCondition"/>
+	</select>
+	
+	<select id="findById" resultMap="volSetSysidResultMap" parameterType="int">
+		select <include refid="columns"/>
+		from vol_set_sysid
+		where set_id = #{id}
+	</select>
+	
+	<select id="findAll" resultMap="volSetSysidResultMap">
+		select <include refid="columns"/>
+		from vol_set_sysid
+		order by set_id desc
+	</select>
+	<select id="findByDto" resultMap="volSetSysidResultMap" parameterType="VolSetSysid">
+		select <include refid="columns"/>
+		from vol_set_sysid
+		where 1=1 <include refid="whereCondition"/>
+		order by set_id desc
+		<if test="start != null">
+			limit #{start}, #{end}
+		</if>
+	</select>
+	
+	<insert id="insert" parameterType="VolSetSysid">
+		insert into vol_set_sysid
+		(<include refid="columns"/>)
+		values(<include refid="insertValues"/>);
+		<selectKey resultType="int" keyProperty="id">
+			select last_insert_id()
+		</selectKey>
+	</insert>
+	
+	<insert id="insertList" parameterType="java.util.List">
+		insert into vol_set_sysid
+		(<include refid="columns"/>)
+		values
+			<foreach collection="list" item="dto" index="index" separator=",">
+				(<include refid="insertListValues"/>)
+			</foreach>
+	</insert>
+	
+	<update id="update" parameterType="VolSetSysid">
+		update vol_set_sysid
+		set <include refid="updateValues"/>
+		where set_id = #{id}
+	</update>
+	
+	<!--update id="updateList" parameterType="java.util.List">
+		update vol_set_sysid
+		set <include refid="updateListValues"/>
+		where set_id in
+		<foreach collection="list" item="dto" open="(" separator="," close=")">
+			#{dto.id}
+		</foreach>
+	</update-->
+	
+	<update id="updatePartial" parameterType="VolSetSysid">
+		update vol_set_sysid
+		set <include refid="updatePartialValues"/>
+		where set_id = #{id}
+	</update>
+	
+	<delete id="delete" parameterType="int">
+		delete from vol_set_sysid
+		where set_id = #{id}
+	</delete>
+	
+	<delete id="deleteList" parameterType="java.util.List">
+		delete from vol_set_sysid
+		where set_id in
+		<foreach collection="list" item="id" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+</mapper>

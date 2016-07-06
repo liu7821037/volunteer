@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bjb.dao.VolEvalutionDao">
+	<resultMap id="volEvalutionResultMap" type="com.bjb.entity.VolEvalution">
+		<id column="evalutionId" property="id" jdbcType="INTEGER" />
+		<result column="projectId" property="projectId" jdbcType="INTEGER" />
+		<result column="volunteerId" property="volunteerId" jdbcType="INTEGER" />
+		<result column="starId" property="starId" jdbcType="INTEGER" />
+		<result column="evalutionAuditor" property="evalutionAuditor" jdbcType="INTEGER" />
+		<result column="organizationId" property="organizationId" jdbcType="INTEGER" />
+		<result column="evalutionDate" property="evalutionDate" jdbcType="TIMESTAMP" />
+	</resultMap>
+	
+	<sql id="columns">
+		evalutionId, projectId, volunteerId, starId, evalutionAuditor, organizationId, evalutionDate
+	</sql>
+	
+	<sql id="insertValues">
+		null,
+		#{projectId, jdbcType=INTEGER},
+		#{volunteerId, jdbcType=INTEGER},
+		#{starId, jdbcType=INTEGER},
+		#{evalutionAuditor, jdbcType=INTEGER},
+		#{organizationId, jdbcType=INTEGER},
+		#{evalutionDate, jdbcType=TIMESTAMP}
+	</sql>
+	
+	<sql id="insertListValues">
+		null,
+		#{dto.projectId, jdbcType=INTEGER},
+		#{dto.volunteerId, jdbcType=INTEGER},
+		#{dto.starId, jdbcType=INTEGER},
+		#{dto.evalutionAuditor, jdbcType=INTEGER},
+		#{dto.organizationId, jdbcType=INTEGER},
+		#{dto.evalutionDate, jdbcType=TIMESTAMP}
+	</sql>
+	
+	<sql id="updateValues">
+		evalutionId=#{id, jdbcType=INTEGER},
+		projectId=#{projectId, jdbcType=INTEGER},
+		volunteerId=#{volunteerId, jdbcType=INTEGER},
+		starId=#{starId, jdbcType=INTEGER},
+		evalutionAuditor=#{evalutionAuditor, jdbcType=INTEGER},
+		organizationId=#{organizationId, jdbcType=INTEGER},
+		evalutionDate=#{evalutionDate, jdbcType=TIMESTAMP}
+	</sql>
+	
+	<sql id="updateListValues">
+		evalutionId=#{dto.id, jdbcType=INTEGER},
+		projectId=#{dto.projectId, jdbcType=INTEGER},
+		volunteerId=#{dto.volunteerId, jdbcType=INTEGER},
+		starId=#{dto.starId, jdbcType=INTEGER},
+		evalutionAuditor=#{dto.evalutionAuditor, jdbcType=INTEGER},
+		organizationId=#{dto.organizationId, jdbcType=INTEGER},
+		evalutionDate=#{dto.evalutionDate, jdbcType=TIMESTAMP}
+	</sql>
+	
+	<sql id="updatePartialValues">
+		evalutionId=#{id, jdbcType=INTEGER}
+		<if test="projectId != null">
+			<trim prefix=",">
+				projectId=#{projectId, jdbcType=INTEGER}
+			</trim>
+		</if>
+		<if test="volunteerId != null">
+			<trim prefix=",">
+				volunteerId=#{volunteerId, jdbcType=INTEGER}
+			</trim>
+		</if>
+		<if test="starId != null">
+			<trim prefix=",">
+				starId=#{starId, jdbcType=INTEGER}
+			</trim>
+		</if>
+		<if test="evalutionAuditor != null">
+			<trim prefix=",">
+				evalutionAuditor=#{evalutionAuditor, jdbcType=INTEGER}
+			</trim>
+		</if>
+		<if test="organizationId != null">
+			<trim prefix=",">
+				organizationId=#{organizationId, jdbcType=INTEGER}
+			</trim>
+		</if>
+		<if test="evalutionDate != null">
+			<trim prefix=",">
+				evalutionDate=#{evalutionDate, jdbcType=TIMESTAMP}
+			</trim>
+		</if>
+	</sql>
+	
+	<sql id="whereCondition">
+	</sql>
+	
+	<select id="count" resultType="int">
+		select count(evalutionId)
+		from vol_evalution
+	</select>
+	
+	<select id="countByDto" resultType="int" parameterType="VolEvalution">
+		select count(evalutionId)
+		from vol_evalution
+		where 1=1 <include refid="whereCondition"/>
+	</select>
+	
+	<select id="findById" resultMap="volEvalutionResultMap" parameterType="int">
+		select <include refid="columns"/>
+		from vol_evalution
+		where evalutionId = #{id}
+	</select>
+	
+	<select id="findAll" resultMap="volEvalutionResultMap">
+		select <include refid="columns"/>
+		from vol_evalution
+		order by evalutionId desc
+	</select>
+	
+	<select id="findListByName" resultMap="volEvalutionResultMap">
+		select e.evalutionId, e.projectId, e.volunteerId, e.starId, e.evalutionAuditor, e.organizationId, e.evalutionDate
+		from vol_evalution as e,vol_service_project as s
+		where e.projectId = s.projectId and s.projectTitle like '%${name}%'
+		order by e.evalutionId desc
+	</select>
+	
+	<select id="findByDto" resultMap="volEvalutionResultMap" parameterType="VolEvalution">
+		select <include refid="columns"/>
+		from vol_evalution
+		where 1=1 <include refid="whereCondition"/>
+		order by evalutionId desc
+		<if test="start != null">
+			limit #{start}, #{end}
+		</if>
+	</select>
+	
+	<insert id="insert" parameterType="VolEvalution">
+		insert into vol_evalution
+		(<include refid="columns"/>)
+		values(<include refid="insertValues"/>);
+		<selectKey resultType="int" keyProperty="id">
+			select last_insert_id()
+		</selectKey>
+	</insert>
+	
+	<insert id="insertList" parameterType="java.util.List">
+		insert into vol_evalution
+		(<include refid="columns"/>)
+		values
+			<foreach collection="list" item="dto" index="index" separator=",">
+				(<include refid="insertListValues"/>)
+			</foreach>
+	</insert>
+	
+	<update id="update" parameterType="VolEvalution">
+		update vol_evalution
+		set <include refid="updateValues"/>
+		where evalutionId = #{id}
+	</update>
+	
+	<!--update id="updateList" parameterType="java.util.List">
+		update vol_evalution
+		set <include refid="updateListValues"/>
+		where evalutionId in
+		<foreach collection="list" item="dto" open="(" separator="," close=")">
+			#{dto.id}
+		</foreach>
+	</update-->
+	
+	<update id="updatePartial" parameterType="VolEvalution">
+		update vol_evalution
+		set <include refid="updatePartialValues"/>
+		where evalutionId = #{id}
+	</update>
+	
+	<delete id="delete" parameterType="int">
+		delete from vol_evalution
+		where evalutionId = #{id}
+	</delete>
+	
+	<delete id="deleteList" parameterType="java.util.List">
+		delete from vol_evalution
+		where evalutionId in
+		<foreach collection="list" item="id" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+</mapper>

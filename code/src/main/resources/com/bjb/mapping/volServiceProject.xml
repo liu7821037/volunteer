@@ -1,0 +1,426 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bjb.dao.VolServiceProjectDao">
+	<resultMap id="volServiceProjectResultMap" type="com.bjb.entity.VolServiceProject">
+		<id column="projectId" property="id" jdbcType="INTEGER" />
+		<result column="projectTitle" property="projectTitle" jdbcType="VARCHAR" />
+		<result column="area_pid" property="area_pid" jdbcType="INTEGER" />
+		<result column="area_name" property="cityName" jdbcType="VARCHAR" />
+		<result column="area_cid" property="area_cid" jdbcType="INTEGER" />
+		<result column="area_name2" property="provinceName" jdbcType="VARCHAR" />
+		<result column="projectTypeId" property="projectTypeId" jdbcType="INTEGER" />
+		<result column="projectServiceObject" property="projectServiceObject" jdbcType="INTEGER" />
+		<result column="projectRecruitment" property="projectRecruitment" jdbcType="INTEGER" />
+		<result column="projectOrganizer" property="projectOrganizer" jdbcType="VARCHAR" />
+		<result column="projectAddress" property="projectAddress" jdbcType="VARCHAR" />
+		<result column="latitude" property="latitude" jdbcType="DOUBLE" />
+		<result column="longitude" property="longitude" jdbcType="DOUBLE" />
+		<result column="projectCover" property="projectCover" jdbcType="VARCHAR" />
+		<result column="detail" property="detail" jdbcType="VARCHAR" />
+		<result column="projectEnrrolEndDate" property="projectEnrrolEndDate" jdbcType="TIMESTAMP" />
+		<result column="projectStartDate" property="projectStartDate" jdbcType="TIMESTAMP" />
+		<result column="projectEndDate" property="projectEndDate" jdbcType="TIMESTAMP" />
+		<result column="projectScore" property="projectScore" jdbcType="INTEGER" />
+		<result column="creatorId" property="creatorId" jdbcType="INTEGER" />
+		<result column="createDate" property="createDate" jdbcType="TIMESTAMP" />
+		<result column="updateDate" property="updateDate" jdbcType="TIMESTAMP" />
+		<result column="istop" property="istop" jdbcType="INTEGER" />
+		<association property="projectCount" column="projectId" select="getProjectCount"></association>
+	</resultMap>
+	
+	<select id="getProjectCount" parameterType="int" resultType="com.bjb.entity.VolProjectCount">
+		select *  from vol_project_count  where projectId=#{id}
+	</select>
+	
+	<sql id="columns">
+		projectId, projectTitle, area_pid, area_cid, projectTypeId, projectServiceObject, projectRecruitment, projectOrganizer, projectAddress, latitude, longitude, projectCover, detail, projectEnrrolEndDate, projectStartDate, projectEndDate, projectScore, creatorId, createDate, updateDate,istop
+	</sql>
+	
+	<sql id="insertValues">
+		null,
+		#{projectTitle, jdbcType=VARCHAR},
+		#{area_pid, jdbcType=INTEGER},
+		#{area_cid, jdbcType=INTEGER},
+		#{projectTypeId, jdbcType=INTEGER},
+		#{projectServiceObject, jdbcType=INTEGER},
+		#{projectRecruitment, jdbcType=INTEGER},
+		#{projectOrganizer, jdbcType=VARCHAR},
+		#{projectAddress, jdbcType=VARCHAR},
+		#{latitude, jdbcType=DOUBLE},
+		#{longitude, jdbcType=DOUBLE},
+		#{projectCover, jdbcType=VARCHAR},
+		#{detail, jdbcType=VARCHAR},
+		#{projectEnrrolEndDate, jdbcType=TIMESTAMP},
+		#{projectStartDate, jdbcType=TIMESTAMP},
+		#{projectEndDate, jdbcType=TIMESTAMP},
+		#{projectScore, jdbcType=INTEGER},
+		#{creatorId, jdbcType=INTEGER},
+		#{createDate, jdbcType=TIMESTAMP},
+		#{updateDate, jdbcType=TIMESTAMP},
+		#{istop, jdbcType=INTEGER}
+	</sql>
+	
+	<sql id="insertListValues">
+		null,
+		#{dto.projectTitle, jdbcType=VARCHAR},
+		#{dto.area_pid, jdbcType=INTEGER},
+		#{dto.area_cid, jdbcType=INTEGER},
+		#{dto.projectTypeId, jdbcType=INTEGER},
+		#{dto.projectServiceObject, jdbcType=INTEGER},
+		#{dto.projectRecruitment, jdbcType=INTEGER},
+		#{dto.projectOrganizer, jdbcType=VARCHAR},
+		#{dto.projectAddress, jdbcType=VARCHAR},
+		#{dto.latitude, jdbcType=DOUBLE},
+		#{dto.longitude, jdbcType=DOUBLE},
+		#{dto.projectCover, jdbcType=VARCHAR},
+		#{dto.detail, jdbcType=VARCHAR},
+		#{dto.projectEnrrolEndDate, jdbcType=TIMESTAMP},
+		#{dto.projectStartDate, jdbcType=TIMESTAMP},
+		#{dto.projectEndDate, jdbcType=TIMESTAMP},
+		#{dto.projectScore, jdbcType=INTEGER},
+		#{dto.creatorId, jdbcType=INTEGER},
+		#{dto.createDate, jdbcType=TIMESTAMP},
+		#{dto.updateDate, jdbcType=TIMESTAMP},
+		#{dto.istop, jdbcType=INTEGER}
+	</sql>
+	
+	<sql id="updateValues">
+		projectId=#{id, jdbcType=INTEGER},
+		projectTitle=#{projectTitle, jdbcType=VARCHAR},
+		area_pid=#{area_pid, jdbcType=INTEGER},
+		area_cid=#{area_cid, jdbcType=INTEGER},
+		projectTypeId=#{projectTypeId, jdbcType=INTEGER},
+		projectServiceObject=#{projectServiceObject, jdbcType=INTEGER},
+		projectRecruitment=#{projectRecruitment, jdbcType=INTEGER},
+		projectOrganizer=#{projectOrganizer, jdbcType=VARCHAR},
+		projectAddress=#{projectAddress, jdbcType=VARCHAR},
+		latitude=#{latitude, jdbcType=DOUBLE},
+		longitude=#{longitude, jdbcType=DOUBLE},
+		projectCover=#{projectCover, jdbcType=VARCHAR},
+		detail=#{detail, jdbcType=VARCHAR},
+		projectEnrrolEndDate=#{projectEnrrolEndDate, jdbcType=TIMESTAMP},
+		projectStartDate=#{projectStartDate, jdbcType=TIMESTAMP},
+		projectEndDate=#{projectEndDate, jdbcType=TIMESTAMP},
+		projectScore=#{projectScore, jdbcType=INTEGER},
+		creatorId=#{creatorId, jdbcType=INTEGER},
+		createDate=#{createDate, jdbcType=TIMESTAMP},
+		updateDate=#{updateDate, jdbcType=TIMESTAMP},
+		istop=#{istop, jdbcType=INTEGER}
+	</sql>
+	
+	<sql id="updateListValues">
+		projectId=#{dto.id, jdbcType=INTEGER},
+		projectTitle=#{dto.projectTitle, jdbcType=VARCHAR},
+		area_pid=#{dto.area_pid, jdbcType=INTEGER},
+		area_cid=#{dto.area_cid, jdbcType=INTEGER},
+		projectTypeId=#{dto.projectTypeId, jdbcType=INTEGER},
+		projectServiceObject=#{dto.projectServiceObject, jdbcType=INTEGER},
+		projectRecruitment=#{dto.projectRecruitment, jdbcType=INTEGER},
+		projectOrganizer=#{dto.projectOrganizer, jdbcType=VARCHAR},
+		projectAddress=#{dto.projectAddress, jdbcType=VARCHAR},
+		latitude=#{dto.latitude, jdbcType=DOUBLE},
+		longitude=#{dto.longitude, jdbcType=DOUBLE},
+		projectCover=#{dto.projectCover, jdbcType=VARCHAR},
+		detail=#{dto.detail, jdbcType=VARCHAR},
+		projectEnrrolEndDate=#{dto.projectEnrrolEndDate, jdbcType=TIMESTAMP},
+		projectStartDate=#{dto.projectStartDate, jdbcType=TIMESTAMP},
+		projectEndDate=#{dto.projectEndDate, jdbcType=TIMESTAMP},
+		projectScore=#{dto.projectScore, jdbcType=INTEGER},
+		creatorId=#{dto.creatorId, jdbcType=INTEGER},
+		createDate=#{dto.createDate, jdbcType=TIMESTAMP},
+		updateDate=#{dto.updateDate, jdbcType=TIMESTAMP},
+		istop=#{dto.istop, jdbcType=INTEGER}
+	</sql>
+	
+	<sql id="updatePartialValues">
+		projectId=#{id, jdbcType=INTEGER}
+		<if test="projectTitle != null">
+			<trim prefix=",">
+				projectTitle=#{projectTitle, jdbcType=VARCHAR}
+			</trim>
+		</if>
+		<if test="area_pid != null">
+			<trim prefix=",">
+				area_pid=#{area_pid, jdbcType=INTEGER}
+			</trim>
+		</if>
+		<if test="area_cid != null">
+			<trim prefix=",">
+				area_cid=#{area_cid, jdbcType=INTEGER}
+			</trim>
+		</if>
+		<if test="projectTypeId != null">
+			<trim prefix=",">
+				projectTypeId=#{projectTypeId, jdbcType=INTEGER}
+			</trim>
+		</if>
+		<if test="projectServiceObject != null">
+			<trim prefix=",">
+				projectServiceObject=#{projectServiceObject, jdbcType=INTEGER}
+			</trim>
+		</if>
+		<if test="projectRecruitment != null">
+			<trim prefix=",">
+				projectRecruitment=#{projectRecruitment, jdbcType=INTEGER}
+			</trim>
+		</if>
+		<if test="projectOrganizer != null">
+			<trim prefix=",">
+				projectOrganizer=#{projectOrganizer, jdbcType=VARCHAR}
+			</trim>
+		</if>
+		<if test="projectAddress != null">
+			<trim prefix=",">
+				projectAddress=#{projectAddress, jdbcType=VARCHAR}
+			</trim>
+		</if>
+		<if test="latitude != null">
+			<trim prefix=",">
+				latitude=#{latitude, jdbcType=DOUBLE}
+			</trim>
+		</if>
+		<if test="longitude != null">
+			<trim prefix=",">
+				longitude=#{longitude, jdbcType=DOUBLE}
+			</trim>
+		</if>
+		<if test="projectCover != null">
+			<trim prefix=",">
+				projectCover=#{projectCover, jdbcType=VARCHAR}
+			</trim>
+		</if>
+		<if test="detail != null">
+			<trim prefix=",">
+				detail=#{detail, jdbcType=VARCHAR}
+			</trim>
+		</if>
+		<if test="projectEnrrolEndDate != null">
+			<trim prefix=",">
+				projectEnrrolEndDate=#{projectEnrrolEndDate, jdbcType=TIMESTAMP}
+			</trim>
+		</if>
+		<if test="projectStartDate != null">
+			<trim prefix=",">
+				projectStartDate=#{projectStartDate, jdbcType=TIMESTAMP}
+			</trim>
+		</if>
+		<if test="projectEndDate != null">
+			<trim prefix=",">
+				projectEndDate=#{projectEndDate, jdbcType=TIMESTAMP}
+			</trim>
+		</if>
+		<if test="projectScore != null">
+			<trim prefix=",">
+				projectScore=#{projectScore, jdbcType=INTEGER}
+			</trim>
+		</if>
+		<if test="creatorId != null">
+			<trim prefix=",">
+				creatorId=#{creatorId, jdbcType=INTEGER}
+			</trim>
+		</if>
+		<if test="createDate != null">
+			<trim prefix=",">
+				createDate=#{createDate, jdbcType=TIMESTAMP}
+			</trim>
+		</if>
+		<if test="updateDate != null">
+			<trim prefix=",">
+				updateDate=#{updateDate, jdbcType=TIMESTAMP}
+			</trim>
+		</if>
+		<if test="istop != null">
+			<trim prefix=",">
+				istop=#{istop, jdbcType=INTEGER}
+			</trim>
+		</if>
+	</sql>
+	
+	<sql id="whereCondition">
+		<if test="projectTitle != null">
+			<if test="projectTitle.length() > 0">
+				and instr(projectTitle, #{projectTitle, jdbcType=VARCHAR}) > 0
+			</if>
+		</if>
+		<if test="area_pid != null">
+			and area_pid = #{area_pid, jdbcType=INTEGER}
+		</if>
+		<if test="area_cid != null">
+			and area_cid = #{area_cid, jdbcType=INTEGER}
+		</if>
+		<if test="projectTypeId != null">
+			and projectTypeId = #{projectTypeId, jdbcType=INTEGER}
+		</if>
+		<if test="projectServiceObject != null">
+			and projectServiceObject = #{projectServiceObject, jdbcType=INTEGER}
+		</if>
+		<if test="projectRecruitment != null">
+			and projectRecruitment = #{projectRecruitment, jdbcType=INTEGER}
+		</if>
+		<if test="creatorId != null">
+			and creatorId = #{creatorId, jdbcType=INTEGER}
+		</if>
+		<if test="istop != null">
+			and istop = #{istop, jdbcType=INTEGER}
+		</if>
+	</sql>
+	
+	<sql id="whereCondition2">
+		<if test="state == 0">
+			order by projectId desc
+		</if>
+		<if test="state == 1">
+			order by join_nums desc
+		</if>
+		<if test="state == 2">
+			order by read_nums desc
+		</if>
+	</sql>
+	
+	<sql id="whereCondition1">
+	    <if test="projectTitle != null">
+			<if test="projectTitle.length() > 0">
+				and instr(projectTitle, #{projectTitle, jdbcType=VARCHAR}) > 0
+			</if>
+		</if>
+		<if test="area_cid != null">
+			and area_cid = #{area_cid, jdbcType=INTEGER}
+		</if>
+		<if test="creatorId != null">
+			and creatorId = #{creatorId, jdbcType=INTEGER}
+		</if>
+		<if test="istop != null">
+			and istop = #{istop, jdbcType=INTEGER}
+		</if>
+		<if test="projectTypeId != null">
+			and projectTypeId = #{projectTypeId, jdbcType=INTEGER}
+		</if>
+		<if test="flag == 0">
+			 and <![CDATA[projectEndDate < #{nowTimeStr, jdbcType=VARCHAR}]]>
+		</if>
+		<if test="flag == 1">
+			and <![CDATA[projectEndDate >= #{nowTimeStr, jdbcType=VARCHAR}]]>
+		</if>
+	</sql>
+	
+	<select id="count" resultType="int">
+		select count(projectId)
+		from vol_service_project
+	</select>
+	
+	<select id="countByDto" resultType="int" parameterType="VolServiceProject">
+		select count(projectId)
+		from vol_service_project
+		where 1=1 <include refid="whereCondition"/>
+	</select>
+	
+	<select id="findById" resultMap="volServiceProjectResultMap" parameterType="int">
+		select <include refid="columns"/>
+		from vol_service_project
+		where projectId = #{id}
+	</select>
+	
+	<select id="findAll" resultMap="volServiceProjectResultMap">
+		select <include refid="columns"/>
+		from vol_service_project
+		order by projectId desc
+	</select>
+	
+	<sql id="columns1">
+		p.projectId, projectTitle, area_pid, area_cid, projectTypeId, projectServiceObject, projectRecruitment, projectOrganizer, projectAddress, p.latitude, p.longitude, projectCover, projectEnrrolEndDate, projectStartDate, projectEndDate, projectScore, creatorId, p.createDate, p.updateDate,istop
+	</sql>
+
+	<select id="findByDto1" resultMap="volServiceProjectResultMap">
+		select <include refid="columns1"/> , a1.area_name, a2.area_name as area_name2
+		from vol_service_project as p ,vol_area as a1,vol_area as a2,vol_project_count as p1
+		where 1=1 <include refid="whereCondition1"/> and p.area_pid = a1.area_id and p.area_cid = a2.area_id and p.projectId = p1.projectId
+		 <include refid="whereCondition2"/>
+	</select>
+	
+	<select id="findByUserId" resultMap="volServiceProjectResultMap">
+		select <include refid="columns1"/> , a1.area_name, a2.area_name as area_name2
+		from vol_service_project as p ,vol_area as a1,vol_area as a2,vol_project_signup as s
+		where 1=1 and p.area_pid = a1.area_id and p.area_cid = a2.area_id and p.projectId = s.projectId and s.volunteerId = #{userId} and (s.signUpStutas = 101 or s.signUpStutas = 197)
+		order by projectId desc
+	</select>
+	
+	<sql id="whereCondition3">
+	    <if test="projectTitle != null">
+			<if test="projectTitle.length() > 0">
+				and instr(projectTitle, #{projectTitle, jdbcType=VARCHAR}) > 0
+			</if>
+		</if>
+		<if test="creatorId != null">
+			and s.volunteerId = #{creatorId} 
+		</if>
+	</sql>
+	
+	<select id="findByDto3" resultMap="volServiceProjectResultMap">
+		select <include refid="columns1"/> , a1.area_name, a2.area_name as area_name2
+		from vol_service_project as p ,vol_area as a1,vol_area as a2,vol_project_signup as s
+		where 1=1 <include refid="whereCondition3"/> and p.area_pid = a1.area_id and p.area_cid = a2.area_id and p.projectId = s.projectId  and (s.signUpStutas = 101 or s.signUpStutas = 197)
+		order by projectId desc
+	</select>
+	
+	<select id="findByDto" resultMap="volServiceProjectResultMap" parameterType="VolServiceProject">
+		select <include refid="columns"/>
+		from vol_service_project
+		where 1=1 <include refid="whereCondition"/>
+		order by projectId desc
+		<if test="start != null">
+			limit #{start}, #{end}
+		</if>
+	</select>
+	
+	<insert id="insert" parameterType="VolServiceProject">
+		insert into vol_service_project
+		(<include refid="columns"/>)
+		values(<include refid="insertValues"/>);
+		<selectKey resultType="int" keyProperty="id">
+			select last_insert_id()
+		</selectKey>
+	</insert>
+	
+	<insert id="insertList" parameterType="java.util.List">
+		insert into vol_service_project
+		(<include refid="columns"/>)
+		values
+			<foreach collection="list" item="dto" index="index" separator=",">
+				(<include refid="insertListValues"/>)
+			</foreach>
+	</insert>
+	
+	<update id="update" parameterType="VolServiceProject">
+		update vol_service_project
+		set <include refid="updateValues"/>
+		where projectId = #{id}
+	</update>
+	
+	<!--update id="updateList" parameterType="java.util.List">
+		update vol_service_project
+		set <include refid="updateListValues"/>
+		where projectId in
+		<foreach collection="list" item="dto" open="(" separator="," close=")">
+			#{dto.id}
+		</foreach>
+	</update-->
+	
+	<update id="updatePartial" parameterType="VolServiceProject">
+		update vol_service_project
+		set <include refid="updatePartialValues"/>
+		where projectId = #{id}
+	</update>
+	
+	<delete id="delete" parameterType="int">
+		delete from vol_service_project
+		where projectId = #{id}
+	</delete>
+	
+	<delete id="deleteList" parameterType="java.util.List">
+		delete from vol_service_project
+		where projectId in
+		<foreach collection="list" item="id" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+</mapper>

@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bjb.dao.VolReportDao">
+	<resultMap id="volReportResultMap" type="com.bjb.entity.VolReport">
+		<id column="reportId" property="id" jdbcType="INTEGER" />
+		<result column="elegantId" property="elegantId" jdbcType="INTEGER" />
+		<result column="volunteerId" property="volunteerId" jdbcType="INTEGER" />
+		<result column="reportDate" property="reportDate" jdbcType="TIMESTAMP" />
+		<result column="reportContent" property="reportContent" jdbcType="VARCHAR" />
+		<result column="checkStatus" property="checkStatus" jdbcType="VARCHAR" />
+		<result column="checkId" property="checkId" jdbcType="INTEGER" />
+		<result column="checkDate" property="checkDate" jdbcType="TIMESTAMP" />
+	</resultMap>
+	
+	<sql id="columns">
+		reportId, elegantId, volunteerId, reportDate, reportContent, checkStatus, checkId, checkDate
+	</sql>
+	
+	<sql id="insertValues">
+		null,
+		#{elegantId, jdbcType=INTEGER},
+		#{volunteerId, jdbcType=INTEGER},
+		#{reportDate, jdbcType=TIMESTAMP},
+		#{reportContent, jdbcType=VARCHAR},
+		#{checkStatus, jdbcType=VARCHAR},
+		#{checkId, jdbcType=INTEGER},
+		#{checkDate, jdbcType=TIMESTAMP}
+	</sql>
+	
+	<sql id="insertListValues">
+		null,
+		#{dto.elegantId, jdbcType=INTEGER},
+		#{dto.volunteerId, jdbcType=INTEGER},
+		#{dto.reportDate, jdbcType=TIMESTAMP},
+		#{dto.reportContent, jdbcType=VARCHAR},
+		#{dto.checkStatus, jdbcType=VARCHAR},
+		#{dto.checkId, jdbcType=INTEGER},
+		#{dto.checkDate, jdbcType=TIMESTAMP}
+	</sql>
+	
+	<sql id="updateValues">
+		reportId=#{id, jdbcType=INTEGER},
+		elegantId=#{elegantId, jdbcType=INTEGER},
+		volunteerId=#{volunteerId, jdbcType=INTEGER},
+		reportDate=#{reportDate, jdbcType=TIMESTAMP},
+		reportContent=#{reportContent, jdbcType=VARCHAR},
+		checkStatus=#{checkStatus, jdbcType=VARCHAR},
+		checkId=#{checkId, jdbcType=INTEGER},
+		checkDate=#{checkDate, jdbcType=TIMESTAMP}
+	</sql>
+	
+	<sql id="updateListValues">
+		reportId=#{dto.id, jdbcType=INTEGER},
+		elegantId=#{dto.elegantId, jdbcType=INTEGER},
+		volunteerId=#{dto.volunteerId, jdbcType=INTEGER},
+		reportDate=#{dto.reportDate, jdbcType=TIMESTAMP},
+		reportContent=#{dto.reportContent, jdbcType=VARCHAR},
+		checkStatus=#{dto.checkStatus, jdbcType=VARCHAR},
+		checkId=#{dto.checkId, jdbcType=INTEGER},
+		checkDate=#{dto.checkDate, jdbcType=TIMESTAMP}
+	</sql>
+	
+	<sql id="updatePartialValues">
+		reportId=#{id, jdbcType=INTEGER}
+		<if test="elegantId != null">
+			<trim prefix=",">
+				elegantId=#{elegantId, jdbcType=INTEGER}
+			</trim>
+		</if>
+		<if test="volunteerId != null">
+			<trim prefix=",">
+				volunteerId=#{volunteerId, jdbcType=INTEGER}
+			</trim>
+		</if>
+		<if test="reportDate != null">
+			<trim prefix=",">
+				reportDate=#{reportDate, jdbcType=TIMESTAMP}
+			</trim>
+		</if>
+		<if test="reportContent != null">
+			<trim prefix=",">
+				reportContent=#{reportContent, jdbcType=VARCHAR}
+			</trim>
+		</if>
+		<if test="checkStatus != null">
+			<trim prefix=",">
+				checkStatus=#{checkStatus, jdbcType=VARCHAR}
+			</trim>
+		</if>
+		<if test="checkId != null">
+			<trim prefix=",">
+				checkId=#{checkId, jdbcType=INTEGER}
+			</trim>
+		</if>
+		<if test="checkDate != null">
+			<trim prefix=",">
+				checkDate=#{checkDate, jdbcType=TIMESTAMP}
+			</trim>
+		</if>
+	</sql>
+	
+	<sql id="whereCondition">
+	</sql>
+	
+	<select id="count" resultType="int">
+		select count(reportId)
+		from vol_report
+	</select>
+	
+	<select id="countByDto" resultType="int" parameterType="VolReport">
+		select count(reportId)
+		from vol_report
+		where 1=1 <include refid="whereCondition"/>
+	</select>
+	
+	<select id="findById" resultMap="volReportResultMap" parameterType="int">
+		select <include refid="columns"/>
+		from vol_report
+		where reportId = #{id}
+	</select>
+	
+	<select id="findAll" resultMap="volReportResultMap">
+		select <include refid="columns"/>
+		from vol_report
+		order by reportId desc
+	</select>
+	
+	<select id="findListByName" resultMap="volReportResultMap">
+		select r.reportId, r.elegantId, r.volunteerId, r.reportDate, r.reportContent, r.checkStatus, r.checkId, r.checkDate
+		from vol_report as r,vol_elegant_demeanour as e
+		where r.elegantId = e.elegantId and e.elegantTitle like '%${name}%'
+		order by r.reportId desc
+	</select>
+	
+	<select id="findByDto" resultMap="volReportResultMap" parameterType="VolReport">
+		select <include refid="columns"/>
+		from vol_report
+		where 1=1 <include refid="whereCondition"/>
+		order by reportId desc
+		<if test="start != null">
+			limit #{start}, #{end}
+		</if>
+	</select>
+	
+	<insert id="insert" parameterType="VolReport">
+		insert into vol_report
+		(<include refid="columns"/>)
+		values(<include refid="insertValues"/>);
+		<selectKey resultType="int" keyProperty="id">
+			select last_insert_id()
+		</selectKey>
+	</insert>
+	
+	<insert id="insertList" parameterType="java.util.List">
+		insert into vol_report
+		(<include refid="columns"/>)
+		values
+			<foreach collection="list" item="dto" index="index" separator=",">
+				(<include refid="insertListValues"/>)
+			</foreach>
+	</insert>
+	
+	<update id="update" parameterType="VolReport">
+		update vol_report
+		set <include refid="updateValues"/>
+		where reportId = #{id}
+	</update>
+	
+	<!--update id="updateList" parameterType="java.util.List">
+		update vol_report
+		set <include refid="updateListValues"/>
+		where reportId in
+		<foreach collection="list" item="dto" open="(" separator="," close=")">
+			#{dto.id}
+		</foreach>
+	</update-->
+	
+	<update id="updatePartial" parameterType="VolReport">
+		update vol_report
+		set <include refid="updatePartialValues"/>
+		where reportId = #{id}
+	</update>
+	
+	<delete id="delete" parameterType="int">
+		delete from vol_report
+		where reportId = #{id}
+	</delete>
+	
+	<delete id="deleteList" parameterType="java.util.List">
+		delete from vol_report
+		where reportId in
+		<foreach collection="list" item="id" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+	
+	<!-- 自定义方法 -->
+
+	<select id="findElegantByReportId" resultType="int" parameterType="java.util.List">
+	SELECT * FROM vol_report as r , vol_elegant_demeanour as e 
+	WHERE r.elegantId = e.elegantId AND r.reportId = #{id}
+	
+	</select>
+	
+</mapper>

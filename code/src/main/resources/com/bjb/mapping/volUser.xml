@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bjb.dao.VolUserDao">
+	<resultMap id="volUserResultMap" type="com.bjb.entity.VolUser">
+		<id column="userId" property="id" jdbcType="INTEGER" />
+		<result column="userCode" property="userCode" jdbcType="VARCHAR" />
+		<result column="userPwd" property="userPwd" jdbcType="VARCHAR" />
+		<result column="userPhone" property="userPhone" jdbcType="VARCHAR" />
+		<result column="userTypeId" property="userTypeId" jdbcType="INTEGER" />
+		<result column="userStatus" property="userStatus" jdbcType="INTEGER" />
+	</resultMap>
+	
+	<sql id="columns">
+		userId, userCode, userPwd, userPhone, userTypeId, userStatus
+	</sql>
+	
+	<sql id="insertValues">
+		null,
+		#{userCode, jdbcType=VARCHAR},
+		#{userPwd, jdbcType=VARCHAR},
+		#{userPhone, jdbcType=VARCHAR},
+		#{userTypeId, jdbcType=INTEGER},
+		#{userStatus, jdbcType=INTEGER}
+	</sql>
+	
+	<sql id="insertListValues">
+		null,
+		#{dto.userCode, jdbcType=VARCHAR},
+		#{dto.userPwd, jdbcType=VARCHAR},
+		#{dto.userPhone, jdbcType=VARCHAR},
+		#{dto.userTypeId, jdbcType=INTEGER},
+		#{dto.userStatus, jdbcType=INTEGER}
+	</sql>
+	
+	<sql id="updateValues">
+		userId=#{id, jdbcType=INTEGER},
+		userCode=#{userCode, jdbcType=VARCHAR},
+		userPwd=#{userPwd, jdbcType=VARCHAR},
+		userPhone=#{userPhone, jdbcType=VARCHAR},
+		userTypeId=#{userTypeId, jdbcType=INTEGER},
+		userStatus=#{userStatus, jdbcType=INTEGER}
+	</sql>
+	
+	<sql id="updateListValues">
+		userId=#{dto.id, jdbcType=INTEGER},
+		userCode=#{dto.userCode, jdbcType=VARCHAR},
+		userPwd=#{dto.userPwd, jdbcType=VARCHAR},
+		userPhone=#{dto.userPhone, jdbcType=VARCHAR},
+		userTypeId=#{dto.userTypeId, jdbcType=INTEGER},
+		userStatus=#{dto.userStatus, jdbcType=INTEGER}
+	</sql>
+	
+	<sql id="updatePartialValues">
+		userId=#{id, jdbcType=INTEGER}
+		<if test="userCode != null">
+			<trim prefix=",">
+				userCode=#{userCode, jdbcType=VARCHAR}
+			</trim>
+		</if>
+		<if test="userPwd != null">
+			<trim prefix=",">
+				userPwd=#{userPwd, jdbcType=VARCHAR}
+			</trim>
+		</if>
+		<if test="userPhone != null">
+			<trim prefix=",">
+				userPhone=#{userPhone, jdbcType=VARCHAR}
+			</trim>
+		</if>
+		<if test="userTypeId != null">
+			<trim prefix=",">
+				userTypeId=#{userTypeId, jdbcType=INTEGER}
+			</trim>
+		</if>
+		<if test="userStatus != null">
+			<trim prefix=",">
+				userStatus=#{userStatus, jdbcType=INTEGER}
+			</trim>
+		</if>
+	</sql>
+	
+	<sql id="whereCondition">
+	    <if test="userCode != null">
+			and userCode = #{userCode, jdbcType=VARCHAR}
+		</if>
+		<if test="userPwd != null">
+			and userPwd = #{userPwd, jdbcType=VARCHAR}
+		</if>
+		<if test="userTypeId != null">
+			and userTypeId = #{userTypeId, jdbcType=INTEGER}
+		</if>
+		<if test="userStatus != null">
+			and userStatus = #{userStatus, jdbcType=INTEGER}
+		</if>
+		<if test="userPhone != null">
+			and userPhone = #{userPhone, jdbcType=INTEGER}
+		</if>
+	</sql>
+	
+	<select id="count" resultType="int">
+		select count(userId)
+		from vol_user
+	</select>
+	
+	<select id="countByDto" resultType="int" parameterType="VolUser">
+		select count(userId)
+		from vol_user
+		where 1=1 <include refid="whereCondition"/>
+	</select>
+	
+	<select id="findById" resultMap="volUserResultMap" parameterType="int">
+		select <include refid="columns"/>
+		from vol_user
+		where userId = #{id}
+	</select>
+	
+	<select id="findAll" resultMap="volUserResultMap">
+		select <include refid="columns"/>
+		from vol_user
+		order by userId desc
+	</select>
+	
+	<select id="findByDto" resultMap="volUserResultMap" parameterType="VolUser">
+		select <include refid="columns"/>
+		from vol_user
+		where 1=1 <include refid="whereCondition"/>
+		order by userId desc
+		<if test="start != null">
+			limit #{start}, #{end}
+		</if>
+	</select>
+	
+	<insert id="insert" parameterType="VolUser">
+		insert into vol_user
+		(<include refid="columns"/>)
+		values(<include refid="insertValues"/>);
+		<selectKey resultType="int" keyProperty="id">
+			select last_insert_id()
+		</selectKey>
+	</insert>
+	
+	<insert id="insertList" parameterType="java.util.List">
+		insert into vol_user
+		(<include refid="columns"/>)
+		values
+			<foreach collection="list" item="dto" index="index" separator=",">
+				(<include refid="insertListValues"/>)
+			</foreach>
+	</insert>
+	
+	<update id="update" parameterType="VolUser">
+		update vol_user
+		set <include refid="updateValues"/>
+		where userId = #{id}
+	</update>
+	
+	<!--update id="updateList" parameterType="java.util.List">
+		update vol_user
+		set <include refid="updateListValues"/>
+		where userId in
+		<foreach collection="list" item="dto" open="(" separator="," close=")">
+			#{dto.id}
+		</foreach>
+	</update-->
+	
+	<update id="updatePartial" parameterType="VolUser">
+		update vol_user
+		set <include refid="updatePartialValues"/>
+		where userId = #{id}
+	</update>
+	
+	<delete id="delete" parameterType="int">
+		delete from vol_user
+		where userId = #{id}
+	</delete>
+	
+	<delete id="deleteList" parameterType="java.util.List">
+		delete from vol_user
+		where userId in
+		<foreach collection="list" item="id" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+</mapper>

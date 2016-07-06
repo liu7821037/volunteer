@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bjb.dao.VolAccessDao">
+	<resultMap id="volAccessResultMap" type="com.bjb.entity.VolAccess">
+		<id column="role_id" property="role_id" jdbcType="INTEGER" />
+		<result column="node_id" property="node_id" jdbcType="INTEGER" />
+		<result column="level" property="level" jdbcType="INTEGER" />
+		<result column="module" property="module" jdbcType="VARCHAR" />
+	</resultMap>
+	
+	<sql id="columns">
+		role_id, node_id, level, module
+	</sql>
+	
+	<sql id="insertValues">
+		#{role_id, jdbcType=INTEGER},
+		#{node_id, jdbcType=INTEGER},
+		#{level, jdbcType=INTEGER},
+		#{module, jdbcType=VARCHAR}
+	</sql>
+	
+	<sql id="insertListValues">
+		#{dto.role_id, jdbcType=INTEGER},
+		#{dto.node_id, jdbcType=INTEGER},
+		#{dto.level, jdbcType=INTEGER},
+		#{dto.module, jdbcType=VARCHAR}
+	</sql>
+	
+	<sql id="updateValues">
+		role_id=#{role_id, jdbcType=INTEGER},
+		node_id=#{node_id, jdbcType=INTEGER},
+		level=#{level, jdbcType=INTEGER},
+		module=#{module, jdbcType=VARCHAR}
+	</sql>
+	
+	<sql id="updateListValues">
+		role_id=#{dto.role_id, jdbcType=INTEGER},
+		node_id=#{dto.node_id, jdbcType=INTEGER},
+		level=#{dto.level, jdbcType=INTEGER},
+		module=#{dto.module, jdbcType=VARCHAR}
+	</sql>
+	
+	<sql id="whereCondition">
+	    <if test="role_id != null">
+			and role_id = #{role_id, jdbcType=INTEGER}
+		</if>
+		<if test="node_id != null">
+			and node_id = #{node_id, jdbcType=INTEGER}
+		</if>
+	</sql>
+	
+	<select id="count" resultType="int">
+		select count(role_id)
+		from vol_access
+	</select>
+	
+	<select id="countByDto" resultType="int" parameterType="VolAccess">
+		select count(role_id)
+		from vol_access
+		where 1=1 <include refid="whereCondition"/>
+	</select>
+	
+	<select id="findById" resultMap="volAccessResultMap" parameterType="int">
+		select <include refid="columns"/>
+		from vol_access
+		where role_id = #{id}
+	</select>
+	
+	<select id="findAll" resultMap="volAccessResultMap">
+		select <include refid="columns"/>
+		from vol_access
+		order by role_id desc
+	</select>
+	
+	<select id="findByDto" resultMap="volAccessResultMap" parameterType="VolAccess">
+		select <include refid="columns"/>
+		from vol_access
+		where 1=1 <include refid="whereCondition"/>
+		order by role_id desc
+		<if test="start != null">
+			limit #{start}, #{end}
+		</if>
+	</select>
+	
+	<insert id="insert" parameterType="VolAccess">
+		insert into vol_access
+		(<include refid="columns"/>)
+		values(<include refid="insertValues"/>);
+		<selectKey resultType="int" keyProperty="id">
+			select last_insert_id()
+		</selectKey>
+	</insert>
+	
+	<insert id="insertList" parameterType="java.util.List">
+		insert into vol_access
+		(<include refid="columns"/>)
+		values
+			<foreach collection="list" item="dto" index="index" separator=",">
+				(<include refid="insertListValues"/>)
+			</foreach>
+	</insert>
+	
+	<update id="update" parameterType="VolAccess">
+		update vol_access
+		set <include refid="updateValues"/>
+		where role_id = #{id}
+	</update>
+	
+	<!--update id="updateList" parameterType="java.util.List">
+		update vol_access
+		set <include refid="updateListValues"/>
+		where role_id in
+		<foreach collection="list" item="dto" open="(" separator="," close=")">
+			#{dto.id}
+		</foreach>
+	</update-->
+	
+	<!-- <update id="updatePartial" parameterType="VolAccess">
+		update vol_access
+		set <include refid="updatePartialValues"/>
+		where role_id = #{id}
+	</update> -->
+	
+	<delete id="delete" parameterType="int">
+		delete from vol_access
+		where role_id = #{id}
+	</delete>
+	
+	<delete id="deleteList" parameterType="java.util.List">
+		delete from vol_access
+		where role_id in
+		<foreach collection="list" item="id" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+</mapper>

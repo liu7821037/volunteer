@@ -1,0 +1,588 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bjb.dao.VolVolunteerUserDao">
+	<resultMap id="volVolunteerUserResultMap" type="com.bjb.entity.VolVolunteerUser">
+		<id column="volunteerId" property="id" jdbcType="INTEGER" />
+		<result column="userId" property="userId" jdbcType="INTEGER" />
+		<result column="onlySign" property="onlySign" jdbcType="VARCHAR" />
+		<result column="userTypeId" property="userTypeId" jdbcType="INTEGER" />
+		<result column="headPortrait" property="headPortrait" jdbcType="VARCHAR" />
+		<result column="fullName" property="fullName" jdbcType="VARCHAR" />
+		<result column="email" property="email" jdbcType="VARCHAR" />
+		<result column="gender" property="gender" jdbcType="INTEGER" />
+		<result column="birthDate" property="birthDate" jdbcType="VARCHAR" />
+		<result column="nationality" property="nationality" jdbcType="VARCHAR" />
+		<result column="birthPlace" property="birthPlace" jdbcType="VARCHAR" />
+		<result column="certificatesTypeId" property="certificatesTypeId" jdbcType="INTEGER" />
+		<result column="certificatesNumber" property="certificatesNumber" jdbcType="VARCHAR" />
+		<result column="politicsFaceId" property="politicsFaceId" jdbcType="INTEGER" />
+		<result column="nation" property="nation" jdbcType="INTEGER" />
+		<result column="telphone" property="telphone" jdbcType="VARCHAR" />
+		<result column="fixedTelphone" property="fixedTelphone" jdbcType="VARCHAR" />
+		<result column="qq" property="qq" jdbcType="VARCHAR" />
+		<result column="weChat" property="weChat" jdbcType="VARCHAR" />
+		<result column="microblog" property="microblog" jdbcType="VARCHAR" />
+		<result column="area_id" property="area_id" jdbcType="INTEGER" />
+		<result column="addressDetail" property="addressDetail" jdbcType="VARCHAR" />
+		<result column="zipCode" property="zipCode" jdbcType="VARCHAR" />
+		<result column="highestDegreeId" property="highestDegreeId" jdbcType="INTEGER" />
+		<result column="employmentStatusId" property="employmentStatusId" jdbcType="INTEGER" />
+		<result column="serviceTypeId" property="serviceTypeId" jdbcType="INTEGER" />
+		<result column="organizationId" property="organizationId" jdbcType="INTEGER" />
+		<result column="contactorName" property="contactorName" jdbcType="VARCHAR" />
+		<result column="teamUnitName" property="teamUnitName" jdbcType="VARCHAR" />
+		<result column="teamNumber" property="teamNumber" jdbcType="INTEGER" />
+		<result column="registerTypeId" property="registerTypeId" jdbcType="INTEGER" />
+		<result column="registerDate" property="registerDate" jdbcType="TIMESTAMP" />
+		<result column="updateDate" property="updateDate" jdbcType="TIMESTAMP" />
+		<result column="serviceTime" property="serviceTime" jdbcType="INTEGER" />
+		<result column="starId" property="starId" jdbcType="INTEGER" />
+		<result column="checkStatus" property="checkStatus" jdbcType="INTEGER" />
+		<result column="checkDate" property="checkDate" jdbcType="TIMESTAMP" />
+		<result column="checkId" property="checkId" jdbcType="INTEGER" />
+		<result column="roleId" property="roleId" jdbcType="INTEGER" />
+		<result column="area_pid" property="area_pid" jdbcType="INTEGER" />
+		<association property="user" column="userId" select="getUser"></association>
+	</resultMap>
+	
+	<select id="getUser" parameterType="int" resultType="com.bjb.entity.VolUser">
+		select *  from vol_user  where userId=#{id}
+	</select>
+	
+	<sql id="columns">
+		volunteerId, userId, onlySign, userTypeId, headPortrait, fullName, email, gender, birthDate, nationality, birthPlace, certificatesTypeId, certificatesNumber, politicsFaceId, nation, telphone, fixedTelphone, qq, weChat, microblog, area_id, addressDetail, zipCode, highestDegreeId, employmentStatusId, serviceTypeId, organizationId,contactorName, teamUnitName, teamNumber, registerTypeId, registerDate, updateDate, serviceTime, starId, checkStatus, checkDate, checkId, roleId,area_pid
+	</sql>
+	
+	<sql id="insertValues">
+		null,
+		#{userId, jdbcType=INTEGER},
+		#{onlySign, jdbcType=VARCHAR},
+		#{userTypeId, jdbcType=INTEGER},
+		#{headPortrait, jdbcType=VARCHAR},
+		#{fullName, jdbcType=VARCHAR},
+		#{email, jdbcType=VARCHAR},
+		#{gender, jdbcType=INTEGER},
+		#{birthDate, jdbcType=VARCHAR},
+		#{nationality, jdbcType=VARCHAR},
+		#{birthPlace, jdbcType=VARCHAR},
+		#{certificatesTypeId, jdbcType=INTEGER},
+		#{certificatesNumber, jdbcType=VARCHAR},
+		#{politicsFaceId, jdbcType=INTEGER},
+		#{nation, jdbcType=INTEGER},
+		#{telphone, jdbcType=VARCHAR},
+		#{fixedTelphone, jdbcType=VARCHAR},
+		#{qq, jdbcType=VARCHAR},
+		#{weChat, jdbcType=VARCHAR},
+		#{microblog, jdbcType=VARCHAR},
+		#{area_id, jdbcType=INTEGER},
+		#{addressDetail, jdbcType=VARCHAR},
+		#{zipCode, jdbcType=VARCHAR},
+		#{highestDegreeId, jdbcType=INTEGER},
+		#{employmentStatusId, jdbcType=INTEGER},
+		#{serviceTypeId, jdbcType=INTEGER},
+		#{organizationId, jdbcType=INTEGER},
+		#{contactorName, jdbcType=VARCHAR},
+		#{teamUnitName, jdbcType=VARCHAR},
+		#{teamNumber, jdbcType=INTEGER},
+		#{registerTypeId, jdbcType=INTEGER},
+		#{registerDate, jdbcType=TIMESTAMP},
+		#{updateDate, jdbcType=TIMESTAMP},
+		#{serviceTime, jdbcType=INTEGER},
+		#{starId, jdbcType=INTEGER},
+		#{checkStatus, jdbcType=INTEGER},
+		#{checkDate, jdbcType=TIMESTAMP},
+		#{checkId, jdbcType=INTEGER},
+		#{roleId, jdbcType=INTEGER},
+		#{area_pid, jdbcType=INTEGER}
+	</sql>
+	
+	<sql id="insertListValues">
+		null,
+		#{dto.userId, jdbcType=INTEGER},
+		#{dto.onlySign, jdbcType=VARCHAR},
+		#{dto.userTypeId, jdbcType=INTEGER},
+		#{dto.headPortrait, jdbcType=VARCHAR},
+		#{dto.fullName, jdbcType=VARCHAR},
+		#{dto.email, jdbcType=VARCHAR},
+		#{dto.gender, jdbcType=INTEGER},
+		#{dto.birthDate, jdbcType=VARCHAR},
+		#{dto.nationality, jdbcType=VARCHAR},
+		#{dto.birthPlace, jdbcType=VARCHAR},
+		#{dto.certificatesTypeId, jdbcType=INTEGER},
+		#{dto.certificatesNumber, jdbcType=VARCHAR},
+		#{dto.politicsFaceId, jdbcType=INTEGER},
+		#{dto.nation, jdbcType=INTEGER},
+		#{dto.telphone, jdbcType=VARCHAR},
+		#{dto.fixedTelphone, jdbcType=VARCHAR},
+		#{dto.qq, jdbcType=VARCHAR},
+		#{dto.weChat, jdbcType=VARCHAR},
+		#{dto.microblog, jdbcType=VARCHAR},
+		#{dto.area_id, jdbcType=INTEGER},
+		#{dto.addressDetail, jdbcType=VARCHAR},
+		#{dto.zipCode, jdbcType=VARCHAR},
+		#{dto.highestDegreeId, jdbcType=INTEGER},
+		#{dto.employmentStatusId, jdbcType=INTEGER},
+		#{dto.serviceTypeId, jdbcType=INTEGER},
+		#{dto.organizationId, jdbcType=INTEGER},
+		#{dto.contactorName, jdbcType=VARCHAR},
+		#{dto.teamUnitName, jdbcType=VARCHAR},
+		#{dto.teamNumber, jdbcType=INTEGER},
+		#{dto.registerTypeId, jdbcType=INTEGER},
+		#{dto.registerDate, jdbcType=TIMESTAMP},
+		#{dto.updateDate, jdbcType=TIMESTAMP},
+		#{dto.serviceTime, jdbcType=INTEGER},
+		#{dto.starId, jdbcType=INTEGER},
+		#{dto.checkStatus, jdbcType=INTEGER},
+		#{dto.checkDate, jdbcType=TIMESTAMP},
+		#{dto.checkId, jdbcType=INTEGER},
+		#{dto.roleId, jdbcType=INTEGER},
+		#{dto.area_pid, jdbcType=INTEGER}
+	</sql>
+	
+	<sql id="updateValues">
+		certificatesNumber=#{certificatesNumber, jdbcType=INTEGER},
+		volunteerId=#{id, jdbcType=INTEGER},
+		onlySign=#{onlySign, jdbcType=VARCHAR},
+		userId=#{userId, jdbcType=INTEGER},
+		userTypeId=#{userTypeId, jdbcType=INTEGER},
+		headPortrait=#{headPortrait, jdbcType=VARCHAR},
+		fullName=#{fullName, jdbcType=VARCHAR},
+		email=#{email, jdbcType=VARCHAR},
+		gender=#{gender, jdbcType=INTEGER},
+		birthDate=#{birthDate, jdbcType=VARCHAR},
+		nationality=#{nationality, jdbcType=VARCHAR},
+		birthPlace=#{birthPlace, jdbcType=VARCHAR},
+		certificatesTypeId=#{certificatesTypeId, jdbcType=INTEGER},
+		certificatesNumber=#{certificatesNumber, jdbcType=VARCHAR},
+		politicsFaceId=#{politicsFaceId, jdbcType=INTEGER},
+		nation=#{nation, jdbcType=INTEGER},
+		telphone=#{telphone, jdbcType=VARCHAR},
+		fixedTelphone=#{fixedTelphone, jdbcType=VARCHAR},
+		qq=#{qq, jdbcType=VARCHAR},
+		weChat=#{weChat, jdbcType=VARCHAR},
+		microblog=#{microblog, jdbcType=VARCHAR},
+		area_id=#{area_id, jdbcType=INTEGER},
+		addressDetail=#{addressDetail, jdbcType=VARCHAR},
+		zipCode=#{zipCode, jdbcType=VARCHAR},
+		highestDegreeId=#{highestDegreeId, jdbcType=INTEGER},
+		employmentStatusId=#{employmentStatusId, jdbcType=INTEGER},
+		serviceTypeId=#{serviceTypeId, jdbcType=INTEGER},
+		organizationId=#{organizationId, jdbcType=INTEGER},
+		contactorName=#{contactorName, jdbcType=VARCHAR},
+		teamUnitName=#{teamUnitName, jdbcType=VARCHAR},
+		teamNumber=#{teamNumber, jdbcType=INTEGER},
+		registerTypeId=#{registerTypeId, jdbcType=INTEGER},
+		registerDate=#{registerDate, jdbcType=TIMESTAMP},
+		updateDate=#{updateDate, jdbcType=TIMESTAMP},
+		serviceTime=#{serviceTime, jdbcType=INTEGER},
+		starId=#{starId, jdbcType=INTEGER},
+		checkStatus=#{checkStatus, jdbcType=INTEGER},
+		checkDate=#{checkDate, jdbcType=TIMESTAMP},
+		checkId=#{checkId, jdbcType=INTEGER},
+		roleId=#{roleId, jdbcType=INTEGER},
+		area_pid=#{area_pid, jdbcType=INTEGER}
+	</sql>
+	
+	<sql id="updateListValues">
+		volunteerId=#{dto.id, jdbcType=INTEGER},
+		onlySign=#{dto.onlySign, jdbcType=VARCHAR},
+		userId=#{dto.userId, jdbcType=INTEGER},
+		userTypeId=#{dto.userTypeId, jdbcType=INTEGER},
+		headPortrait=#{dto.headPortrait, jdbcType=VARCHAR},
+		fullName=#{dto.fullName, jdbcType=VARCHAR},
+		email=#{dto.email, jdbcType=VARCHAR},
+		gender=#{dto.gender, jdbcType=INTEGER},
+		birthDate=#{dto.birthDate, jdbcType=VARCHAR},
+		nationality=#{dto.nationality, jdbcType=VARCHAR},
+		birthPlace=#{dto.birthPlace, jdbcType=VARCHAR},
+		certificatesTypeId=#{dto.certificatesTypeId, jdbcType=INTEGER},
+		certificatesNumber=#{dto.certificatesNumber, jdbcType=VARCHAR},
+		politicsFaceId=#{dto.politicsFaceId, jdbcType=INTEGER},
+		nation=#{dto.nation, jdbcType=INTEGER},
+		telphone=#{dto.telphone, jdbcType=VARCHAR},
+		fixedTelphone=#{dto.fixedTelphone, jdbcType=VARCHAR},
+		qq=#{dto.qq, jdbcType=VARCHAR},
+		weChat=#{dto.weChat, jdbcType=VARCHAR},
+		microblog=#{dto.microblog, jdbcType=VARCHAR},
+		area_id=#{dto.area_id, jdbcType=INTEGER},
+		addressDetail=#{dto.addressDetail, jdbcType=VARCHAR},
+		zipCode=#{dto.zipCode, jdbcType=VARCHAR},
+		highestDegreeId=#{dto.highestDegreeId, jdbcType=INTEGER},
+		employmentStatusId=#{dto.employmentStatusId, jdbcType=INTEGER},
+		serviceTypeId=#{dto.serviceTypeId, jdbcType=INTEGER},
+		organizationId=#{dto.organizationId, jdbcType=INTEGER},
+		contactorName=#{dto.contactorName, jdbcType=VARCHAR},
+		teamUnitName=#{dto.teamUnitName, jdbcType=VARCHAR},
+		teamNumber=#{dto.teamNumber, jdbcType=INTEGER},
+		registerTypeId=#{dto.registerTypeId, jdbcType=INTEGER},
+		registerDate=#{dto.registerDate, jdbcType=TIMESTAMP},
+		updateDate=#{dto.updateDate, jdbcType=TIMESTAMP},
+		serviceTime=#{dto.serviceTime, jdbcType=INTEGER},
+		starId=#{dto.starId, jdbcType=INTEGER},
+		checkStatus=#{dto.checkStatus, jdbcType=INTEGER},
+		checkDate=#{dto.checkDate, jdbcType=TIMESTAMP},
+		checkId=#{dto.checkId, jdbcType=INTEGER},
+		roleId=#{dto.roleId, jdbcType=INTEGER},
+		area_pid=#{dto.area_pid, jdbcType=INTEGER}
+	</sql>
+	
+	<sql id="updatePartialValues">
+		volunteerId=#{id, jdbcType=INTEGER}
+		<if test="userId != null">
+			<trim prefix=",">
+				userId=#{userId, jdbcType=INTEGER}
+			</trim>
+		</if>
+		<if test="onlySign != null">
+			<trim prefix=",">
+				onlySign=#{onlySign, jdbcType=VARCHAR}
+			</trim>
+		</if>
+		<if test="userTypeId != null">
+			<trim prefix=",">
+				userTypeId=#{userTypeId, jdbcType=INTEGER}
+			</trim>
+		</if>
+		<if test="headPortrait != null">
+			<trim prefix=",">
+				headPortrait=#{headPortrait, jdbcType=VARCHAR}
+			</trim>
+		</if>
+		<if test="fullName != null">
+			<trim prefix=",">
+				fullName=#{fullName, jdbcType=VARCHAR}
+			</trim>
+		</if>
+		<if test="email != null">
+			<trim prefix=",">
+				email=#{email, jdbcType=VARCHAR}
+			</trim>
+		</if>
+		<if test="gender != null">
+			<trim prefix=",">
+				gender=#{gender, jdbcType=INTEGER}
+			</trim>
+		</if>
+		<if test="birthDate != null">
+			<trim prefix=",">
+				birthDate=#{birthDate, jdbcType=VARCHAR}
+			</trim>
+		</if>
+		<if test="nationality != null">
+			<trim prefix=",">
+				nationality=#{nationality, jdbcType=VARCHAR}
+			</trim>
+		</if>
+		<if test="birthPlace != null">
+			<trim prefix=",">
+				birthPlace=#{birthPlace, jdbcType=VARCHAR}
+			</trim>
+		</if>
+		<if test="certificatesTypeId != null">
+			<trim prefix=",">
+				certificatesTypeId=#{certificatesTypeId, jdbcType=INTEGER}
+			</trim>
+		</if>
+		<if test="certificatesNumber != null">
+			<trim prefix=",">
+				certificatesNumber=#{certificatesNumber, jdbcType=VARCHAR}
+			</trim>
+		</if>
+		<if test="politicsFaceId != null">
+			<trim prefix=",">
+				politicsFaceId=#{politicsFaceId, jdbcType=INTEGER}
+			</trim>
+		</if>
+		<if test="nation != null">
+			<trim prefix=",">
+				nation=#{nation, jdbcType=INTEGER}
+			</trim>
+		</if>
+		<if test="telphone != null">
+			<trim prefix=",">
+				telphone=#{telphone, jdbcType=VARCHAR}
+			</trim>
+		</if>
+		<if test="fixedTelphone != null">
+			<trim prefix=",">
+				fixedTelphone=#{fixedTelphone, jdbcType=VARCHAR}
+			</trim>
+		</if>
+		<if test="qq != null">
+			<trim prefix=",">
+				qq=#{qq, jdbcType=VARCHAR}
+			</trim>
+		</if>
+		<if test="weChat != null">
+			<trim prefix=",">
+				weChat=#{weChat, jdbcType=VARCHAR}
+			</trim>
+		</if>
+		<if test="microblog != null">
+			<trim prefix=",">
+				microblog=#{microblog, jdbcType=VARCHAR}
+			</trim>
+		</if>
+		<if test="area_id != null">
+			<trim prefix=",">
+				area_id=#{area_id, jdbcType=INTEGER}
+			</trim>
+		</if>
+		<if test="area_pid != null">
+			<trim prefix=",">
+				area_pid=#{area_pid, jdbcType=INTEGER}
+			</trim>
+		</if>
+		<if test="addressDetail != null">
+			<trim prefix=",">
+				addressDetail=#{addressDetail, jdbcType=VARCHAR}
+			</trim>
+		</if>
+		<if test="zipCode != null">
+			<trim prefix=",">
+				zipCode=#{zipCode, jdbcType=VARCHAR}
+			</trim>
+		</if>
+		<if test="highestDegreeId != null">
+			<trim prefix=",">
+				highestDegreeId=#{highestDegreeId, jdbcType=INTEGER}
+			</trim>
+		</if>
+		<if test="employmentStatusId != null">
+			<trim prefix=",">
+				employmentStatusId=#{employmentStatusId, jdbcType=INTEGER}
+			</trim>
+		</if>
+		<if test="serviceTypeId != null">
+			<trim prefix=",">
+				serviceTypeId=#{serviceTypeId, jdbcType=INTEGER}
+			</trim>
+		</if>
+		<if test="organizationId != null">
+			<trim prefix=",">
+				organizationId=#{organizationId, jdbcType=INTEGER}
+			</trim>
+		</if>
+		<if test="contactorName != null">
+			<trim prefix=",">
+				contactorName=#{contactorName, jdbcType=VARCHAR}
+			</trim>
+		</if>
+		<if test="teamUnitName != null">
+			<trim prefix=",">
+				teamUnitName=#{teamUnitName, jdbcType=VARCHAR}
+			</trim>
+		</if>
+		<if test="teamNumber != null">
+			<trim prefix=",">
+				teamNumber=#{teamNumber, jdbcType=INTEGER}
+			</trim>
+		</if>
+		<if test="registerTypeId != null">
+			<trim prefix=",">
+				registerTypeId=#{registerTypeId, jdbcType=INTEGER}
+			</trim>
+		</if>
+		<if test="registerDate != null">
+			<trim prefix=",">
+				registerDate=#{registerDate, jdbcType=TIMESTAMP}
+			</trim>
+		</if>
+		<if test="updateDate != null">
+			<trim prefix=",">
+				updateDate=#{updateDate, jdbcType=TIMESTAMP}
+			</trim>
+		</if>
+		<if test="serviceTime != null">
+			<trim prefix=",">
+				serviceTime=#{serviceTime, jdbcType=INTEGER}
+			</trim>
+		</if>
+		<if test="starId != null">
+			<trim prefix=",">
+				starId=#{starId, jdbcType=INTEGER}
+			</trim>
+		</if>
+		<if test="checkStatus != null">
+			<trim prefix=",">
+				checkStatus=#{checkStatus, jdbcType=INTEGER}
+			</trim>
+		</if>
+		<if test="checkDate != null">
+			<trim prefix=",">
+				checkDate=#{checkDate, jdbcType=TIMESTAMP}
+			</trim>
+		</if>
+		<if test="checkId != null">
+			<trim prefix=",">
+				checkId=#{checkId, jdbcType=INTEGER}
+			</trim>
+		</if>
+		<if test="roleId != null">
+			<trim prefix=",">
+				roleId=#{roleId, jdbcType=INTEGER}
+			</trim>
+		</if>
+	</sql>
+	
+	<sql id="whereCondition">
+		<if test="userId != null">
+			and userId = #{userId, jdbcType=INTEGER}
+		</if>
+		<if test="userTypeId != null">
+			and userTypeId = #{userTypeId, jdbcType=INTEGER}
+		</if>
+		<if test="onlySign != null">
+			and onlySign = #{onlySign, jdbcType=VARCHAR}
+		</if>
+		<if test="fullName != null">
+			<if test="fullName.length() > 0">
+				and instr(fullName, #{fullName, jdbcType=VARCHAR}) > 0
+			</if>
+		</if>
+		<if test="gender != null">
+			and gender = #{gender, jdbcType=INTEGER}
+		</if>
+		<if test="nationality != null">
+			<if test="nationality.length() > 0">
+				and instr(nationality, #{nationality, jdbcType=VARCHAR}) > 0
+			</if>
+		</if>
+		<if test="birthPlace != null">
+			<if test="birthPlace.length() > 0">
+				and instr(birthPlace, #{birthPlace, jdbcType=VARCHAR}) > 0
+			</if>
+		</if>
+		<if test="certificatesTypeId != null">
+			and certificatesTypeId = #{certificatesTypeId, jdbcType=INTEGER}
+		</if>
+		<if test="politicsFaceId != null">
+			and politicsFaceId = #{politicsFaceId, jdbcType=INTEGER}
+		</if>
+		<if test="nation != null">
+			and nation = #{nation, jdbcType=INTEGER}
+		</if>
+		<if test="highestDegreeId != null">
+			and highestDegreeId = #{highestDegreeId, jdbcType=INTEGER}
+		</if>
+		<if test="employmentStatusId != null">
+			and employmentStatusId = #{employmentStatusId, jdbcType=INTEGER}
+		</if>
+		<if test="serviceTypeId != null">
+			and serviceTypeId = #{serviceTypeId, jdbcType=INTEGER}
+		</if>
+		<if test="organizationId != null">
+			and organizationId = #{organizationId, jdbcType=INTEGER}
+		</if>
+		<if test="registerTypeId != null">
+			and registerTypeId = #{registerTypeId, jdbcType=INTEGER}
+		</if>
+		<if test="checkStatus != null">
+			and checkStatus = #{checkStatus, jdbcType=INTEGER}
+		</if>
+		<if test="checkId != null">
+			and checkId = #{checkId, jdbcType=INTEGER}
+		</if>
+		<if test="roleId != null">
+			and roleId = #{roleId, jdbcType=INTEGER}
+		</if>
+	</sql>
+	
+	<select id="count" resultType="int">
+		select count(volunteerId)
+		from vol_volunteer_user
+	</select>
+	
+	<select id="countByDto" resultType="int" parameterType="VolVolunteerUser">
+		select count(volunteerId)
+		from vol_volunteer_user
+		where 1=1 <include refid="whereCondition"/>
+	</select>
+	
+	<select id="findById" resultMap="volVolunteerUserResultMap" parameterType="int">
+		select <include refid="columns"/>
+		from vol_volunteer_user
+		where volunteerId = #{id}
+	</select>
+	
+	<select id="findAll" resultMap="volVolunteerUserResultMap">
+		select <include refid="columns"/>
+		from vol_volunteer_user
+		order by volunteerId desc
+	</select>
+
+	<select id="findByDto" resultMap="volVolunteerUserResultMap" parameterType="VolVolunteerUser">
+		select <include refid="columns"/>
+		from vol_volunteer_user
+		where 1=1 <include refid="whereCondition"/>
+		order by volunteerId desc
+		<if test="start != null">
+			limit #{start}, #{end}
+		</if>
+	</select>
+	
+	<sql id="columns1">
+		userId,fullName,serviceTime
+	</sql>
+	
+	<select id="findlist" resultMap="volVolunteerUserResultMap" parameterType="VolVolunteerUser">
+		select <include refid="columns1"/>
+		from vol_volunteer_user
+		order by serviceTime desc
+		<if test="start != null">
+			limit #{start}, #{end}
+		</if>
+	</select>
+	
+	<insert id="insert" parameterType="VolVolunteerUser">
+		insert into vol_volunteer_user
+		(<include refid="columns"/>)
+		values(<include refid="insertValues"/>);
+		<selectKey resultType="int" keyProperty="id">
+			select last_insert_id()
+		</selectKey>
+	</insert>
+	
+	<insert id="insertList" parameterType="java.util.List">
+		insert into vol_volunteer_user
+		(<include refid="columns"/>)
+		values
+			<foreach collection="list" item="dto" index="index" separator=",">
+				(<include refid="insertListValues"/>)
+			</foreach>
+	</insert>
+	
+	<update id="update" parameterType="VolVolunteerUser">
+		update vol_volunteer_user
+		set <include refid="updateValues"/>
+		where volunteerId = #{id}
+	</update>
+	
+	<!--update id="updateList" parameterType="java.util.List">
+		update vol_volunteer_user
+		set <include refid="updateListValues"/>
+		where volunteerId in
+		<foreach collection="list" item="dto" open="(" separator="," close=")">
+			#{dto.id}
+		</foreach>
+	</update-->
+	
+	<update id="updatePartial" parameterType="VolVolunteerUser">
+		update vol_volunteer_user
+		set <include refid="updatePartialValues"/>
+		where volunteerId = #{id}
+	</update>
+	
+	<delete id="delete" parameterType="int">
+		delete from vol_volunteer_user
+		where volunteerId = #{id}
+	</delete>
+	
+	<delete id="deleteList" parameterType="java.util.List">
+		delete from vol_volunteer_user
+		where volunteerId in
+		<foreach collection="list" item="id" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+</mapper>

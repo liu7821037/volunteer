@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bjb.dao.VolRoleDao">
+	<resultMap id="volRoleResultMap" type="com.bjb.entity.VolRole">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="name " property="name " jdbcType="VARCHAR" />
+		<result column="pid" property="pid" jdbcType="INTEGER" />
+		<result column="status" property="status" jdbcType="INTEGER" />
+		<result column="remark" property="remark" jdbcType="VARCHAR" />
+	</resultMap>
+	
+	<sql id="columns">
+		id, name , pid, status, remark
+	</sql>
+	
+	<sql id="insertValues">
+		null,
+		#{name , jdbcType=VARCHAR},
+		#{pid, jdbcType=INTEGER},
+		#{status, jdbcType=INTEGER},
+		#{remark, jdbcType=VARCHAR}
+	</sql>
+	
+	<sql id="insertListValues">
+		null,
+		#{dto.name , jdbcType=VARCHAR},
+		#{dto.pid, jdbcType=INTEGER},
+		#{dto.status, jdbcType=INTEGER},
+		#{dto.remark, jdbcType=VARCHAR}
+	</sql>
+	
+	<sql id="updateValues">
+		id=#{id, jdbcType=INTEGER},
+		name =#{name , jdbcType=VARCHAR},
+		pid=#{pid, jdbcType=INTEGER},
+		status=#{status, jdbcType=INTEGER},
+		remark=#{remark, jdbcType=VARCHAR}
+	</sql>
+	
+	<sql id="updateListValues">
+		id=#{dto.id, jdbcType=INTEGER},
+		name =#{dto.name , jdbcType=VARCHAR},
+		pid=#{dto.pid, jdbcType=INTEGER},
+		status=#{dto.status, jdbcType=INTEGER},
+		remark=#{dto.remark, jdbcType=VARCHAR}
+	</sql>
+	
+	<sql id="updatePartialValues">
+		id=#{id, jdbcType=INTEGER}
+		<if test="name  != null">
+			<trim prefix=",">
+				name =#{name , jdbcType=VARCHAR}
+			</trim>
+		</if>
+		<if test="pid != null">
+			<trim prefix=",">
+				pid=#{pid, jdbcType=INTEGER}
+			</trim>
+		</if>
+		<if test="status != null">
+			<trim prefix=",">
+				status=#{status, jdbcType=INTEGER}
+			</trim>
+		</if>
+		<if test="remark != null">
+			<trim prefix=",">
+				remark=#{remark, jdbcType=VARCHAR}
+			</trim>
+		</if>
+	</sql>
+	
+	<sql id="whereCondition">
+	    <if test="status != null">
+			and status = #{status, jdbcType=INTEGER}
+		</if>
+	</sql>
+	
+	<select id="count" resultType="int">
+		select count(id)
+		from vol_role
+	</select>
+	
+	<select id="countByDto" resultType="int" parameterType="VolRole">
+		select count(id)
+		from vol_role
+		where 1=1 <include refid="whereCondition"/>
+	</select>
+	
+	<select id="findById" resultMap="volRoleResultMap" parameterType="int">
+		select <include refid="columns"/>
+		from vol_role
+		where id = #{id}
+	</select>
+	
+	<select id="findAll" resultMap="volRoleResultMap">
+		select <include refid="columns"/>
+		from vol_role
+		order by id desc
+	</select>
+	
+	<select id="findByDto" resultMap="volRoleResultMap" parameterType="VolRole">
+		select <include refid="columns"/>
+		from vol_role
+		where 1=1 <include refid="whereCondition"/>
+		order by id desc
+		<if test="start != null">
+			limit #{start}, #{end}
+		</if>
+	</select>
+	
+	<insert id="insert" parameterType="VolRole">
+		insert into vol_role
+		(<include refid="columns"/>)
+		values(<include refid="insertValues"/>);
+		<selectKey resultType="int" keyProperty="id">
+			select last_insert_id()
+		</selectKey>
+	</insert>
+	
+	<insert id="insertList" parameterType="java.util.List">
+		insert into vol_role
+		(<include refid="columns"/>)
+		values
+			<foreach collection="list" item="dto" index="index" separator=",">
+				(<include refid="insertListValues"/>)
+			</foreach>
+	</insert>
+	
+	<update id="update" parameterType="VolRole">
+		update vol_role
+		set <include refid="updateValues"/>
+		where id = #{id}
+	</update>
+	
+	<!--update id="updateList" parameterType="java.util.List">
+		update vol_role
+		set <include refid="updateListValues"/>
+		where roleId in
+		<foreach collection="list" item="dto" open="(" separator="," close=")">
+			#{dto.id}
+		</foreach>
+	</update-->
+	
+	<update id="updatePartial" parameterType="VolRole">
+		update vol_role
+		set <include refid="updatePartialValues"/>
+		where id = #{id}
+	</update>
+	
+	<delete id="delete" parameterType="int">
+		delete from vol_role
+		where id = #{id}
+	</delete>
+	
+	<delete id="deleteList" parameterType="java.util.List">
+		delete from vol_role
+		where id in
+		<foreach collection="list" item="id" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+</mapper>

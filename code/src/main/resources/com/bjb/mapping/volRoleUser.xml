@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bjb.dao.VolRoleUserDao">
+	<resultMap id="volRoleUserResultMap" type="com.bjb.entity.VolRoleUser">
+		<id column="role_id" property="role_id" jdbcType="INTEGER" />
+		<result column="user_id" property="user_id" jdbcType="VARCHAR" />
+	</resultMap>
+	
+	<sql id="columns">
+		role_id, user_id
+	</sql>
+	
+	<sql id="insertValues">
+		#{role_id, jdbcType=VARCHAR},
+		#{user_id, jdbcType=VARCHAR}
+	</sql>
+	
+	<sql id="insertListValues">
+		#{dto.role_id, jdbcType=VARCHAR},
+		#{dto.user_id, jdbcType=VARCHAR}
+	</sql>
+	
+	<sql id="updateValues">
+		role_id=#{role_id, jdbcType=INTEGER},
+		user_id=#{user_id, jdbcType=VARCHAR}
+	</sql>
+	
+	<sql id="updateListValues">
+		role_id=#{dto.role_id, jdbcType=INTEGER},
+		user_id=#{dto.user_id, jdbcType=VARCHAR}
+	</sql>
+	
+	<sql id="updatePartialValues">
+		role_id=#{role_id, jdbcType=INTEGER}
+		<if test="user_id != null">
+			<trim prefix=",">
+				user_id=#{user_id, jdbcType=VARCHAR}
+			</trim>
+		</if>
+	</sql>
+	
+	<sql id="whereCondition">
+	    <if test="user_id != null">
+			and user_id = #{user_id, jdbcType=INTEGER}
+		</if>
+	</sql>
+	
+	<select id="count" resultType="int">
+		select count(role_id)
+		from vol_role_user
+	</select>
+	
+	<select id="countByDto" resultType="int" parameterType="VolRoleUser">
+		select count(role_id)
+		from vol_role_user
+		where 1=1 <include refid="whereCondition"/>
+	</select>
+	
+	<select id="findById" resultMap="volRoleUserResultMap" parameterType="int">
+		select <include refid="columns"/>
+		from vol_role_user
+		where role_id = #{id}
+	</select>
+	
+	<select id="findAll" resultMap="volRoleUserResultMap">
+		select <include refid="columns"/>
+		from vol_role_user
+		order by role_id desc
+	</select>
+	
+	<select id="findByDto" resultMap="volRoleUserResultMap" parameterType="VolRoleUser">
+		select <include refid="columns"/>
+		from vol_role_user
+		where 1=1 <include refid="whereCondition"/>
+		order by role_id desc
+		<if test="start != null">
+			limit #{start}, #{end}
+		</if>
+	</select>
+	
+	<insert id="insert" parameterType="VolRoleUser">
+		insert into vol_role_user
+		(<include refid="columns"/>)
+		values(<include refid="insertValues"/>);
+		<selectKey resultType="int" keyProperty="id">
+			select last_insert_id()
+		</selectKey>
+	</insert>
+	
+	<insert id="insertList" parameterType="java.util.List">
+		insert into vol_role_user
+		(<include refid="columns"/>)
+		values
+			<foreach collection="list" item="dto" index="index" separator=",">
+				(<include refid="insertListValues"/>)
+			</foreach>
+	</insert>
+	
+	<update id="update" parameterType="VolRoleUser">
+		update vol_role_user
+		set <include refid="updateValues"/>
+		where role_id = #{id}
+	</update>
+	
+	<!--update id="updateList" parameterType="java.util.List">
+		update vol_role_user
+		set <include refid="updateListValues"/>
+		where role_id in
+		<foreach collection="list" item="dto" open="(" separator="," close=")">
+			#{dto.id}
+		</foreach>
+	</update-->
+	
+	<update id="updatePartial" parameterType="VolRoleUser">
+		update vol_role_user
+		set <include refid="updatePartialValues"/>
+		where role_id = #{id}
+	</update>
+	
+	<delete id="delete" parameterType="String">
+		delete from vol_role_user
+		where user_id = #{id}
+	</delete>
+	
+	<delete id="deleteList" parameterType="java.util.List">
+		delete from vol_role_user
+		where role_id in
+		<foreach collection="list" item="id" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+</mapper>

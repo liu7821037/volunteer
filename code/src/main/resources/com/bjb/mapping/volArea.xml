@@ -1,0 +1,266 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bjb.dao.VolAreaDao">
+	<resultMap id="volAreaResultMap" type="com.bjb.entity.VolArea">
+		<id column="area_id" property="id" jdbcType="INTEGER" />
+		<result column="area_name" property="area_name" jdbcType="VARCHAR" />
+		<result column="parent_area_id" property="parent_area_id" jdbcType="INTEGER" />
+		<result column="add_time" property="add_time" jdbcType="TIMESTAMP" />
+		<result column="first_letter" property="first_letter" jdbcType="VARCHAR" />
+		<result column="pinyin" property="pinyin" jdbcType="VARCHAR" />
+		<result column="area_number" property="area_number" jdbcType="VARCHAR" />
+		<result column="zipCode" property="zipCode" jdbcType="VARCHAR" />
+		<result column="hot_city" property="hot_city" jdbcType="INTEGER" />
+		<result column="longitude" property="longitude" jdbcType="DOUBLE" />
+		<result column="latitude" property="latitude" jdbcType="DOUBLE" />
+		<result column="number" property="number" jdbcType="INTEGER" />
+		<result column="area_sort" property="area_sort" jdbcType="INTEGER" />
+	</resultMap>
+	
+	<sql id="columns">
+		area_id, area_name, parent_area_id, add_time, first_letter, pinyin, area_number, zipCode, hot_city, longitude, latitude, number, area_sort
+	</sql>
+	
+	<sql id="insertValues">
+		null,
+		#{area_name, jdbcType=VARCHAR},
+		#{parent_area_id, jdbcType=INTEGER},
+		#{add_time, jdbcType=TIMESTAMP},
+		#{first_letter, jdbcType=VARCHAR},
+		#{pinyin, jdbcType=VARCHAR},
+		#{area_number, jdbcType=VARCHAR},
+		#{zipCode, jdbcType=VARCHAR},
+		#{hot_city, jdbcType=INTEGER},
+		#{longitude, jdbcType=DOUBLE},
+		#{latitude, jdbcType=DOUBLE},
+		#{number, jdbcType=INTEGER},
+		#{area_sort, jdbcType=INTEGER}
+	</sql>
+	
+	<sql id="insertListValues">
+		null,
+		#{dto.area_name, jdbcType=VARCHAR},
+		#{dto.parent_area_id, jdbcType=INTEGER},
+		#{dto.add_time, jdbcType=TIMESTAMP},
+		#{dto.first_letter, jdbcType=VARCHAR},
+		#{dto.pinyin, jdbcType=VARCHAR},
+		#{dto.area_number, jdbcType=VARCHAR},
+		#{dto.zipCode, jdbcType=VARCHAR},
+		#{dto.hot_city, jdbcType=INTEGER},
+		#{dto.longitude, jdbcType=DOUBLE},
+		#{dto.latitude, jdbcType=DOUBLE},
+		#{dto.number, jdbcType=INTEGER},
+		#{dto.area_sort, jdbcType=INTEGER}
+	</sql>
+	
+	<sql id="updateValues">
+		area_id=#{id, jdbcType=INTEGER},
+		area_name=#{area_name, jdbcType=VARCHAR},
+		parent_area_id=#{parent_area_id, jdbcType=INTEGER},
+		add_time=#{add_time, jdbcType=TIMESTAMP},
+		first_letter=#{first_letter, jdbcType=VARCHAR},
+		pinyin=#{pinyin, jdbcType=VARCHAR},
+		area_number=#{area_number, jdbcType=VARCHAR},
+		zipCode=#{zipCode, jdbcType=VARCHAR},
+		hot_city=#{hot_city, jdbcType=INTEGER},
+		longitude=#{longitude, jdbcType=DOUBLE},
+		latitude=#{latitude, jdbcType=DOUBLE},
+		number=#{number, jdbcType=INTEGER},
+		area_sort=#{area_sort, jdbcType=INTEGER}
+	</sql>
+	
+	<sql id="updateListValues">
+		area_id=#{dto.id, jdbcType=INTEGER},
+		area_name=#{dto.area_name, jdbcType=VARCHAR},
+		parent_area_id=#{dto.parent_area_id, jdbcType=INTEGER},
+		add_time=#{dto.add_time, jdbcType=TIMESTAMP},
+		first_letter=#{dto.first_letter, jdbcType=VARCHAR},
+		pinyin=#{dto.pinyin, jdbcType=VARCHAR},
+		area_number=#{dto.area_number, jdbcType=VARCHAR},
+		zipCode=#{dto.zipCode, jdbcType=VARCHAR},
+		hot_city=#{dto.hot_city, jdbcType=INTEGER},
+		longitude=#{dto.longitude, jdbcType=DOUBLE},
+		latitude=#{dto.latitude, jdbcType=DOUBLE},
+		number=#{dto.number, jdbcType=INTEGER},
+		area_sort=#{dto.area_sort, jdbcType=INTEGER}
+	</sql>
+	
+	<sql id="updatePartialValues">
+		area_id=#{id, jdbcType=INTEGER}
+		<if test="area_name != null">
+			<trim prefix=",">
+				area_name=#{area_name, jdbcType=VARCHAR}
+			</trim>
+		</if>
+		<if test="parent_area_id != null">
+			<trim prefix=",">
+				parent_area_id=#{parent_area_id, jdbcType=INTEGER}
+			</trim>
+		</if>
+		<if test="add_time != null">
+			<trim prefix=",">
+				add_time=#{add_time, jdbcType=TIMESTAMP}
+			</trim>
+		</if>
+		<if test="first_letter != null">
+			<trim prefix=",">
+				first_letter=#{first_letter, jdbcType=VARCHAR}
+			</trim>
+		</if>
+		<if test="pinyin != null">
+			<trim prefix=",">
+				pinyin=#{pinyin, jdbcType=VARCHAR}
+			</trim>
+		</if>
+		<if test="area_number != null">
+			<trim prefix=",">
+				area_number=#{area_number, jdbcType=VARCHAR}
+			</trim>
+		</if>
+		<if test="zipCode != null">
+			<trim prefix=",">
+				zipCode=#{zipCode, jdbcType=VARCHAR}
+			</trim>
+		</if>
+		<if test="hot_city != null">
+			<trim prefix=",">
+				hot_city=#{hot_city, jdbcType=INTEGER}
+			</trim>
+		</if>
+		<if test="longitude != null">
+			<trim prefix=",">
+				longitude=#{longitude, jdbcType=DOUBLE}
+			</trim>
+		</if>
+		<if test="latitude != null">
+			<trim prefix=",">
+				latitude=#{latitude, jdbcType=DOUBLE}
+			</trim>
+		</if>
+		<if test="number != null">
+			<trim prefix=",">
+				number=#{number, jdbcType=INTEGER}
+			</trim>
+		</if>
+		<if test="area_sort != null">
+			<trim prefix=",">
+				area_sort=#{area_sort, jdbcType=INTEGER}
+			</trim>
+		</if>
+	</sql>
+	
+	<sql id="whereCondition">
+	    <if test="parent_area_id != null">
+			and parent_area_id = #{parent_area_id, jdbcType=INTEGER}
+		</if>
+		<if test="first_letter != null">
+			and first_letter = #{first_letter, jdbcType=VARCHAR}
+		</if>
+	</sql>
+	
+	<sql id="whereCondition1">
+		<if test="area_name != null">
+			<if test="area_name.length() > 0">
+				and instr(area_name, #{area_name, jdbcType=VARCHAR}) > 0
+			</if>
+		</if>
+		<if test="first_letter != null">
+			and first_letter = #{first_letter, jdbcType=VARCHAR}
+		</if>
+	</sql>
+	
+	<select id="count" resultType="int">
+		select count(area_id)
+		from vol_area
+	</select>
+	
+	<select id="countByDto" resultType="int" parameterType="VolArea">
+		select count(area_id)
+		from vol_area
+		where 1=1 <include refid="whereCondition"/>
+	</select>
+	
+	<select id="findById" resultMap="volAreaResultMap" parameterType="int">
+		select <include refid="columns"/>
+		from vol_area
+		where area_id = #{id}
+	</select>
+	
+	<select id="findAll" resultMap="volAreaResultMap">
+		select <include refid="columns"/>
+		from vol_area
+		order by area_id desc
+	</select>
+	
+	<select id="getAllCityList" resultMap="volAreaResultMap" parameterType="VolArea">
+		select <include refid="columns"/>
+		from vol_area
+		where 1=1 <include refid="whereCondition1"/>  and (area_id &lt; 5 or parent_area_id &gt; 4)
+		order by first_letter,area_id,convert(area_name USING gbk) COLLATE gbk_chinese_ci asc
+		<if test="start != null">
+			limit #{start}, #{end}
+		</if>
+	</select>
+	
+	<select id="findByDto" resultMap="volAreaResultMap" parameterType="VolArea">
+		select <include refid="columns"/>
+		from vol_area
+		where 1=1 <include refid="whereCondition"/>
+		order by area_id
+		<if test="start != null">
+			limit #{start}, #{end}
+		</if>
+	</select>
+	
+	<insert id="insert" parameterType="VolArea">
+		insert into vol_area
+		(<include refid="columns"/>)
+		values(<include refid="insertValues"/>);
+		<selectKey resultType="int" keyProperty="id">
+			select last_insert_id()
+		</selectKey>
+	</insert>
+	
+	<insert id="insertList" parameterType="java.util.List">
+		insert into vol_area
+		(<include refid="columns"/>)
+		values
+			<foreach collection="list" item="dto" index="index" separator=",">
+				(<include refid="insertListValues"/>)
+			</foreach>
+	</insert>
+	
+	<update id="update" parameterType="VolArea">
+		update vol_area
+		set <include refid="updateValues"/>
+		where area_id = #{id}
+	</update>
+	
+	<!--update id="updateList" parameterType="java.util.List">
+		update vol_area
+		set <include refid="updateListValues"/>
+		where area_id in
+		<foreach collection="list" item="dto" open="(" separator="," close=")">
+			#{dto.id}
+		</foreach>
+	</update-->
+	
+	<update id="updatePartial" parameterType="VolArea">
+		update vol_area
+		set <include refid="updatePartialValues"/>
+		where area_id = #{id}
+	</update>
+	
+	<delete id="delete" parameterType="int">
+		delete from vol_area
+		where area_id = #{id}
+	</delete>
+	
+	<delete id="deleteList" parameterType="java.util.List">
+		delete from vol_area
+		where area_id in
+		<foreach collection="list" item="id" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+</mapper>

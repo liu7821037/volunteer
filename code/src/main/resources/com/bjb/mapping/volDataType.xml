@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bjb.dao.VolDataTypeDao">
+	<resultMap id="volDataTypeResultMap" type="com.bjb.entity.VolDataType">
+		<id column="typeId" property="id" jdbcType="INTEGER" />
+		<result column="typeName" property="typeName" jdbcType="VARCHAR" />
+		<result column="remark" property="remark" jdbcType="VARCHAR" />
+		<result column="status" property="status" jdbcType="INTEGER" />
+	</resultMap>
+	
+	<sql id="columns">
+		typeId, typeName, remark, status
+	</sql>
+	
+	<sql id="insertValues">
+		null,
+		#{typeName, jdbcType=VARCHAR},
+		#{remark, jdbcType=VARCHAR},
+		#{status, jdbcType=INTEGER}
+	</sql>
+	
+	<sql id="insertListValues">
+		null,
+		#{dto.typeName, jdbcType=VARCHAR},
+		#{dto.remark, jdbcType=VARCHAR},
+		#{dto.status, jdbcType=INTEGER}
+	</sql>
+	
+	<sql id="updateValues">
+		typeId=#{id, jdbcType=INTEGER},
+		typeName=#{typeName, jdbcType=VARCHAR},
+		remark=#{remark, jdbcType=VARCHAR},
+		status=#{status, jdbcType=INTEGER}
+	</sql>
+	
+	<sql id="updateListValues">
+		typeId=#{dto.id, jdbcType=INTEGER},
+		typeName=#{dto.typeName, jdbcType=VARCHAR},
+		remark=#{dto.remark, jdbcType=VARCHAR},
+		status=#{dto.status, jdbcType=INTEGER}
+	</sql>
+	
+	<sql id="updatePartialValues">
+		typeId=#{id, jdbcType=INTEGER}
+		<if test="typeName != null">
+			<trim prefix=",">
+				typeName=#{typeName, jdbcType=VARCHAR}
+			</trim>
+		</if>
+		<if test="remark != null">
+			<trim prefix=",">
+				remark=#{remark, jdbcType=VARCHAR}
+			</trim>
+		</if>
+		<if test="status != null">
+			<trim prefix=",">
+				status=#{status, jdbcType=INTEGER}
+			</trim>
+		</if>
+	</sql>
+	
+	<sql id="whereCondition">
+	    <if test="status != null">
+			and status = #{status, jdbcType=INTEGER}
+		</if>
+	</sql>
+	
+	<select id="count" resultType="int">
+		select count(typeId)
+		from vol_data_type
+	</select>
+	
+	<select id="countByDto" resultType="int" parameterType="VolDataType">
+		select count(typeId)
+		from vol_data_type
+		where 1=1 <include refid="whereCondition"/>
+	</select>
+	
+	<select id="findById" resultMap="volDataTypeResultMap" parameterType="int">
+		select <include refid="columns"/>
+		from vol_data_type
+		where typeId = #{id}
+	</select>
+	
+	<select id="findAll" resultMap="volDataTypeResultMap">
+		select <include refid="columns"/>
+		from vol_data_type
+		order by typeId desc
+	</select>
+	
+	<select id="findByDto" resultMap="volDataTypeResultMap" parameterType="VolDataType">
+		select <include refid="columns"/>
+		from vol_data_type
+		where 1=1 <include refid="whereCondition"/>
+		order by typeId
+		<if test="start != null">
+			limit #{start}, #{end}
+		</if>
+	</select>
+	
+	<insert id="insert" parameterType="VolDataType">
+		insert into vol_data_type
+		(<include refid="columns"/>)
+		values(<include refid="insertValues"/>);
+		<selectKey resultType="int" keyProperty="id">
+			select last_insert_id()
+		</selectKey>
+	</insert>
+	
+	<insert id="insertList" parameterType="java.util.List">
+		insert into vol_data_type
+		(<include refid="columns"/>)
+		values
+			<foreach collection="list" item="dto" index="index" separator=",">
+				(<include refid="insertListValues"/>)
+			</foreach>
+	</insert>
+	
+	<update id="update" parameterType="VolDataType">
+		update vol_data_type
+		set <include refid="updateValues"/>
+		where typeId = #{id}
+	</update>
+	
+	<!--update id="updateList" parameterType="java.util.List">
+		update vol_data_type
+		set <include refid="updateListValues"/>
+		where typeId in
+		<foreach collection="list" item="dto" open="(" separator="," close=")">
+			#{dto.id}
+		</foreach>
+	</update-->
+	
+	<update id="updatePartial" parameterType="VolDataType">
+		update vol_data_type
+		set <include refid="updatePartialValues"/>
+		where typeId = #{id}
+	</update>
+	
+	<delete id="delete" parameterType="int">
+		delete from vol_data_type
+		where typeId = #{id}
+	</delete>
+	
+	<delete id="deleteList" parameterType="java.util.List">
+		delete from vol_data_type
+		where typeId in
+		<foreach collection="list" item="id" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+</mapper>

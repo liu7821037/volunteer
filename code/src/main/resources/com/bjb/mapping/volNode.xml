@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bjb.dao.VolNodeDao">
+	<resultMap id="volNodeResultMap" type="com.bjb.entity.VolNode">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="name" property="name" jdbcType="VARCHAR" />
+		<result column="title" property="title" jdbcType="VARCHAR" />
+		<result column="status" property="status" jdbcType="INTEGER" />
+		<result column="remark" property="remark" jdbcType="INTEGER" />
+		<result column="sort" property="sort" jdbcType="INTEGER" />
+		<result column="pid" property="pid" jdbcType="INTEGER" />
+		<result column="level" property="level" jdbcType="VARCHAR" />
+	</resultMap>
+	
+	<sql id="columns">
+		id, name, title, status, remark, sort, pid, level
+	</sql>
+	
+	<sql id="insertValues">
+		null,
+		#{name, jdbcType=VARCHAR},
+		#{title, jdbcType=VARCHAR},
+		#{status, jdbcType=INTEGER},
+		#{remark, jdbcType=INTEGER},
+		#{sort, jdbcType=INTEGER},
+		#{pid, jdbcType=INTEGER},
+		#{level, jdbcType=VARCHAR}
+	</sql>
+	
+	<sql id="insertListValues">
+		null,
+		#{dto.name, jdbcType=VARCHAR},
+		#{dto.title, jdbcType=VARCHAR},
+		#{dto.status, jdbcType=INTEGER},
+		#{dto.remark, jdbcType=INTEGER},
+		#{dto.sort, jdbcType=INTEGER},
+		#{dto.pid, jdbcType=INTEGER},
+		#{dto.level, jdbcType=VARCHAR}
+	</sql>
+	
+	<sql id="updateValues">
+		id=#{id, jdbcType=INTEGER},
+		name=#{name, jdbcType=VARCHAR},
+		title=#{title, jdbcType=VARCHAR},
+		status=#{status, jdbcType=INTEGER},
+		remark=#{remark, jdbcType=INTEGER},
+		sort=#{sort, jdbcType=INTEGER},
+		pid=#{pid, jdbcType=INTEGER},
+		level=#{level, jdbcType=VARCHAR}
+	</sql>
+	
+	<sql id="updateListValues">
+		id=#{dto.id, jdbcType=INTEGER},
+		name=#{dto.name, jdbcType=VARCHAR},
+		title=#{dto.title, jdbcType=VARCHAR},
+		status=#{dto.status, jdbcType=INTEGER},
+		remark=#{dto.remark, jdbcType=INTEGER},
+		sort=#{dto.sort, jdbcType=INTEGER},
+		pid=#{dto.pid, jdbcType=INTEGER},
+		level=#{dto.level, jdbcType=VARCHAR}
+	</sql>
+	
+	<sql id="updatePartialValues">
+		id=#{id, jdbcType=INTEGER}
+		<if test="name != null">
+			<trim prefix=",">
+				name=#{name, jdbcType=VARCHAR}
+			</trim>
+		</if>
+		<if test="title != null">
+			<trim prefix=",">
+				title=#{title, jdbcType=VARCHAR}
+			</trim>
+		</if>
+		<if test="status != null">
+			<trim prefix=",">
+				status=#{status, jdbcType=INTEGER}
+			</trim>
+		</if>
+		<if test="remark != null">
+			<trim prefix=",">
+				remark=#{remark, jdbcType=INTEGER}
+			</trim>
+		</if>
+		<if test="sort != null">
+			<trim prefix=",">
+				sort=#{sort, jdbcType=INTEGER}
+			</trim>
+		</if>
+		<if test="pid != null">
+			<trim prefix=",">
+				pid=#{pid, jdbcType=INTEGER}
+			</trim>
+		</if>
+		<if test="level != null">
+			<trim prefix=",">
+				level=#{level, jdbcType=VARCHAR}
+			</trim>
+		</if>
+	</sql>
+	
+	<sql id="whereCondition">
+	    <if test="pid != null">
+			and pid = #{pid, jdbcType=INTEGER}
+		</if>
+	</sql>
+	
+	<select id="count" resultType="int">
+		select count(id)
+		from vol_node
+	</select>
+	
+	<select id="countByDto" resultType="int" parameterType="VolNode">
+		select count(id)
+		from vol_node
+		where 1=1 <include refid="whereCondition"/>
+	</select>
+	
+	<select id="findById" resultMap="volNodeResultMap" parameterType="int">
+		select <include refid="columns"/>
+		from vol_node
+		where id = #{id}
+	</select>
+	
+	<select id="findByUserId" resultMap="volNodeResultMap">
+		select node.id,node.name,node.pid
+		from vol_node as node,vol_role as role,vol_role_user as user,vol_access as access
+		where user.user_id = #{userId} and user.role_id = role.id and (access.role_id=role.id or(access.role_id=role.pid and role.pid!=0)) and role.status=1 and access.node_id=node.id and node.level=#{level} and node.pid=#{pid} and node.status=1
+	</select>
+	
+	<select id="findAll" resultMap="volNodeResultMap">
+		select <include refid="columns"/>
+		from vol_node
+		order by sort
+	</select>
+	
+	<select id="findByDto" resultMap="volNodeResultMap" parameterType="VolNode">
+		select <include refid="columns"/>
+		from vol_node
+		where 1=1 <include refid="whereCondition"/>
+		order by sort
+		<if test="start != null">
+			limit #{start}, #{end}
+		</if>
+	</select>
+	
+	<insert id="insert" parameterType="VolNode">
+		insert into vol_node
+		(<include refid="columns"/>)
+		values(<include refid="insertValues"/>);
+		<selectKey resultType="int" keyProperty="id">
+			select last_insert_id()
+		</selectKey>
+	</insert>
+	
+	<insert id="insertList" parameterType="java.util.List">
+		insert into vol_node
+		(<include refid="columns"/>)
+		values
+			<foreach collection="list" item="dto" index="index" separator=",">
+				(<include refid="insertListValues"/>)
+			</foreach>
+	</insert>
+	
+	<update id="update" parameterType="VolNode">
+		update vol_node
+		set <include refid="updateValues"/>
+		where id = #{id}
+	</update>
+	
+	<!--update id="updateList" parameterType="java.util.List">
+		update vol_node
+		set <include refid="updateListValues"/>
+		where id in
+		<foreach collection="list" item="dto" open="(" separator="," close=")">
+			#{dto.id}
+		</foreach>
+	</update-->
+	
+	<update id="updatePartial" parameterType="VolNode">
+		update vol_node
+		set <include refid="updatePartialValues"/>
+		where id = #{id}
+	</update>
+	
+	<delete id="delete" parameterType="int">
+		delete from vol_node
+		where id = #{id}
+	</delete>
+	
+	<delete id="deleteList" parameterType="java.util.List">
+		delete from vol_node
+		where id in
+		<foreach collection="list" item="id" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+</mapper>

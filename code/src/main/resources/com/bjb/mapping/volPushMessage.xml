@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bjb.dao.VolPushMessageDao">
+	<resultMap id="volPushMessageResultMap" type="com.bjb.entity.VolPushMessage">
+		<id column="messageId" property="id" jdbcType="INTEGER" />
+		<result column="projectId" property="projectId" jdbcType="INTEGER" />
+		<result column="volunteerId" property="volunteerId" jdbcType="INTEGER" />
+		<result column="messageTitle" property="messageTitle" jdbcType="VARCHAR" />
+		<result column="messageContent" property="messageContent" jdbcType="VARCHAR" />
+		<result column="messageOperator" property="messageOperator" jdbcType="INTEGER" />
+		<result column="pushDate" property="pushDate" jdbcType="TIMESTAMP" />
+		<result column="readOrNot" property="readOrNot" jdbcType="INTEGER" />
+	</resultMap>
+	
+	<sql id="columns">
+		messageId, projectId, volunteerId, messageTitle, messageContent, messageOperator, pushDate, readOrNot
+	</sql>
+	
+	<sql id="insertValues">
+		null,
+		#{projectId, jdbcType=INTEGER},
+		#{volunteerId, jdbcType=INTEGER},
+		#{messageTitle, jdbcType=VARCHAR},
+		#{messageContent, jdbcType=VARCHAR},
+		#{messageOperator, jdbcType=INTEGER},
+		#{pushDate, jdbcType=TIMESTAMP},
+		#{readOrNot, jdbcType=INTEGER}
+	</sql>
+	
+	<sql id="insertListValues">
+		null,
+		#{dto.projectId, jdbcType=INTEGER},
+		#{dto.volunteerId, jdbcType=INTEGER},
+		#{dto.messageTitle, jdbcType=VARCHAR},
+		#{dto.messageContent, jdbcType=VARCHAR},
+		#{dto.messageOperator, jdbcType=INTEGER},
+		#{dto.pushDate, jdbcType=TIMESTAMP},
+		#{dto.readOrNot, jdbcType=INTEGER}
+	</sql>
+	
+	<sql id="updateValues">
+		messageId=#{id, jdbcType=INTEGER},
+		projectId=#{projectId, jdbcType=INTEGER},
+		volunteerId=#{volunteerId, jdbcType=INTEGER},
+		messageTitle=#{messageTitle, jdbcType=VARCHAR},
+		messageContent=#{messageContent, jdbcType=VARCHAR},
+		messageOperator=#{messageOperator, jdbcType=INTEGER},
+		pushDate=#{pushDate, jdbcType=TIMESTAMP},
+		readOrNot=#{readOrNot, jdbcType=INTEGER}
+	</sql>
+	
+	<sql id="updateListValues">
+		messageId=#{dto.id, jdbcType=INTEGER},
+		projectId=#{dto.projectId, jdbcType=INTEGER},
+		volunteerId=#{dto.volunteerId, jdbcType=INTEGER},
+		messageTitle=#{dto.messageTitle, jdbcType=VARCHAR},
+		messageContent=#{dto.messageContent, jdbcType=VARCHAR},
+		messageOperator=#{dto.messageOperator, jdbcType=INTEGER},
+		pushDate=#{dto.pushDate, jdbcType=TIMESTAMP},
+		readOrNot=#{dto.readOrNot, jdbcType=INTEGER}
+	</sql>
+	
+	<sql id="updatePartialValues">
+		messageId=#{id, jdbcType=INTEGER}
+		<if test="projectId != null">
+			<trim prefix=",">
+				projectId=#{projectId, jdbcType=INTEGER}
+			</trim>
+		</if>
+		<if test="volunteerId != null">
+			<trim prefix=",">
+				volunteerId=#{volunteerId, jdbcType=INTEGER}
+			</trim>
+		</if>
+		<if test="messageTitle != null">
+			<trim prefix=",">
+				messageTitle=#{messageTitle, jdbcType=VARCHAR}
+			</trim>
+		</if>
+		<if test="messageContent != null">
+			<trim prefix=",">
+				messageContent=#{messageContent, jdbcType=VARCHAR}
+			</trim>
+		</if>
+		<if test="messageOperator != null">
+			<trim prefix=",">
+				messageOperator=#{messageOperator, jdbcType=INTEGER}
+			</trim>
+		</if>
+		<if test="pushDate != null">
+			<trim prefix=",">
+				pushDate=#{pushDate, jdbcType=TIMESTAMP}
+			</trim>
+		</if>
+		<if test="readOrNot != null">
+			<trim prefix=",">
+				readOrNot=#{readOrNot, jdbcType=INTEGER}
+			</trim>
+		</if>
+	</sql>
+	
+	<sql id="whereCondition">
+		<if test="projectId != null">
+			and projectId = #{projectId, jdbcType=INTEGER}
+		</if>
+		<if test="volunteerId != null">
+			and volunteerId = #{volunteerId, jdbcType=INTEGER}
+		</if>
+		<if test="messageTitle != null">
+			<if test="messageTitle.length() > 0">
+				and instr(messageTitle, #{messageTitle, jdbcType=VARCHAR}) > 0
+			</if>
+		</if>
+		<if test="messageOperator != null">
+			and messageOperator = #{messageOperator, jdbcType=INTEGER}
+		</if>
+		<if test="readOrNot != null">
+			and readOrNot = #{readOrNot, jdbcType=INTEGER}
+		</if>
+	</sql>
+	
+	<select id="count" resultType="int">
+		select count(messageId)
+		from vol_push_message
+	</select>
+	
+	<select id="countByDto" resultType="int" parameterType="VolPushMessage">
+		select count(messageId)
+		from vol_push_message
+		where 1=1 <include refid="whereCondition"/>
+	</select>
+	
+	<select id="findById" resultMap="volPushMessageResultMap" parameterType="int">
+		select <include refid="columns"/>
+		from vol_push_message
+		where messageId = #{id}
+	</select>
+	
+	<select id="findAll" resultMap="volPushMessageResultMap">
+		select <include refid="columns"/>
+		from vol_push_message
+		order by messageId desc
+	</select>
+	
+	<select id="findByDto" resultMap="volPushMessageResultMap" parameterType="VolPushMessage">
+		select <include refid="columns"/>
+		from vol_push_message
+		where 1=1 <include refid="whereCondition"/>
+		order by messageId desc
+		<if test="start != null">
+			limit #{start}, #{end}
+		</if>
+	</select>
+	
+	<insert id="insert" parameterType="VolPushMessage">
+		insert into vol_push_message
+		(<include refid="columns"/>)
+		values(<include refid="insertValues"/>);
+		<selectKey resultType="int" keyProperty="id">
+			select last_insert_id()
+		</selectKey>
+	</insert>
+	
+	<insert id="insertList" parameterType="java.util.List">
+		insert into vol_push_message
+		(<include refid="columns"/>)
+		values
+			<foreach collection="list" item="dto" index="index" separator=",">
+				(<include refid="insertListValues"/>)
+			</foreach>
+	</insert>
+	
+	<update id="update" parameterType="VolPushMessage">
+		update vol_push_message
+		set <include refid="updateValues"/>
+		where messageId = #{id}
+	</update>
+	
+	<!--update id="updateList" parameterType="java.util.List">
+		update vol_push_message
+		set <include refid="updateListValues"/>
+		where messageId in
+		<foreach collection="list" item="dto" open="(" separator="," close=")">
+			#{dto.id}
+		</foreach>
+	</update-->
+	
+	<update id="updatePartial" parameterType="VolPushMessage">
+		update vol_push_message
+		set <include refid="updatePartialValues"/>
+		where messageId = #{id}
+	</update>
+	
+	<delete id="delete" parameterType="int">
+		delete from vol_push_message
+		where messageId = #{id}
+	</delete>
+	
+	<delete id="deleteList" parameterType="java.util.List">
+		delete from vol_push_message
+		where messageId in
+		<foreach collection="list" item="id" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+</mapper>

@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bjb.dao.VolOrganizationUserRelationDao">
+	<resultMap id="volOrganizationUserRelationResultMap" type="com.bjb.entity.VolOrganizationUserRelation">
+		<id column="relationId" property="id" jdbcType="INTEGER" />
+		<result column="organizationId" property="organizationId" jdbcType="INTEGER" />
+		<result column="userId" property="userId" jdbcType="INTEGER" />
+		<result column="userType" property="userType" jdbcType="INTEGER" />
+		<result column="userName" property="userName" jdbcType="VARCHAR" />
+	</resultMap>
+	
+	<sql id="columns">
+		relationId, organizationId, userId, userType
+	</sql>
+	
+	<sql id="insertValues">
+		null,
+		#{organizationId, jdbcType=INTEGER},
+		#{userId, jdbcType=INTEGER},
+		#{userType, jdbcType=INTEGER}
+	</sql>
+	
+	<sql id="insertListValues">
+		null,
+		#{dto.organizationId, jdbcType=INTEGER},
+		#{dto.userId, jdbcType=INTEGER},
+		#{dto.userType, jdbcType=INTEGER}
+	</sql>
+	
+	<sql id="updateValues">
+		relationId=#{id, jdbcType=INTEGER},
+		organizationId=#{organizationId, jdbcType=INTEGER},
+		userId=#{userId, jdbcType=INTEGER},
+		userType=#{userType, jdbcType=INTEGER}
+	</sql>
+	
+	<sql id="updateListValues">
+		relationId=#{dto.id, jdbcType=INTEGER},
+		organizationId=#{dto.organizationId, jdbcType=INTEGER},
+		userId=#{dto.userId, jdbcType=INTEGER},
+		userType=#{dto.userType, jdbcType=INTEGER}
+	</sql>
+	
+	<sql id="updatePartialValues">
+		relationId=#{id, jdbcType=INTEGER}
+		<if test="organizationId != null">
+			<trim prefix=",">
+				organizationId=#{organizationId, jdbcType=INTEGER}
+			</trim>
+		</if>
+		<if test="userId != null">
+			<trim prefix=",">
+				userId=#{userId, jdbcType=INTEGER}
+			</trim>
+		</if>
+		<if test="userType != null">
+			<trim prefix=",">
+				userType=#{userType, jdbcType=INTEGER}
+			</trim>
+		</if>
+	</sql>
+	
+	<sql id="whereCondition">
+	    <if test="organizationId != null">
+			and	organizationId=#{organizationId, jdbcType=INTEGER}
+		</if>
+		<if test="userId != null">
+			and	userId=#{userId, jdbcType=INTEGER}
+		</if>
+		<if test="userType != null">
+			and	userType=#{userType, jdbcType=INTEGER}
+		</if>
+	</sql>
+	
+	<select id="count" resultType="int">
+		select count(relationId)
+		from vol_organization_user_relation
+	</select>
+	
+	<select id="countByDto" resultType="int" parameterType="VolOrganizationUserRelation">
+		select count(relationId)
+		from vol_organization_user_relation
+		where 1=1 <include refid="whereCondition"/>
+	</select>
+	
+	<select id="findById" resultMap="volOrganizationUserRelationResultMap" parameterType="int">
+		select <include refid="columns"/>
+		from vol_organization_user_relation
+		where relationId = #{id}
+	</select>
+	
+	<select id="findAll" resultMap="volOrganizationUserRelationResultMap">
+		select <include refid="columns"/>
+		from vol_organization_user_relation
+		order by relationId desc
+	</select>
+	
+	<select id="findByDto" resultMap="volOrganizationUserRelationResultMap" parameterType="VolOrganizationUserRelation">
+		select <include refid="columns"/>
+		from vol_organization_user_relation
+		where 1=1 <include refid="whereCondition"/>
+		order by relationId desc
+		<if test="start != null">
+			limit #{start}, #{end}
+		</if>
+	</select>
+	
+	<select id="findVenuesUserByDto" resultMap="volOrganizationUserRelationResultMap" parameterType="VolOrganizationUserRelation">
+		select *
+		FROM vol_organization_user_relation re INNER JOIN vol_user us ON re.userId=us.userId AND re.userType=us.userTypeId
+		where 1=1 
+	    <if test="organizationId != null">
+			and	re.organizationId=#{organizationId, jdbcType=INTEGER}
+		</if>
+		<if test="userName != null">
+		    <if test="userName.length() > 0">
+				and instr(us.userCode, #{userName, jdbcType=VARCHAR}) > 0
+			</if>
+		</if>
+		order by relationId desc
+		<if test="start != null">
+			limit #{start}, #{end}
+		</if>
+	</select>
+	
+	<insert id="insert" parameterType="VolOrganizationUserRelation">
+		insert into vol_organization_user_relation
+		(<include refid="columns"/>)
+		values(<include refid="insertValues"/>);
+		<selectKey resultType="int" keyProperty="id">
+			select last_insert_id()
+		</selectKey>
+	</insert>
+	
+	<insert id="insertList" parameterType="java.util.List">
+		insert into vol_organization_user_relation
+		(<include refid="columns"/>)
+		values
+			<foreach collection="list" item="dto" index="index" separator=",">
+				(<include refid="insertListValues"/>)
+			</foreach>
+	</insert>
+	
+	<update id="update" parameterType="VolOrganizationUserRelation">
+		update vol_organization_user_relation
+		set <include refid="updateValues"/>
+		where relationId = #{id}
+	</update>
+	
+	<!--update id="updateList" parameterType="java.util.List">
+		update vol_organization_user_relation
+		set <include refid="updateListValues"/>
+		where relationId in
+		<foreach collection="list" item="dto" open="(" separator="," close=")">
+			#{dto.id}
+		</foreach>
+	</update-->
+	
+	<update id="updatePartial" parameterType="VolOrganizationUserRelation">
+		update vol_organization_user_relation
+		set <include refid="updatePartialValues"/>
+		where relationId = #{id}
+	</update>
+	
+	<delete id="delete" parameterType="int">
+		delete from vol_organization_user_relation
+		where relationId = #{id}
+	</delete>
+	
+	<delete id="deleteList" parameterType="java.util.List">
+		delete from vol_organization_user_relation
+		where relationId in
+		<foreach collection="list" item="id" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+</mapper>

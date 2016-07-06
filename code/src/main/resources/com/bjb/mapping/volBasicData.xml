@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bjb.dao.VolBasicDataDao">
+	<resultMap id="volBasicDataResultMap" type="com.bjb.entity.VolBasicData">
+		<id column="dataId" property="id" jdbcType="INTEGER" />
+		<result column="typeId" property="typeId" jdbcType="INTEGER" />
+		<result column="dataName" property="dataName" jdbcType="VARCHAR" />
+		<result column="sort" property="sort" jdbcType="INTEGER" />
+		<result column="createUserId" property="createUserId" jdbcType="INTEGER" />
+	</resultMap>
+	
+	<sql id="columns">
+		dataId, typeId, dataName, sort, createUserId
+	</sql>
+	
+	<sql id="insertValues">
+		null,
+		#{typeId, jdbcType=INTEGER},
+		#{dataName, jdbcType=VARCHAR},
+		#{sort, jdbcType=INTEGER},
+		#{createUserId, jdbcType=INTEGER}
+	</sql>
+	
+	<sql id="insertListValues">
+		null,
+		#{dto.typeId, jdbcType=INTEGER},
+		#{dto.dataName, jdbcType=VARCHAR},
+		#{dto.sort, jdbcType=INTEGER},
+		#{dto.createUserId, jdbcType=INTEGER}
+	</sql>
+	
+	<sql id="updateValues">
+		dataId=#{id, jdbcType=INTEGER},
+		typeId=#{typeId, jdbcType=INTEGER},
+		dataName=#{dataName, jdbcType=VARCHAR},
+		sort=#{sort, jdbcType=INTEGER},
+		createUserId=#{createUserId, jdbcType=INTEGER}
+	</sql>
+	
+	<sql id="updateListValues">
+		dataId=#{dto.id, jdbcType=INTEGER},
+		typeId=#{dto.typeId, jdbcType=INTEGER},
+		dataName=#{dto.dataName, jdbcType=VARCHAR},
+		sort=#{dto.sort, jdbcType=INTEGER},
+		createUserId=#{dto.createUserId, jdbcType=INTEGER}
+	</sql>
+	
+	<sql id="updatePartialValues">
+		dataId=#{id, jdbcType=INTEGER}
+		<if test="typeId != null">
+			<trim prefix=",">
+				typeId=#{typeId, jdbcType=INTEGER}
+			</trim>
+		</if>
+		<if test="dataName != null">
+			<trim prefix=",">
+				dataName=#{dataName, jdbcType=VARCHAR}
+			</trim>
+		</if>
+		<if test="sort != null">
+			<trim prefix=",">
+				sort=#{sort, jdbcType=INTEGER}
+			</trim>
+		</if>
+		<if test="createUserId != null">
+			<trim prefix=",">
+				createUserId=#{createUserId, jdbcType=INTEGER}
+			</trim>
+		</if>
+	</sql>
+	
+	<sql id="whereCondition">
+	   <if test="typeId != null">
+			and typeId = #{typeId, jdbcType=INTEGER}
+		</if>
+	</sql>
+	
+	<select id="count" resultType="int">
+		select count(dataId)
+		from vol_basic_data
+	</select>
+	
+	<select id="countByDto" resultType="int" parameterType="VolBasicData">
+		select count(dataId)
+		from vol_basic_data
+		where 1=1 <include refid="whereCondition"/>
+	</select>
+	
+	<select id="findById" resultMap="volBasicDataResultMap" parameterType="int">
+		select <include refid="columns"/>
+		from vol_basic_data
+		where dataId = #{id}
+	</select>
+	
+	<select id="findAll" resultMap="volBasicDataResultMap">
+		select <include refid="columns"/>
+		from vol_basic_data
+		order by dataId desc
+	</select>
+	
+	<select id="findByDto" resultMap="volBasicDataResultMap" parameterType="VolBasicData">
+		select <include refid="columns"/>
+		from vol_basic_data
+		where 1=1 <include refid="whereCondition"/>
+		order by sort
+		<if test="start != null">
+			limit #{start}, #{end}
+		</if>
+	</select>
+	
+	<insert id="insert" parameterType="VolBasicData">
+		insert into vol_basic_data
+		(<include refid="columns"/>)
+		values(<include refid="insertValues"/>);
+		<selectKey resultType="int" keyProperty="id">
+			select last_insert_id()
+		</selectKey>
+	</insert>
+	
+	<insert id="insertList" parameterType="java.util.List">
+		insert into vol_basic_data
+		(<include refid="columns"/>)
+		values
+			<foreach collection="list" item="dto" index="index" separator=",">
+				(<include refid="insertListValues"/>)
+			</foreach>
+	</insert>
+	
+	<update id="update" parameterType="VolBasicData">
+		update vol_basic_data
+		set <include refid="updateValues"/>
+		where dataId = #{id}
+	</update>
+	
+	<!--update id="updateList" parameterType="java.util.List">
+		update vol_basic_data
+		set <include refid="updateListValues"/>
+		where dataId in
+		<foreach collection="list" item="dto" open="(" separator="," close=")">
+			#{dto.id}
+		</foreach>
+	</update-->
+	
+	<update id="updatePartial" parameterType="VolBasicData">
+		update vol_basic_data
+		set <include refid="updatePartialValues"/>
+		where dataId = #{id}
+	</update>
+	
+	<delete id="delete" parameterType="int">
+		delete from vol_basic_data
+		where dataId = #{id}
+	</delete>
+	
+	<delete id="deleteList" parameterType="java.util.List">
+		delete from vol_basic_data
+		where dataId in
+		<foreach collection="list" item="id" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+</mapper>

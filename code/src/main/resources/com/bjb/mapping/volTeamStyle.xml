@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bjb.dao.VolTeamStyleDao">
+	<resultMap id="volTeamStyleResultMap" type="VolTeamStyle">
+		<id column="styleId" property="id" jdbcType="INTEGER" />
+		<result column="styleTitle" property="styleTitle" jdbcType="VARCHAR" />
+		<result column="styleTeam" property="styleTeam" jdbcType="INTEGER" />
+		<result column="createPeople" property="createPeople" jdbcType="VARCHAR" />
+		<result column="teamPhone" property="teamPhone" jdbcType="VARCHAR" />
+		<result column="teamArea" property="teamArea" jdbcType="VARCHAR" />
+		<result column="serciveType" property="serciveType" jdbcType="INTEGER" />
+		<result column="picture" property="picture" jdbcType="VARCHAR" />
+		<result column="content" property="content" jdbcType="VARCHAR" />
+		<result column="createDate" property="createDate" jdbcType="TIMESTAMP" />
+		<result column="updateDate" property="updateDate" jdbcType="TIMESTAMP" />
+	</resultMap>
+	
+	<sql id="columns">
+		styleId, styleTitle, styleTeam, createPeople, teamPhone, teamArea, serciveType, picture, content, createDate, updateDate
+	</sql>
+	
+	<sql id="insertValues">
+		null,
+		#{styleTitle, jdbcType=VARCHAR},
+		#{styleTeam, jdbcType=INTEGER},
+		#{createPeople, jdbcType=VARCHAR},
+		#{teamPhone, jdbcType=VARCHAR},
+		#{teamArea, jdbcType=INTEGER},
+		#{serciveType, jdbcType=INTEGER},
+		#{picture, jdbcType=VARCHAR},
+		#{content, jdbcType=VARCHAR},
+		#{createDate, jdbcType=TIMESTAMP},
+		#{updateDate, jdbcType=TIMESTAMP}
+	</sql>
+	
+	<sql id="insertListValues">
+		null,
+		#{dto.styleTitle, jdbcType=VARCHAR},
+		#{dto.styleTeam, jdbcType=INTEGER},
+		#{dto.createPeople, jdbcType=VARCHAR},
+		#{dto.teamPhone, jdbcType=VARCHAR},
+		#{dto.teamArea, jdbcType=INTEGER},
+		#{dto.serciveType, jdbcType=INTEGER},
+		#{dto.picture, jdbcType=VARCHAR},
+		#{dto.content, jdbcType=VARCHAR},
+		#{dto.createDate, jdbcType=TIMESTAMP},
+		#{dto.updateDate, jdbcType=TIMESTAMP}
+	</sql>
+	
+	<sql id="updateValues">
+		styleId=#{id, jdbcType=INTEGER},
+		styleTitle=#{styleTitle, jdbcType=VARCHAR},
+		styleTeam=#{styleTeam, jdbcType=INTEGER},
+		createPeople=#{createPeople, jdbcType=VARCHAR},
+		teamPhone=#{teamPhone, jdbcType=VARCHAR},
+		teamArea=#{teamArea, jdbcType=INTEGER},
+		serciveType=#{serciveType, jdbcType=INTEGER},
+		picture=#{picture, jdbcType=VARCHAR},
+		content=#{content, jdbcType=VARCHAR},
+		createDate=#{createDate, jdbcType=TIMESTAMP},
+		updateDate=#{updateDate, jdbcType=TIMESTAMP}
+	</sql>
+	
+	<sql id="updateListValues">
+		styleId=#{dto.id, jdbcType=INTEGER},
+		styleTitle=#{dto.styleTitle, jdbcType=VARCHAR},
+		styleTeam=#{dto.styleTeam, jdbcType=INTEGER},
+		createPeople=#{dto.createPeople, jdbcType=VARCHAR},
+		teamPhone=#{dto.teamPhone, jdbcType=VARCHAR},
+		teamArea=#{dto.teamArea, jdbcType=INTEGER},
+		serciveType=#{dto.serciveType, jdbcType=INTEGER},
+		picture=#{dto.picture, jdbcType=VARCHAR},
+		content=#{dto.content, jdbcType=VARCHAR},
+		createDate=#{dto.createDate, jdbcType=TIMESTAMP},
+		updateDate=#{dto.updateDate, jdbcType=TIMESTAMP}
+	</sql>
+	
+	<sql id="updatePartialValues">
+		styleId=#{id, jdbcType=INTEGER}
+		<if test="styleTitle != null">
+			<trim prefix=",">
+				styleTitle=#{styleTitle, jdbcType=VARCHAR}
+			</trim>
+		</if>
+		<if test="styleTeam != null">
+			<trim prefix=",">
+				styleTeam=#{styleTeam, jdbcType=INTEGER}
+			</trim>
+		</if>
+		<if test="createPeople != null">
+			<trim prefix=",">
+				createPeople=#{createPeople, jdbcType=VARCHAR}
+			</trim>
+		</if>
+		<if test="teamPhone != null">
+			<trim prefix=",">
+				teamPhone=#{teamPhone, jdbcType=VARCHAR}
+			</trim>
+		</if>
+		<if test="teamArea != null">
+			<trim prefix=",">
+				teamArea=#{teamArea, jdbcType=INTEGER}
+			</trim>
+		</if>
+		<if test="serciveType != null">
+			<trim prefix=",">
+				serciveType=#{serciveType, jdbcType=INTEGER}
+			</trim>
+		</if>
+		<if test="picture != null">
+			<trim prefix=",">
+				picture=#{picture, jdbcType=VARCHAR}
+			</trim>
+		</if>
+		<if test="content != null">
+			<trim prefix=",">
+				content=#{content, jdbcType=VARCHAR}
+			</trim>
+		</if>
+		<if test="createDate != null">
+			<trim prefix=",">
+				createDate=#{createDate, jdbcType=TIMESTAMP}
+			</trim>
+		</if>
+		<if test="updateDate != null">
+			<trim prefix=",">
+				updateDate=#{updateDate, jdbcType=TIMESTAMP}
+			</trim>
+		</if>
+	</sql>
+	
+	<sql id="whereCondition">
+		<if test="id != null">
+			and styleId = #{id, jdbcType=INTEGER}
+		</if>
+		<if test="styleTitle != null">
+			<if test="styleTitle.length() > 0">
+				and instr(styleTitle, #{styleTitle, jdbcType=VARCHAR}) > 0
+			</if>
+		</if>
+		<if test="styleTeam != null">
+			<if test="styleTeam.length() > 0">
+				and instr(styleTeam, #{styleTeam, jdbcType=INTEGER}) > 0
+			</if>
+		</if>
+		<if test="createPeople != null">
+			and createPeople = #{createPeople, jdbcType=VARCHAR}
+		</if>
+		<if test="teamPhone != null">
+			and teamPhone = #{teamPhone, jdbcType=VARCHAR}
+		</if>
+		<if test="teamArea != null">
+			and teamArea = #{teamArea, jdbcType=INTEGER}
+		</if>
+		<if test="serciveType != null">
+			and serciveType = #{serciveType, jdbcType=INTEGER}
+		</if>
+		<if test="picture != null">
+			and picture = #{picture, jdbcType=VARCHAR}
+		</if>
+		<if test="content != null">
+			and content = #{content, jdbcType=VARCHAR}
+		</if>
+		<if test="createDate != null">
+			and createDate = #{createDate, jdbcType=TIMESTAMP}
+		</if>
+		<if test="updateDate != null">
+			and updateDate = #{updateDate, jdbcType=TIMESTAMP}
+		</if>
+	</sql>
+	
+	<select id="count" resultType="int">
+		select count(styleId)
+		from vol_team_style
+	</select>
+	
+	<select id="countByDto" resultType="int" parameterType="VolTeamStyle">
+		select count(styleId)
+		from vol_team_style
+		where 1=1 <include refid="whereCondition"/>
+	</select>
+	
+	<select id="findById" resultMap="volTeamStyleResultMap" parameterType="int">
+		select <include refid="columns"/>
+		from vol_team_style
+		where styleId = #{id}
+	</select>
+	
+	<select id="findAll" resultMap="volTeamStyleResultMap">
+		select <include refid="columns"/>
+		from vol_team_style
+		order by styleId desc
+	</select>
+	
+	<select id="findByDto" resultMap="volTeamStyleResultMap" parameterType="VolTeamStyle">
+		select <include refid="columns"/>
+		from vol_team_style
+		where 1=1 <include refid="whereCondition"/>
+		order by styleId desc
+		<if test="start != null">
+			limit #{start}, #{end}
+		</if>
+	</select>
+	
+	<insert id="insert" parameterType="VolTeamStyle">
+		insert into vol_team_style
+		(<include refid="columns"/>)
+		values(<include refid="insertValues"/>);
+		<selectKey resultType="int" keyProperty="id">
+			select last_insert_id()
+		</selectKey>
+	</insert>
+	
+	<insert id="insertList" parameterType="java.util.List">
+		insert into vol_team_style
+		(<include refid="columns"/>)
+		values
+			<foreach collection="list" item="dto" index="index" separator=",">
+				(<include refid="insertListValues"/>)
+			</foreach>
+	</insert>
+	
+	<update id="update" parameterType="VolTeamStyle">
+		update vol_team_style
+		set <include refid="updateValues"/>
+		where styleId = #{id}
+	</update>
+	
+	<!--update id="updateList" parameterType="java.util.List">
+		update vol_team_style
+		set <include refid="updateListValues"/>
+		where styleId in
+		<foreach collection="list" item="dto" open="(" separator="," close=")">
+			#{dto.id}
+		</foreach>
+	</update-->
+	
+	<update id="updatePartial" parameterType="VolTeamStyle">
+		update vol_team_style
+		set <include refid="updatePartialValues"/>
+		where styleId = #{id}
+	</update>
+	
+	<delete id="delete" parameterType="int">
+		delete from vol_team_style
+		where styleId = #{id}
+	</delete>
+	
+	<delete id="deleteList" parameterType="java.util.List">
+		delete from vol_team_style
+		where styleId in
+		<foreach collection="list" item="id" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+</mapper>

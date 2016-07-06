@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bjb.dao.VolCommonUserDao">
+	<resultMap id="volCommonUserResultMap" type="com.bjb.entity.VolCommonUser">
+		<id column="commonUserId" property="id" jdbcType="INTEGER" />
+		<result column="commonUserCode" property="commonUserCode" jdbcType="VARCHAR" />
+		<result column="commonUserPwd" property="commonUserPwd" jdbcType="VARCHAR" />
+		<result column="commonUserNickname" property="commonUserNickname" jdbcType="VARCHAR" />
+		<result column="commonUserPortrait" property="commonUserPortrait" jdbcType="VARCHAR" />
+		<result column="commonUserPhone" property="commonUserPhone" jdbcType="VARCHAR" />
+		<result column="commonUserEmail" property="commonUserEmail" jdbcType="VARCHAR" />
+		<result column="onlySign" property="onlySign" jdbcType="VARCHAR" />
+	</resultMap>
+	
+	<sql id="columns">
+		commonUserId, commonUserCode, commonUserPwd, commonUserNickname, commonUserPortrait, commonUserPhone, commonUserEmail, onlySign
+	</sql>
+	
+	<sql id="insertValues">
+		null,
+		#{commonUserCode, jdbcType=VARCHAR},
+		#{commonUserPwd, jdbcType=VARCHAR},
+		#{commonUserNickname, jdbcType=VARCHAR},
+		#{commonUserPortrait, jdbcType=VARCHAR},
+		#{commonUserPhone, jdbcType=VARCHAR},
+		#{commonUserEmail, jdbcType=VARCHAR},
+		#{onlySign, jdbcType=VARCHAR}
+	</sql>
+	
+	<sql id="insertListValues">
+		null,
+		#{dto.commonUserCode, jdbcType=VARCHAR},
+		#{dto.commonUserPwd, jdbcType=VARCHAR},
+		#{dto.commonUserNickname, jdbcType=VARCHAR},
+		#{dto.commonUserPortrait, jdbcType=VARCHAR},
+		#{dto.commonUserPhone, jdbcType=VARCHAR},
+		#{dto.commonUserEmail, jdbcType=VARCHAR},
+		#{dto.onlySign, jdbcType=VARCHAR}
+	</sql>
+	
+	<sql id="updateValues">
+		commonUserId=#{id, jdbcType=INTEGER},
+		commonUserCode=#{commonUserCode, jdbcType=VARCHAR},
+		commonUserPwd=#{commonUserPwd, jdbcType=VARCHAR},
+		commonUserNickname=#{commonUserNickname, jdbcType=VARCHAR},
+		commonUserPortrait=#{commonUserPortrait, jdbcType=VARCHAR},
+		commonUserPhone=#{commonUserPhone, jdbcType=VARCHAR},
+		commonUserEmail=#{commonUserEmail, jdbcType=VARCHAR},
+		onlySign=#{onlySign, jdbcType=VARCHAR}
+	</sql>
+	
+	<sql id="updateListValues">
+		commonUserId=#{dto.id, jdbcType=INTEGER},
+		commonUserCode=#{dto.commonUserCode, jdbcType=VARCHAR},
+		commonUserPwd=#{dto.commonUserPwd, jdbcType=VARCHAR},
+		commonUserNickname=#{dto.commonUserNickname, jdbcType=VARCHAR},
+		commonUserPortrait=#{dto.commonUserPortrait, jdbcType=VARCHAR},
+		commonUserPhone=#{dto.commonUserPhone, jdbcType=VARCHAR},
+		commonUserEmail=#{dto.commonUserEmail, jdbcType=VARCHAR},
+		onlySign=#{dto.onlySign, jdbcType=VARCHAR}
+	</sql>
+	
+	<sql id="updatePartialValues">
+		commonUserId=#{id, jdbcType=INTEGER}
+		<if test="commonUserCode != null">
+			<trim prefix=",">
+				commonUserCode=#{commonUserCode, jdbcType=VARCHAR}
+			</trim>
+		</if>
+		<if test="commonUserPwd != null">
+			<trim prefix=",">
+				commonUserPwd=#{commonUserPwd, jdbcType=VARCHAR}
+			</trim>
+		</if>
+		<if test="commonUserNickname != null">
+			<trim prefix=",">
+				commonUserNickname=#{commonUserNickname, jdbcType=VARCHAR}
+			</trim>
+		</if>
+		<if test="commonUserPortrait != null">
+			<trim prefix=",">
+				commonUserPortrait=#{commonUserPortrait, jdbcType=VARCHAR}
+			</trim>
+		</if>
+		<if test="commonUserPhone != null">
+			<trim prefix=",">
+				commonUserPhone=#{commonUserPhone, jdbcType=VARCHAR}
+			</trim>
+		</if>
+		<if test="commonUserEmail != null">
+			<trim prefix=",">
+				commonUserEmail=#{commonUserEmail, jdbcType=VARCHAR}
+			</trim>
+		</if>
+		<if test="onlySign != null">
+			<trim prefix=",">
+				onlySign=#{onlySign, jdbcType=VARCHAR}
+			</trim>
+		</if>
+	</sql>
+	
+	<sql id="whereCondition">
+	</sql>
+	
+	<select id="count" resultType="int">
+		select count(commonUserId)
+		from vol_common_user
+	</select>
+	
+	<select id="countByDto" resultType="int" parameterType="VolCommonUser">
+		select count(commonUserId)
+		from vol_common_user
+		where 1=1 <include refid="whereCondition"/>
+	</select>
+	
+	<select id="findById" resultMap="volCommonUserResultMap" parameterType="int">
+		select <include refid="columns"/>
+		from vol_common_user
+		where commonUserId = #{id}
+	</select>
+	
+	<select id="findAll" resultMap="volCommonUserResultMap">
+		select <include refid="columns"/>
+		from vol_common_user
+		order by commonUserId desc
+	</select>
+	
+	<select id="findByDto" resultMap="volCommonUserResultMap" parameterType="VolCommonUser">
+		select <include refid="columns"/>
+		from vol_common_user
+		where 1=1 <include refid="whereCondition"/>
+		order by commonUserId desc
+		<if test="start != null">
+			limit #{start}, #{end}
+		</if>
+	</select>
+	
+	<insert id="insert" parameterType="VolCommonUser">
+		insert into vol_common_user
+		(<include refid="columns"/>)
+		values(<include refid="insertValues"/>);
+		<selectKey resultType="int" keyProperty="id">
+			select last_insert_id()
+		</selectKey>
+	</insert>
+	
+	<insert id="insertList" parameterType="java.util.List">
+		insert into vol_common_user
+		(<include refid="columns"/>)
+		values
+			<foreach collection="list" item="dto" index="index" separator=",">
+				(<include refid="insertListValues"/>)
+			</foreach>
+	</insert>
+	
+	<update id="update" parameterType="VolCommonUser">
+		update vol_common_user
+		set <include refid="updateValues"/>
+		where commonUserId = #{id}
+	</update>
+	
+	<!--update id="updateList" parameterType="java.util.List">
+		update vol_common_user
+		set <include refid="updateListValues"/>
+		where commonUserId in
+		<foreach collection="list" item="dto" open="(" separator="," close=")">
+			#{dto.id}
+		</foreach>
+	</update-->
+	
+	<update id="updatePartial" parameterType="VolCommonUser">
+		update vol_common_user
+		set <include refid="updatePartialValues"/>
+		where commonUserId = #{id}
+	</update>
+	
+	<delete id="delete" parameterType="int">
+		delete from vol_common_user
+		where commonUserId = #{id}
+	</delete>
+	
+	<delete id="deleteList" parameterType="java.util.List">
+		delete from vol_common_user
+		where commonUserId in
+		<foreach collection="list" item="id" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+</mapper>

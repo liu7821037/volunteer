@@ -1,0 +1,272 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bjb.dao.VolElegantDemeanourDao">
+	<resultMap id="volElegantDemeanourResultMap" type="com.bjb.entity.VolElegantDemeanour">
+		<id column="elegantId" property="id" jdbcType="INTEGER" />
+		<result column="elegantTitle" property="elegantTitle" jdbcType="VARCHAR" />
+		<result column="type" property="type" jdbcType="INTEGER" />
+		<result column="picture" property="picture" jdbcType="VARCHAR" />
+		<result column="detail" property="detail" jdbcType="VARCHAR" />
+		<result column="auditor" property="auditor" jdbcType="INTEGER" />
+		<result column="auditTypeId" property="auditTypeId" jdbcType="INTEGER" />
+		<result column="auditDate" property="auditDate" jdbcType="TIMESTAMP" />
+		<result column="read_nums" property="read_nums" jdbcType="INTEGER" />
+		<result column="share_nums" property="share_nums" jdbcType="INTEGER" />
+		<result column="creatorId" property="creatorId" jdbcType="INTEGER" />
+		<result column="userName" property="userName" jdbcType="VARCHAR" />
+		<result column="createDate" property="createDate" jdbcType="TIMESTAMP" />
+		<result column="updateDate" property="updateDate" jdbcType="TIMESTAMP" />
+	</resultMap>
+	
+	<sql id="columns">
+		elegantId, elegantTitle, type, picture, detail, auditor, auditTypeId, auditDate, read_nums, share_nums, creatorId, createDate, updateDate
+	</sql>
+	
+	<sql id="insertValues">
+		null,
+		#{elegantTitle, jdbcType=VARCHAR},
+		#{type, jdbcType=INTEGER},
+		#{picture, jdbcType=VARCHAR},
+		#{detail, jdbcType=VARCHAR},
+		#{auditor, jdbcType=INTEGER},
+		#{auditTypeId, jdbcType=INTEGER},
+		#{auditDate, jdbcType=TIMESTAMP},
+		#{read_nums, jdbcType=INTEGER},
+		#{share_nums, jdbcType=INTEGER},
+		#{creatorId, jdbcType=INTEGER},
+		#{createDate, jdbcType=TIMESTAMP},
+		#{updateDate, jdbcType=TIMESTAMP}
+	</sql>
+	
+	<sql id="insertListValues">
+		null,
+		#{dto.elegantTitle, jdbcType=VARCHAR},
+		#{dto.type, jdbcType=INTEGER},
+		#{dto.picture, jdbcType=VARCHAR},
+		#{dto.detail, jdbcType=VARCHAR},
+		#{dto.auditor, jdbcType=INTEGER},
+		#{dto.auditTypeId, jdbcType=INTEGER},
+		#{dto.auditDate, jdbcType=TIMESTAMP},
+		#{dto.read_nums, jdbcType=INTEGER},
+		#{dto.share_nums, jdbcType=INTEGER},
+		#{dto.creatorId, jdbcType=INTEGER},
+		#{dto.createDate, jdbcType=TIMESTAMP},
+		#{dto.updateDate, jdbcType=TIMESTAMP}
+	</sql>
+	
+	<sql id="updateValues">
+		elegantId=#{id, jdbcType=INTEGER},
+		elegantTitle=#{elegantTitle, jdbcType=VARCHAR},
+		type=#{type, jdbcType=INTEGER},
+		picture=#{picture, jdbcType=VARCHAR},
+		detail=#{detail, jdbcType=VARCHAR},
+		auditor=#{auditor, jdbcType=INTEGER},
+		auditTypeId=#{auditTypeId, jdbcType=INTEGER},
+		auditDate=#{auditDate, jdbcType=TIMESTAMP},
+		read_nums=#{read_nums, jdbcType=INTEGER},
+		share_nums=#{share_nums, jdbcType=INTEGER},
+		creatorId=#{creatorId, jdbcType=INTEGER},
+		createDate=#{createDate, jdbcType=TIMESTAMP},
+		updateDate=#{updateDate, jdbcType=TIMESTAMP}
+	</sql>
+	
+	<sql id="updateListValues">
+		elegantId=#{dto.id, jdbcType=INTEGER},
+		elegantTitle=#{dto.elegantTitle, jdbcType=VARCHAR},
+		type=#{dto.type, jdbcType=INTEGER},
+		picture=#{dto.picture, jdbcType=VARCHAR},
+		detail=#{dto.detail, jdbcType=VARCHAR},
+		auditor=#{dto.auditor, jdbcType=INTEGER},
+		auditTypeId=#{dto.auditTypeId, jdbcType=INTEGER},
+		auditDate=#{dto.auditDate, jdbcType=TIMESTAMP},
+		read_nums=#{dto.read_nums, jdbcType=INTEGER},
+		share_nums=#{dto.share_nums, jdbcType=INTEGER},
+		creatorId=#{dto.creatorId, jdbcType=INTEGER},
+		createDate=#{dto.createDate, jdbcType=TIMESTAMP},
+		updateDate=#{dto.updateDate, jdbcType=TIMESTAMP}
+	</sql>
+	
+	<sql id="updatePartialValues">
+		elegantId=#{id, jdbcType=INTEGER}
+		<if test="elegantTitle != null">
+			<trim prefix=",">
+				elegantTitle=#{elegantTitle, jdbcType=VARCHAR}
+			</trim>
+		</if>
+		<if test="type != null">
+			<trim prefix=",">
+				type=#{type, jdbcType=INTEGER}
+			</trim>
+		</if>
+		<if test="picture != null">
+			<trim prefix=",">
+				picture=#{picture, jdbcType=VARCHAR}
+			</trim>
+		</if>
+		<if test="detail != null">
+			<trim prefix=",">
+				detail=#{detail, jdbcType=VARCHAR}
+			</trim>
+		</if>
+		<if test="auditor != null">
+			<trim prefix=",">
+				auditor=#{auditor, jdbcType=INTEGER}
+			</trim>
+		</if>
+		<if test="auditTypeId != null">
+			<trim prefix=",">
+				auditTypeId=#{auditTypeId, jdbcType=INTEGER}
+			</trim>
+		</if>
+		<if test="auditDate != null">
+			<trim prefix=",">
+				auditDate=#{auditDate, jdbcType=TIMESTAMP}
+			</trim>
+		</if>
+		<if test="read_nums != null">
+			<trim prefix=",">
+				read_nums=#{read_nums, jdbcType=INTEGER}
+			</trim>
+		</if>
+		<if test="share_nums != null">
+			<trim prefix=",">
+				share_nums=#{share_nums, jdbcType=INTEGER}
+			</trim>
+		</if>
+		<if test="creatorId != null">
+			<trim prefix=",">
+				creatorId=#{creatorId, jdbcType=INTEGER}
+			</trim>
+		</if>
+		<if test="createDate != null">
+			<trim prefix=",">
+				createDate=#{createDate, jdbcType=TIMESTAMP}
+			</trim>
+		</if>
+		<if test="updateDate != null">
+			<trim prefix=",">
+				updateDate=#{updateDate, jdbcType=TIMESTAMP}
+			</trim>
+		</if>
+	</sql>
+	
+	
+	
+	<sql id="whereCondition">
+		<if test="elegantTitle != null">
+			<if test="elegantTitle.length() > 0">
+				and instr(elegantTitle, #{elegantTitle, jdbcType=VARCHAR}) > 0
+			</if>
+		</if>
+		<if test="type != null">
+			and type = #{type, jdbcType=INTEGER}
+		</if>
+		<if test="auditor != null">
+			and auditor = #{auditor, jdbcType=INTEGER}
+		</if>
+		<if test="auditTypeId != null">
+			and auditTypeId = #{auditTypeId, jdbcType=INTEGER}
+		</if>
+		<if test="creatorId != null">
+			and creatorId = #{creatorId, jdbcType=INTEGER}
+		</if>
+		and auditTypeId != 2
+	</sql>
+	
+	<select id="count" resultType="int">
+		select count(elegantId)
+		from vol_elegant_demeanour
+	</select>
+	
+	<select id="countByDto" resultType="int" parameterType="VolElegantDemeanour">
+		select count(elegantId)
+		from vol_elegant_demeanour
+		where 1=1 <include refid="whereCondition"/>
+	</select>
+	
+	<select id="findById" resultMap="volElegantDemeanourResultMap" parameterType="int">
+		select <include refid="columns"/>
+		from vol_elegant_demeanour
+		where elegantId = #{id}
+	</select>
+	
+	<select id="findAll" resultMap="volElegantDemeanourResultMap">
+		select <include refid="columns"/>
+		from vol_elegant_demeanour
+		order by elegantId desc
+	</select>
+	
+	<sql id="columns1">
+		elegantId, elegantTitle, type, picture, auditor, auditTypeId, read_nums, share_nums, creatorId, e.createDate, e.updateDate
+	</sql>
+	
+	<select id="findByDto" resultMap="volElegantDemeanourResultMap" parameterType="VolElegantDemeanour">
+		select <include refid="columns1"/> ,v.fullName as userName, v.serviceTime
+		from vol_elegant_demeanour as e,vol_volunteer_user as v
+		where 1=1 <include refid="whereCondition"/> and e.creatorId = v.userId
+		<if test="state == 0">
+			order by elegantId desc
+		</if>
+		<if test="state == 1">
+			order by read_nums desc
+		</if>
+		<if test="state == 2">
+			order by v.serviceTime desc
+		</if>
+		<if test="start != null">
+			limit #{start}, #{end}
+		</if>
+	</select>
+	
+	<insert id="insert" parameterType="VolElegantDemeanour">
+		insert into vol_elegant_demeanour
+		(<include refid="columns"/>)
+		values(<include refid="insertValues"/>);
+		<selectKey resultType="int" keyProperty="id">
+			select last_insert_id()
+		</selectKey>
+	</insert>
+	
+	<insert id="insertList" parameterType="java.util.List">
+		insert into vol_elegant_demeanour
+		(<include refid="columns"/>)
+		values
+			<foreach collection="list" item="dto" index="index" separator=",">
+				(<include refid="insertListValues"/>)
+			</foreach>
+	</insert>
+	
+	<update id="update" parameterType="VolElegantDemeanour">
+		update vol_elegant_demeanour
+		set <include refid="updateValues"/>
+		where elegantId = #{id}
+	</update>
+	
+	<!--update id="updateList" parameterType="java.util.List">
+		update vol_elegant_demeanour
+		set <include refid="updateListValues"/>
+		where elegantId in
+		<foreach collection="list" item="dto" open="(" separator="," close=")">
+			#{dto.id}
+		</foreach>
+	</update-->
+	
+	<update id="updatePartial" parameterType="VolElegantDemeanour">
+		update vol_elegant_demeanour
+		set <include refid="updatePartialValues"/>
+		where elegantId = #{id}
+	</update>
+	
+	<delete id="delete" parameterType="int">
+		delete from vol_elegant_demeanour
+		where elegantId = #{id}
+	</delete>
+	
+	<delete id="deleteList" parameterType="java.util.List">
+		delete from vol_elegant_demeanour
+		where elegantId in
+		<foreach collection="list" item="id" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+</mapper>

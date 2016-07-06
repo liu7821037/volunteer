@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bjb.dao.VolOrganizationUserDao">
+	<resultMap id="volOrganizationUserResultMap" type="com.bjb.entity.VolOrganizationUser">
+		<id column="organizationUserId" property="id" jdbcType="INTEGER" />
+		<result column="userId" property="userId" jdbcType="INTEGER" />
+		<result column="organizationUserPortrait" property="organizationUserPortrait" jdbcType="VARCHAR" />
+		<result column="onlySign" property="onlySign" jdbcType="VARCHAR" />
+		<result column="organizationUserGender" property="organizationUserGender" jdbcType="INTEGER" />
+		<result column="organizationUserPhone" property="organizationUserPhone" jdbcType="VARCHAR" />
+		<result column="organizationUserEmail" property="organizationUserEmail" jdbcType="VARCHAR" />
+		<result column="organizationArea" property="organizationArea" jdbcType="VARCHAR" />
+		<result column="organizationId" property="organizationId" jdbcType="INTEGER" />
+		<result column="registerDate" property="registerDate" jdbcType="TIMESTAMP" />
+		<result column="updateDate" property="updateDate" jdbcType="TIMESTAMP" />
+		<result column="roleId" property="roleId" jdbcType="INTEGER" />
+	</resultMap>
+	
+	<sql id="columns">
+		organizationUserId, userId, organizationUserPortrait, onlySign, organizationUserGender, organizationUserPhone, organizationUserEmail, organizationArea, organizationId, registerDate, updateDate, roleId
+	</sql>
+	
+	<sql id="insertValues">
+		null,
+		#{userId, jdbcType=INTEGER},
+		#{organizationUserPortrait, jdbcType=VARCHAR},
+		#{onlySign, jdbcType=VARCHAR},
+		#{organizationUserGender, jdbcType=INTEGER},
+		#{organizationUserPhone, jdbcType=VARCHAR},
+		#{organizationUserEmail, jdbcType=VARCHAR},
+		#{organizationArea, jdbcType=VARCHAR},
+		#{organizationId, jdbcType=INTEGER},
+		#{registerDate, jdbcType=TIMESTAMP},
+		#{updateDate, jdbcType=TIMESTAMP},
+		#{roleId, jdbcType=INTEGER}
+	</sql>
+	
+	<sql id="insertListValues">
+		null,
+		#{dto.userId, jdbcType=INTEGER},
+		#{dto.organizationUserPortrait, jdbcType=VARCHAR},
+		#{dto.onlySign, jdbcType=VARCHAR},
+		#{dto.organizationUserGender, jdbcType=INTEGER},
+		#{dto.organizationUserPhone, jdbcType=VARCHAR},
+		#{dto.organizationUserEmail, jdbcType=VARCHAR},
+		#{dto.organizationArea, jdbcType=VARCHAR},
+		#{dto.organizationId, jdbcType=INTEGER},
+		#{dto.registerDate, jdbcType=TIMESTAMP},
+		#{dto.updateDate, jdbcType=TIMESTAMP},
+		#{dto.roleId, jdbcType=INTEGER}
+	</sql>
+	
+	<sql id="updateValues">
+		organizationUserId=#{id, jdbcType=INTEGER},
+		userId=#{userId, jdbcType=INTEGER},
+		organizationUserPortrait=#{organizationUserPortrait, jdbcType=VARCHAR},
+		onlySign=#{onlySign, jdbcType=VARCHAR},
+		organizationUserGender=#{organizationUserGender, jdbcType=INTEGER},
+		organizationUserPhone=#{organizationUserPhone, jdbcType=VARCHAR},
+		organizationUserEmail=#{organizationUserEmail, jdbcType=VARCHAR},
+		organizationArea=#{organizationArea, jdbcType=VARCHAR},
+		organizationId=#{organizationId, jdbcType=INTEGER},
+		registerDate=#{registerDate, jdbcType=TIMESTAMP},
+		updateDate=#{updateDate, jdbcType=TIMESTAMP},
+		roleId=#{roleId, jdbcType=INTEGER}
+	</sql>
+	
+	<sql id="updateListValues">
+		organizationUserId=#{dto.id, jdbcType=INTEGER},
+		userId=#{dto.userId, jdbcType=INTEGER},
+		organizationUserPortrait=#{dto.organizationUserPortrait, jdbcType=VARCHAR},
+		onlySign=#{dto.onlySign, jdbcType=VARCHAR},
+		organizationUserGender=#{dto.organizationUserGender, jdbcType=INTEGER},
+		organizationUserPhone=#{dto.organizationUserPhone, jdbcType=VARCHAR},
+		organizationUserEmail=#{dto.organizationUserEmail, jdbcType=VARCHAR},
+		organizationArea=#{dto.organizationArea, jdbcType=VARCHAR},
+		organizationId=#{dto.organizationId, jdbcType=INTEGER},
+		registerDate=#{dto.registerDate, jdbcType=TIMESTAMP},
+		updateDate=#{dto.updateDate, jdbcType=TIMESTAMP},
+		roleId=#{dto.roleId, jdbcType=INTEGER}
+	</sql>
+	
+	<sql id="updatePartialValues">
+		organizationUserId=#{id, jdbcType=INTEGER}
+		<if test="userId != null">
+			<trim prefix=",">
+				userId=#{userId, jdbcType=INTEGER}
+			</trim>
+		</if>
+		<if test="organizationUserPortrait != null">
+			<trim prefix=",">
+				organizationUserPortrait=#{organizationUserPortrait, jdbcType=VARCHAR}
+			</trim>
+		</if>
+		<if test="onlySign != null">
+			<trim prefix=",">
+				onlySign=#{onlySign, jdbcType=VARCHAR}
+			</trim>
+		</if>
+		<if test="organizationUserGender != null">
+			<trim prefix=",">
+				organizationUserGender=#{organizationUserGender, jdbcType=INTEGER}
+			</trim>
+		</if>
+		<if test="organizationUserPhone != null">
+			<trim prefix=",">
+				organizationUserPhone=#{organizationUserPhone, jdbcType=VARCHAR}
+			</trim>
+		</if>
+		<if test="organizationUserEmail != null">
+			<trim prefix=",">
+				organizationUserEmail=#{organizationUserEmail, jdbcType=VARCHAR}
+			</trim>
+		</if>
+		<if test="organizationArea != null">
+			<trim prefix=",">
+				organizationArea=#{organizationArea, jdbcType=VARCHAR}
+			</trim>
+		</if>
+		<if test="organizationId != null">
+			<trim prefix=",">
+				organizationId=#{organizationId, jdbcType=INTEGER}
+			</trim>
+		</if>
+		<if test="registerDate != null">
+			<trim prefix=",">
+				registerDate=#{registerDate, jdbcType=TIMESTAMP}
+			</trim>
+		</if>
+		<if test="updateDate != null">
+			<trim prefix=",">
+				updateDate=#{updateDate, jdbcType=TIMESTAMP}
+			</trim>
+		</if>
+		<if test="roleId != null">
+			<trim prefix=",">
+				roleId=#{roleId, jdbcType=INTEGER}
+			</trim>
+		</if>
+	</sql>
+	
+	<sql id="whereCondition">
+	    <if test="userId != null">
+			and userId = #{userId, jdbcType=INTEGER}
+		</if>
+	</sql>
+	
+	<select id="count" resultType="int">
+		select count(organizationUserId)
+		from vol_organization_user
+	</select>
+	
+	<select id="countByDto" resultType="int" parameterType="VolOrganizationUser">
+		select count(organizationUserId)
+		from vol_organization_user
+		where 1=1 <include refid="whereCondition"/>
+	</select>
+	
+	<select id="findById" resultMap="volOrganizationUserResultMap" parameterType="int">
+		select <include refid="columns"/>
+		from vol_organization_user
+		where organizationUserId = #{id}
+	</select>
+	
+	<select id="findAll" resultMap="volOrganizationUserResultMap">
+		select <include refid="columns"/>
+		from vol_organization_user
+		order by organizationUserId desc
+	</select>
+	
+	<select id="findListByName" resultMap="volOrganizationUserResultMap">
+		select o.organizationUserId, o.userId, o.organizationUserPortrait, o.onlySign, o.organizationUserGender, o.organizationUserPhone, o.organizationUserEmail, o.organizationArea, o.organizationId, o.registerDate, o.updateDate, o.roleId
+		from vol_organization_user as o,vol_user as u
+		where o.userId = u.userId and u.userCode like '%${name}%'
+		order by o.organizationUserId desc
+	</select>
+	
+	<select id="findByDto" resultMap="volOrganizationUserResultMap" parameterType="VolOrganizationUser">
+		select <include refid="columns"/>
+		from vol_organization_user
+		where 1=1 <include refid="whereCondition"/>
+		order by organizationUserId desc
+		<if test="start != null">
+			limit #{start}, #{end}
+		</if>
+	</select>
+	
+	<insert id="insert" parameterType="VolOrganizationUser">
+		insert into vol_organization_user
+		(<include refid="columns"/>)
+		values(<include refid="insertValues"/>);
+		<selectKey resultType="int" keyProperty="id">
+			select last_insert_id()
+		</selectKey>
+	</insert>
+	
+	<insert id="insertList" parameterType="java.util.List">
+		insert into vol_organization_user
+		(<include refid="columns"/>)
+		values
+			<foreach collection="list" item="dto" index="index" separator=",">
+				(<include refid="insertListValues"/>)
+			</foreach>
+	</insert>
+	
+	<update id="update" parameterType="VolOrganizationUser">
+		update vol_organization_user
+		set <include refid="updateValues"/>
+		where organizationUserId = #{id}
+	</update>
+	
+	<!--update id="updateList" parameterType="java.util.List">
+		update vol_organization_user
+		set <include refid="updateListValues"/>
+		where organizationUserId in
+		<foreach collection="list" item="dto" open="(" separator="," close=")">
+			#{dto.id}
+		</foreach>
+	</update-->
+	
+	<update id="updatePartial" parameterType="VolOrganizationUser">
+		update vol_organization_user
+		set <include refid="updatePartialValues"/>
+		where organizationUserId = #{id}
+	</update>
+	
+	<delete id="delete" parameterType="int">
+		delete from vol_organization_user
+		where organizationUserId = #{id}
+	</delete>
+	
+	<delete id="deleteList" parameterType="java.util.List">
+		delete from vol_organization_user
+		where organizationUserId in
+		<foreach collection="list" item="id" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+</mapper>

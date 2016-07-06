@@ -1,0 +1,364 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bjb.dao.VolTeamUserDao">
+	<resultMap id="volTeamUserResultMap" type="VolTeamUser">
+		<id column="teamId" property="id" jdbcType="INTEGER" />
+		<result column="userId" property="userId" jdbcType="INTEGER" />
+		<result column="onlySign" property="onlySign" jdbcType="VARCHAR" />
+		<result column="captainEmail" property="captainEmail" jdbcType="VARCHAR" />
+		<result column="teamName" property="teamName" jdbcType="VARCHAR" />
+		<result column="teamType" property="teamType" jdbcType="INTEGER" />
+		<result column="teamUnitName" property="teamUnitName" jdbcType="VARCHAR" />
+		<result column="area_id" property="area_id" jdbcType="INTEGER" />
+		<result column="teamAddress" property="teamAddress" jdbcType="VARCHAR" />
+		<result column="teamZipCode" property="teamZipCode" jdbcType="VARCHAR" />
+		<result column="createDate" property="createDate" jdbcType="TIMESTAMP" />
+		<result column="teamNumber" property="teamNumber" jdbcType="INTEGER" />
+		<result column="serviceTypeId" property="serviceTypeId" jdbcType="INTEGER" />
+		<result column="contactorName" property="contactorName" jdbcType="VARCHAR" />
+		<result column="captainTel" property="captainTel" jdbcType="VARCHAR" />
+		<result column="contactorMobile" property="contactorMobile" jdbcType="VARCHAR" />
+		<result column="contactorQQ" property="contactorQQ" jdbcType="VARCHAR" />
+		<result column="registType" property="registType" jdbcType="INTEGER" />
+		<result column="registDate" property="registDate" jdbcType="TIMESTAMP" />
+		<result column="updateDate" property="updateDate" jdbcType="TIMESTAMP" />
+		<result column="serviceTime" property="serviceTime" jdbcType="INTEGER" />
+		<result column="starId" property="starId" jdbcType="INTEGER" />
+		<result column="checkStatus" property="checkStatus" jdbcType="VARCHAR" />
+		<result column="checkDate" property="checkDate" jdbcType="TIMESTAMP" />
+		<result column="checkId" property="checkId" jdbcType="INTEGER" />
+	</resultMap>
+	
+	<sql id="columns">
+		teamId, userId, onlySign, captainEmail, teamName, teamType, teamUnitName, area_id, teamAddress, teamZipCode, createDate, teamNumber, serviceTypeId, contactorName, captainTel, contactorMobile, contactorQQ, registType, registDate, updateDate, serviceTime, starId, checkStatus, checkDate, checkId
+	</sql>
+	
+	<sql id="insertValues">
+		null,
+		#{userId, jdbcType=INTEGER},
+		#{onlySign, jdbcType=VARCHAR},
+		#{captainEmail, jdbcType=VARCHAR},
+		#{teamName, jdbcType=VARCHAR},
+		#{teamType, jdbcType=INTEGER},
+		#{teamUnitName, jdbcType=VARCHAR},
+		#{area_id, jdbcType=INTEGER},
+		#{teamAddress, jdbcType=VARCHAR},
+		#{teamZipCode, jdbcType=VARCHAR},
+		#{createDate, jdbcType=TIMESTAMP},
+		#{teamNumber, jdbcType=INTEGER},
+		#{serviceTypeId, jdbcType=INTEGER},
+		#{contactorName, jdbcType=VARCHAR},
+		#{captainTel, jdbcType=VARCHAR},
+		#{contactorMobile, jdbcType=VARCHAR},
+		#{contactorQQ, jdbcType=VARCHAR},
+		#{registType, jdbcType=INTEGER},
+		#{registDate, jdbcType=TIMESTAMP},
+		#{updateDate, jdbcType=TIMESTAMP},
+		#{serviceTime, jdbcType=INTEGER},
+		#{starId, jdbcType=INTEGER},
+		#{checkStatus, jdbcType=VARCHAR},
+		#{checkDate, jdbcType=TIMESTAMP},
+		#{checkId, jdbcType=INTEGER}
+	</sql>
+	
+	<sql id="insertListValues">
+		null,
+		#{dto.userId, jdbcType=INTEGER},
+		#{dto.onlySign, jdbcType=VARCHAR},
+		#{dto.captainEmail, jdbcType=VARCHAR},
+		#{dto.teamName, jdbcType=VARCHAR},
+		#{dto.teamType, jdbcType=INTEGER},
+		#{dto.teamUnitName, jdbcType=VARCHAR},
+		#{dto.area_id, jdbcType=INTEGER},
+		#{dto.teamAddress, jdbcType=VARCHAR},
+		#{dto.teamZipCode, jdbcType=VARCHAR},
+		#{dto.createDate, jdbcType=TIMESTAMP},
+		#{dto.teamNumber, jdbcType=INTEGER},
+		#{dto.serviceTypeId, jdbcType=INTEGER},
+		#{dto.contactorName, jdbcType=VARCHAR},
+		#{dto.captainTel, jdbcType=VARCHAR},
+		#{dto.contactorMobile, jdbcType=VARCHAR},
+		#{dto.contactorQQ, jdbcType=VARCHAR},
+		#{dto.registType, jdbcType=INTEGER},
+		#{dto.registDate, jdbcType=TIMESTAMP},
+		#{dto.updateDate, jdbcType=TIMESTAMP},
+		#{dto.serviceTime, jdbcType=INTEGER},
+		#{dto.starId, jdbcType=INTEGER},
+		#{dto.checkStatus, jdbcType=VARCHAR},
+		#{dto.checkDate, jdbcType=TIMESTAMP},
+		#{dto.checkId, jdbcType=INTEGER}
+	</sql>
+	
+	<sql id="updateValues">
+		teamId=#{id, jdbcType=INTEGER},
+		userId=#{userId, jdbcType=INTEGER},
+		onlySign=#{onlySign, jdbcType=VARCHAR},
+		captainEmail=#{captainEmail, jdbcType=VARCHAR},
+		teamName=#{teamName, jdbcType=VARCHAR},
+		teamType=#{teamType, jdbcType=INTEGER},
+		teamUnitName=#{teamUnitName, jdbcType=VARCHAR},
+		area_id=#{area_id, jdbcType=INTEGER},
+		teamAddress=#{teamAddress, jdbcType=VARCHAR},
+		teamZipCode=#{teamZipCode, jdbcType=VARCHAR},
+		createDate=#{createDate, jdbcType=TIMESTAMP},
+		teamNumber=#{teamNumber, jdbcType=INTEGER},
+		serviceTypeId=#{serviceTypeId, jdbcType=INTEGER},
+		contactorName=#{contactorName, jdbcType=VARCHAR},
+		captainTel=#{captainTel, jdbcType=VARCHAR},
+		contactorMobile=#{contactorMobile, jdbcType=VARCHAR},
+		contactorQQ=#{contactorQQ, jdbcType=VARCHAR},
+		registType=#{registType, jdbcType=INTEGER},
+		registDate=#{registDate, jdbcType=TIMESTAMP},
+		updateDate=#{updateDate, jdbcType=TIMESTAMP},
+		serviceTime=#{serviceTime, jdbcType=INTEGER},
+		starId=#{starId, jdbcType=INTEGER},
+		checkStatus=#{checkStatus, jdbcType=VARCHAR},
+		checkDate=#{checkDate, jdbcType=TIMESTAMP},
+		checkId=#{checkId, jdbcType=INTEGER}
+	</sql>
+	
+	<sql id="updateListValues">
+		teamId=#{dto.id, jdbcType=INTEGER},
+		userId=#{dto.userId, jdbcType=INTEGER},
+		onlySign=#{dto.onlySign, jdbcType=VARCHAR},
+		captainEmail=#{dto.captainEmail, jdbcType=VARCHAR},
+		teamName=#{dto.teamName, jdbcType=VARCHAR},
+		teamType=#{dto.teamType, jdbcType=INTEGER},
+		teamUnitName=#{dto.teamUnitName, jdbcType=VARCHAR},
+		area_id=#{dto.area_id, jdbcType=INTEGER},
+		teamAddress=#{dto.teamAddress, jdbcType=VARCHAR},
+		teamZipCode=#{dto.teamZipCode, jdbcType=VARCHAR},
+		createDate=#{dto.createDate, jdbcType=TIMESTAMP},
+		teamNumber=#{dto.teamNumber, jdbcType=INTEGER},
+		serviceTypeId=#{dto.serviceTypeId, jdbcType=INTEGER},
+		contactorName=#{dto.contactorName, jdbcType=VARCHAR},
+		captainTel=#{dto.captainTel, jdbcType=VARCHAR},
+		contactorMobile=#{dto.contactorMobile, jdbcType=VARCHAR},
+		contactorQQ=#{dto.contactorQQ, jdbcType=VARCHAR},
+		registType=#{dto.registType, jdbcType=INTEGER},
+		registDate=#{dto.registDate, jdbcType=TIMESTAMP},
+		updateDate=#{dto.updateDate, jdbcType=TIMESTAMP},
+		serviceTime=#{dto.serviceTime, jdbcType=INTEGER},
+		starId=#{dto.starId, jdbcType=INTEGER},
+		checkStatus=#{dto.checkStatus, jdbcType=VARCHAR},
+		checkDate=#{dto.checkDate, jdbcType=TIMESTAMP},
+		checkId=#{dto.checkId, jdbcType=INTEGER}
+	</sql>
+	
+	<sql id="updatePartialValues">
+		teamId=#{id, jdbcType=INTEGER}
+		<if test="userId != null">
+			<trim prefix=",">
+				userId=#{userId, jdbcType=INTEGER}
+			</trim>
+		</if>
+		<if test="onlySign != null">
+			<trim prefix=",">
+				onlySign=#{onlySign, jdbcType=VARCHAR}
+			</trim>
+		</if>
+		<if test="captainEmail != null">
+			<trim prefix=",">
+				captainEmail=#{captainEmail, jdbcType=VARCHAR}
+			</trim>
+		</if>
+		<if test="teamName != null">
+			<trim prefix=",">
+				teamName=#{teamName, jdbcType=VARCHAR}
+			</trim>
+		</if>
+		<if test="teamType != null">
+			<trim prefix=",">
+				teamType=#{teamType, jdbcType=INTEGER}
+			</trim>
+		</if>
+		<if test="teamUnitName != null">
+			<trim prefix=",">
+				teamUnitName=#{teamUnitName, jdbcType=VARCHAR}
+			</trim>
+		</if>
+		<if test="area_id != null">
+			<trim prefix=",">
+				area_id=#{area_id, jdbcType=INTEGER}
+			</trim>
+		</if>
+		<if test="teamAddress != null">
+			<trim prefix=",">
+				teamAddress=#{teamAddress, jdbcType=VARCHAR}
+			</trim>
+		</if>
+		<if test="teamZipCode != null">
+			<trim prefix=",">
+				teamZipCode=#{teamZipCode, jdbcType=VARCHAR}
+			</trim>
+		</if>
+		<if test="createDate != null">
+			<trim prefix=",">
+				createDate=#{createDate, jdbcType=TIMESTAMP}
+			</trim>
+		</if>
+		<if test="teamNumber != null">
+			<trim prefix=",">
+				teamNumber=#{teamNumber, jdbcType=INTEGER}
+			</trim>
+		</if>
+		<if test="serviceTypeId != null">
+			<trim prefix=",">
+				serviceTypeId=#{serviceTypeId, jdbcType=INTEGER}
+			</trim>
+		</if>
+		<if test="contactorName != null">
+			<trim prefix=",">
+				contactorName=#{contactorName, jdbcType=VARCHAR}
+			</trim>
+		</if>
+		<if test="captainTel != null">
+			<trim prefix=",">
+				captainTel=#{captainTel, jdbcType=VARCHAR}
+			</trim>
+		</if>
+		<if test="contactorMobile != null">
+			<trim prefix=",">
+				contactorMobile=#{contactorMobile, jdbcType=VARCHAR}
+			</trim>
+		</if>
+		<if test="contactorQQ != null">
+			<trim prefix=",">
+				contactorQQ=#{contactorQQ, jdbcType=VARCHAR}
+			</trim>
+		</if>
+		<if test="registType != null">
+			<trim prefix=",">
+				registType=#{registType, jdbcType=INTEGER}
+			</trim>
+		</if>
+		<if test="registDate != null">
+			<trim prefix=",">
+				registDate=#{registDate, jdbcType=TIMESTAMP}
+			</trim>
+		</if>
+		<if test="updateDate != null">
+			<trim prefix=",">
+				updateDate=#{updateDate, jdbcType=TIMESTAMP}
+			</trim>
+		</if>
+		<if test="serviceTime != null">
+			<trim prefix=",">
+				serviceTime=#{serviceTime, jdbcType=INTEGER}
+			</trim>
+		</if>
+		<if test="starId != null">
+			<trim prefix=",">
+				starId=#{starId, jdbcType=INTEGER}
+			</trim>
+		</if>
+		<if test="checkStatus != null">
+			<trim prefix=",">
+				checkStatus=#{checkStatus, jdbcType=VARCHAR}
+			</trim>
+		</if>
+		<if test="checkDate != null">
+			<trim prefix=",">
+				checkDate=#{checkDate, jdbcType=TIMESTAMP}
+			</trim>
+		</if>
+		<if test="checkId != null">
+			<trim prefix=",">
+				checkId=#{checkId, jdbcType=INTEGER}
+			</trim>
+		</if>
+	</sql>
+	
+	<sql id="whereCondition">
+	    <if test="teamName != null">
+			<if test="teamName.length() > 0">
+				and instr(teamName, #{teamName, jdbcType=VARCHAR}) > 0
+			</if>
+		</if>
+	</sql>
+	
+	<select id="count" resultType="int">
+		select count(teamId)
+		from vol_team_user
+	</select>
+	
+	<select id="countByDto" resultType="int" parameterType="VolTeamUser">
+		select count(teamId)
+		from vol_team_user
+		where 1=1 <include refid="whereCondition"/>
+	</select>
+	
+	<select id="findById" resultMap="volTeamUserResultMap" parameterType="int">
+		select <include refid="columns"/>
+		from vol_team_user
+		where teamId = #{id}
+	</select>
+	
+	<select id="findAll" resultMap="volTeamUserResultMap">
+		select <include refid="columns"/>
+		from vol_team_user
+		order by teamId desc
+	</select>
+	
+	<select id="findByDto" resultMap="volTeamUserResultMap" parameterType="VolTeamUser">
+		select <include refid="columns"/>
+		from vol_team_user
+		where 1=1 <include refid="whereCondition"/>
+		order by teamId desc
+		<if test="start != null">
+			limit #{start}, #{end}
+		</if>
+	</select>
+	
+	<insert id="insert" parameterType="VolTeamUser">
+		insert into vol_team_user
+		(<include refid="columns"/>)
+		values(<include refid="insertValues"/>);
+		<selectKey resultType="int" keyProperty="id">
+			select last_insert_id()
+		</selectKey>
+	</insert>
+	
+	<insert id="insertList" parameterType="java.util.List">
+		insert into vol_team_user
+		(<include refid="columns"/>)
+		values
+			<foreach collection="list" item="dto" index="index" separator=",">
+				(<include refid="insertListValues"/>)
+			</foreach>
+	</insert>
+	
+	<update id="update" parameterType="VolTeamUser">
+		update vol_team_user
+		set <include refid="updateValues"/>
+		where teamId = #{id}
+	</update>
+	
+	<!--update id="updateList" parameterType="java.util.List">
+		update vol_team_user
+		set <include refid="updateListValues"/>
+		where teamId in
+		<foreach collection="list" item="dto" open="(" separator="," close=")">
+			#{dto.id}
+		</foreach>
+	</update-->
+	
+	<update id="updatePartial" parameterType="VolTeamUser">
+		update vol_team_user
+		set <include refid="updatePartialValues"/>
+		where teamId = #{id}
+	</update>
+	
+	<delete id="delete" parameterType="int">
+		delete from vol_team_user
+		where teamId = #{id}
+	</delete>
+	
+	<delete id="deleteList" parameterType="java.util.List">
+		delete from vol_team_user
+		where teamId in
+		<foreach collection="list" item="id" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+</mapper>

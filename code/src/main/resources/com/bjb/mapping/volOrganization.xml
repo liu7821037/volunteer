@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bjb.dao.VolOrganizationDao">
+	<resultMap id="volOrganizationResultMap" type="com.bjb.entity.VolOrganization">
+		<id column="organizationId" property="id" jdbcType="INTEGER" />
+		<result column="organizationName" property="organizationName" jdbcType="VARCHAR" />
+		<result column="organizationArea" property="organizationArea" jdbcType="VARCHAR" />
+		<result column="organizationAddress" property="organizationAddress" jdbcType="VARCHAR" />
+		<result column="organizationHead" property="organizationHead" jdbcType="VARCHAR" />
+		<result column="organizationHeadPhone" property="organizationHeadPhone" jdbcType="VARCHAR" />
+		<result column="organizationEmail" property="organizationEmail" jdbcType="VARCHAR" />
+		<result column="organizationZip" property="organizationZip" jdbcType="VARCHAR" />
+	</resultMap>
+	
+	<sql id="columns">
+		organizationId, organizationName, organizationArea, organizationAddress, organizationHead, organizationHeadPhone, organizationEmail, organizationZip
+	</sql>
+	
+	<sql id="insertValues">
+		null,
+		#{organizationName, jdbcType=VARCHAR},
+		#{organizationArea, jdbcType=VARCHAR},
+		#{organizationAddress, jdbcType=VARCHAR},
+		#{organizationHead, jdbcType=VARCHAR},
+		#{organizationHeadPhone, jdbcType=VARCHAR},
+		#{organizationEmail, jdbcType=VARCHAR},
+		#{organizationZip, jdbcType=VARCHAR}
+	</sql>
+	
+	<sql id="insertListValues">
+		null,
+		#{dto.organizationName, jdbcType=VARCHAR},
+		#{dto.organizationArea, jdbcType=VARCHAR},
+		#{dto.organizationAddress, jdbcType=VARCHAR},
+		#{dto.organizationHead, jdbcType=VARCHAR},
+		#{dto.organizationHeadPhone, jdbcType=VARCHAR},
+		#{dto.organizationEmail, jdbcType=VARCHAR},
+		#{dto.organizationZip, jdbcType=VARCHAR}
+	</sql>
+	
+	<sql id="updateValues">
+		organizationId=#{id, jdbcType=INTEGER},
+		organizationName=#{organizationName, jdbcType=VARCHAR},
+		organizationArea=#{organizationArea, jdbcType=VARCHAR},
+		organizationAddress=#{organizationAddress, jdbcType=VARCHAR},
+		organizationHead=#{organizationHead, jdbcType=VARCHAR},
+		organizationHeadPhone=#{organizationHeadPhone, jdbcType=VARCHAR},
+		organizationEmail=#{organizationEmail, jdbcType=VARCHAR},
+		organizationZip=#{organizationZip, jdbcType=VARCHAR}
+	</sql>
+	
+	<sql id="updateListValues">
+		organizationId=#{dto.id, jdbcType=INTEGER},
+		organizationName=#{dto.organizationName, jdbcType=VARCHAR},
+		organizationArea=#{dto.organizationArea, jdbcType=VARCHAR},
+		organizationAddress=#{dto.organizationAddress, jdbcType=VARCHAR},
+		organizationHead=#{dto.organizationHead, jdbcType=VARCHAR},
+		organizationHeadPhone=#{dto.organizationHeadPhone, jdbcType=VARCHAR},
+		organizationEmail=#{dto.organizationEmail, jdbcType=VARCHAR},
+		organizationZip=#{dto.organizationZip, jdbcType=VARCHAR}
+	</sql>
+	
+	<sql id="updatePartialValues">
+		organizationId=#{id, jdbcType=INTEGER}
+		<if test="organizationName != null">
+			<trim prefix=",">
+				organizationName=#{organizationName, jdbcType=VARCHAR}
+			</trim>
+		</if>
+		<if test="organizationArea != null">
+			<trim prefix=",">
+				organizationArea=#{organizationArea, jdbcType=VARCHAR}
+			</trim>
+		</if>
+		<if test="organizationAddress != null">
+			<trim prefix=",">
+				organizationAddress=#{organizationAddress, jdbcType=VARCHAR}
+			</trim>
+		</if>
+		<if test="organizationHead != null">
+			<trim prefix=",">
+				organizationHead=#{organizationHead, jdbcType=VARCHAR}
+			</trim>
+		</if>
+		<if test="organizationHeadPhone != null">
+			<trim prefix=",">
+				organizationHeadPhone=#{organizationHeadPhone, jdbcType=VARCHAR}
+			</trim>
+		</if>
+		<if test="organizationEmail != null">
+			<trim prefix=",">
+				organizationEmail=#{organizationEmail, jdbcType=VARCHAR}
+			</trim>
+		</if>
+		<if test="organizationZip != null">
+			<trim prefix=",">
+				organizationZip=#{organizationZip, jdbcType=VARCHAR}
+			</trim>
+		</if>
+	</sql>
+	
+	<sql id="whereCondition">
+		<if test="organizationName != null">
+			<if test="organizationName.length() > 0">
+				and instr(organizationName, #{organizationName, jdbcType=VARCHAR}) > 0
+			</if>
+		</if>
+		<if test="organizationArea != null">
+			and	organizationArea=#{organizationArea, jdbcType=VARCHAR}
+		</if>
+		<if test="organizationAddress != null">
+			and	organizationAddress=#{organizationAddress, jdbcType=VARCHAR}
+		</if>
+		<if test="organizationHead != null">
+			and	organizationHead=#{organizationHead, jdbcType=VARCHAR}
+		</if>
+		<if test="organizationHeadPhone != null">
+			and	organizationHeadPhone=#{organizationHeadPhone, jdbcType=VARCHAR}
+		</if>
+		<if test="organizationEmail != null">
+			and	organizationEmail=#{organizationEmail, jdbcType=VARCHAR}
+		</if>
+		<if test="organizationZip != null">
+			and	organizationZip=#{organizationZip, jdbcType=VARCHAR}
+		</if>
+	</sql>
+	
+	<sql id="whereConditionByName">
+		<if test="organizationName != null">
+			and organizationName=#{organizationName, jdbcType=VARCHAR}
+		</if>
+	</sql>
+	
+	<select id="count" resultType="int">
+		select count(organizationId)
+		from vol_organization
+	</select>
+	
+	<select id="countByDto" resultType="int" parameterType="VolOrganization">
+		select count(organizationId)
+		from vol_organization
+		where 1=1 <include refid="whereCondition"/>
+	</select>
+	
+	<select id="findById" resultMap="volOrganizationResultMap" parameterType="int">
+		select <include refid="columns"/>
+		from vol_organization
+		where organizationId = #{id}
+	</select>
+	
+	<select id="findAll" resultMap="volOrganizationResultMap">
+		select <include refid="columns"/>
+		from vol_organization
+		order by organizationId desc
+	</select>
+	
+	<select id="findByDto" resultMap="volOrganizationResultMap" parameterType="VolOrganization">
+		select <include refid="columns"/>
+		from vol_organization
+		where 1=1 <include refid="whereCondition"/>
+		order by organizationId desc
+		<if test="start != null">
+			limit #{start}, #{end}
+		</if>
+	</select>
+	
+	<select id="findListByName" resultMap="volOrganizationResultMap" parameterType="VolOrganization">
+		select <include refid="columns"/>
+		from vol_organization
+		where 1=1 <include refid="whereConditionByName"/>
+		order by organizationId desc
+		<if test="start != null">
+			limit #{start}, #{end}
+		</if>
+	</select>
+	
+	<insert id="insert" parameterType="VolOrganization">
+		insert into vol_organization
+		(<include refid="columns"/>)
+		values(<include refid="insertValues"/>);
+		<selectKey resultType="int" keyProperty="id">
+			select last_insert_id()
+		</selectKey>
+	</insert>
+	
+	<insert id="insertList" parameterType="java.util.List">
+		insert into vol_organization
+		(<include refid="columns"/>)
+		values
+			<foreach collection="list" item="dto" index="index" separator=",">
+				(<include refid="insertListValues"/>)
+			</foreach>
+	</insert>
+	
+	<update id="update" parameterType="VolOrganization">
+		update vol_organization
+		set <include refid="updateValues"/>
+		where organizationId = #{id}
+	</update>
+	
+	<!--update id="updateList" parameterType="java.util.List">
+		update vol_organization
+		set <include refid="updateListValues"/>
+		where organizationId in
+		<foreach collection="list" item="dto" open="(" separator="," close=")">
+			#{dto.id}
+		</foreach>
+	</update-->
+	
+	<update id="updatePartial" parameterType="VolOrganization">
+		update vol_organization
+		set <include refid="updatePartialValues"/>
+		where organizationId = #{id}
+	</update>
+	
+	<delete id="delete" parameterType="int">
+		delete from vol_organization
+		where organizationId = #{id}
+	</delete>
+	
+	<delete id="deleteList" parameterType="java.util.List">
+		delete from vol_organization
+		where organizationId in
+		<foreach collection="list" item="id" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+</mapper>

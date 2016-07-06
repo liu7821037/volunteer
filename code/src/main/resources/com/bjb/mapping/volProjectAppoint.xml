@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bjb.dao.VolProjectAppointDao">
+	<resultMap id="volProjectAppointResultMap" type="com.bjb.entity.VolProjectAppoint">
+		<id column="serialId" property="id" jdbcType="INTEGER" />
+		<result column="signUpId" property="signUpId" jdbcType="INTEGER" />
+		<result column="appointUserId" property="appointUserId" jdbcType="INTEGER" />
+		<result column="appointDate" property="appointDate" jdbcType="TIMESTAMP" />
+	</resultMap>
+	
+	<sql id="columns">
+		serialId, signUpId, appointUserId, appointDate
+	</sql>
+	
+	<sql id="insertValues">
+		null,
+		#{signUpId, jdbcType=INTEGER},
+		#{appointUserId, jdbcType=INTEGER},
+		#{appointDate, jdbcType=TIMESTAMP}
+	</sql>
+	
+	<sql id="insertListValues">
+		null,
+		#{dto.signUpId, jdbcType=INTEGER},
+		#{dto.appointUserId, jdbcType=INTEGER},
+		#{dto.appointDate, jdbcType=TIMESTAMP}
+	</sql>
+	
+	<sql id="updateValues">
+		serialId=#{id, jdbcType=INTEGER},
+		signUpId=#{signUpId, jdbcType=INTEGER},
+		appointUserId=#{appointUserId, jdbcType=INTEGER},
+		appointDate=#{appointDate, jdbcType=TIMESTAMP}
+	</sql>
+	
+	<sql id="updateListValues">
+		serialId=#{dto.id, jdbcType=INTEGER},
+		signUpId=#{dto.signUpId, jdbcType=INTEGER},
+		appointUserId=#{dto.appointUserId, jdbcType=INTEGER},
+		appointDate=#{dto.appointDate, jdbcType=TIMESTAMP}
+	</sql>
+	
+	<sql id="updatePartialValues">
+		serialId=#{id, jdbcType=INTEGER}
+		<if test="signUpId != null">
+			<trim prefix=",">
+				signUpId=#{signUpId, jdbcType=INTEGER}
+			</trim>
+		</if>
+		<if test="appointUserId != null">
+			<trim prefix=",">
+				appointUserId=#{appointUserId, jdbcType=INTEGER}
+			</trim>
+		</if>
+		<if test="appointDate != null">
+			<trim prefix=",">
+				appointDate=#{appointDate, jdbcType=TIMESTAMP}
+			</trim>
+		</if>
+	</sql>
+	
+	<sql id="whereCondition">
+	</sql>
+	
+	<select id="count" resultType="int">
+		select count(serialId)
+		from vol_project_appoint
+	</select>
+	
+	<select id="countByDto" resultType="int" parameterType="VolProjectAppoint">
+		select count(serialId)
+		from vol_project_appoint
+		where 1=1 <include refid="whereCondition"/>
+	</select>
+	
+	<select id="findById" resultMap="volProjectAppointResultMap" parameterType="int">
+		select <include refid="columns"/>
+		from vol_project_appoint
+		where serialId = #{id}
+	</select>
+	
+	<select id="findAll" resultMap="volProjectAppointResultMap">
+		select <include refid="columns"/>
+		from vol_project_appoint
+		order by serialId desc
+	</select>
+	
+	<select id="findByDto" resultMap="volProjectAppointResultMap" parameterType="VolProjectAppoint">
+		select <include refid="columns"/>
+		from vol_project_appoint
+		where 1=1 <include refid="whereCondition"/>
+		order by serialId desc
+		<if test="start != null">
+			limit #{start}, #{end}
+		</if>
+	</select>
+	
+	<insert id="insert" parameterType="VolProjectAppoint">
+		insert into vol_project_appoint
+		(<include refid="columns"/>)
+		values(<include refid="insertValues"/>);
+		<selectKey resultType="int" keyProperty="id">
+			select last_insert_id()
+		</selectKey>
+	</insert>
+	
+	<insert id="insertList" parameterType="java.util.List">
+		insert into vol_project_appoint
+		(<include refid="columns"/>)
+		values
+			<foreach collection="list" item="dto" index="index" separator=",">
+				(<include refid="insertListValues"/>)
+			</foreach>
+	</insert>
+	
+	<update id="update" parameterType="VolProjectAppoint">
+		update vol_project_appoint
+		set <include refid="updateValues"/>
+		where serialId = #{id}
+	</update>
+	
+	<!--update id="updateList" parameterType="java.util.List">
+		update vol_project_appoint
+		set <include refid="updateListValues"/>
+		where serialId in
+		<foreach collection="list" item="dto" open="(" separator="," close=")">
+			#{dto.id}
+		</foreach>
+	</update-->
+	
+	<update id="updatePartial" parameterType="VolProjectAppoint">
+		update vol_project_appoint
+		set <include refid="updatePartialValues"/>
+		where serialId = #{id}
+	</update>
+	
+	<delete id="delete" parameterType="int">
+		delete from vol_project_appoint
+		where serialId = #{id}
+	</delete>
+	
+	<delete id="deleteList" parameterType="java.util.List">
+		delete from vol_project_appoint
+		where serialId in
+		<foreach collection="list" item="id" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+</mapper>
